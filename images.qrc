@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/surface">
+        <file>res/images/surface/111.ico</file>
+    </qresource>
+</RCC>
