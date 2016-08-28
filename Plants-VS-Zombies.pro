@@ -14,10 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    globalmanager.cpp
+    globalmanager.cpp \
+    abstractwindow.cpp \
+    welcomewidget.cpp
 
 HEADERS  += mainwindow.h \
-    globalmanager.h
+    globalmanager.h \
+    abstractwidget.h \
+    welcomewidget.h
 
 FORMS    += mainwindow.ui
 

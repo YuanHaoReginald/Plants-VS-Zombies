@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "globalmanager.h"
+#include "abstractwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,15 +16,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
-    enum GameStatus { WelcomeSurface };
 
 public slots:
-	//void switchState(MainWindow::GameStatus);
+	void SwitchStatus(GameStatus);
 
 private:
 	GameStatus CurrentStatus;
-	QWidget *CurrentStatusWidget;
+	AbstractWidget *CurrentStatusWidget;
     
 private:
     Ui::MainWindow *ui;

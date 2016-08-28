@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/surface">
         <file>res/images/surface/111.ico</file>
+        <file>res/images/surface/WelcomeSurfaceBackground.png</file>
+        <file>res/images/surface/SurfaceExit.png</file>
     </qresource>
 </RCC>

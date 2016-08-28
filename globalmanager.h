@@ -14,4 +14,6 @@ public:
     static double StanradWindowWHeight;
 };
 
+    enum class GameStatus { Welcome };
+
 #endif // GLOBALMANAGER_H
