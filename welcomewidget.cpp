@@ -58,25 +58,49 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 {
                 case BackgroundArea::NullArea:
                     if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
                         SwitchBackground(Background::Exit);
+                        setCursor(Qt::PointingHandCursor);
+                    }
                     else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
                         SwitchBackground(Background::Help);
+                        setCursor(Qt::PointingHandCursor);
+                    }
                     else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
                         SwitchBackground(Background::Option);
+                        setCursor(Qt::PointingHandCursor);
+                    }
                     else
+                    {
                         SwitchBackground(Background::Default);
+                        setCursor(Qt::ArrowCursor);
+                    }
                     break;
                 case BackgroundArea::OtherArea:
                     SwitchBackground(Background::Default);
                     break;
                 case BackgroundArea::ExitArea:
                     SwitchBackground(Background::Exit);
+                    if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                        setCursor(Qt::PointingHandCursor);
+                    else
+                        setCursor(Qt::ArrowCursor);
                     break;
                 case BackgroundArea::HelpArea:
                     SwitchBackground(Background::Help);
+                    if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                        setCursor(Qt::PointingHandCursor);
+                    else
+                        setCursor(Qt::ArrowCursor);
                     break;
                 case BackgroundArea::OptionArea:
                     SwitchBackground(Background::Option);
+                    if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                        setCursor(Qt::PointingHandCursor);
+                    else
+                        setCursor(Qt::ArrowCursor);
                     break;
                 default:
                     break;
