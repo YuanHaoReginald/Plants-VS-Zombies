@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QMouseEvent>
+#include <qapplication.h>
 
 WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
 {
@@ -113,25 +114,13 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
                 {
                     if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
                         CurrentPointArea = BackgroundArea::ExitArea;
-                        SwitchBackground(Background::Exit);
-                    }
                     else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
                         CurrentPointArea = BackgroundArea::HelpArea;
-                        SwitchBackground(Background::Help);
-                    }
                     else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
                         CurrentPointArea = BackgroundArea::OptionArea;
-                        SwitchBackground(Background::Option);
-                    }
                     else
-                    {
                         CurrentPointArea = BackgroundArea::OtherArea;
-                        SwitchBackground(Background::Default);
-                    }
                     return true;
                 }
                 return false;
@@ -152,9 +141,11 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                                                              ForScale(GlobalManager::StanradWindowWHeight));
                             ExitMainWidgetLabel->setPixmap(ExitMainWidget);
                             OKButtonLabel = new QLabel(this);
+                            OKButtonLabel->installEventFilter(this);
                             OKButtonLabel->setGeometry(ForScale(282), ForScale(364), ForScale(163), ForScale(46));
                             OKButtonLabel->setPixmap(OKButtonNormal);
                             CancelButtonLabel = new QLabel(this);
+                            CancelButtonLabel->installEventFilter(this);
                             CancelButtonLabel->setGeometry(ForScale(445), ForScale(364), ForScale(163), ForScale(46));
                             CancelButtonLabel->setPixmap(CancelButtonNormal);
                             ExitMainWidgetLabel->show();
@@ -177,6 +168,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     default:
                         break;
                     }
+                    setCursor(Qt::ArrowCursor);
                     CurrentPointArea = BackgroundArea::NullArea;
                     SwitchBackground(Background::Default);
                     return true;
@@ -187,12 +179,61 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
         }
         break;
     case WelcomeStatus::Exit:
+        /*if(obj == OKButtonLabel)
+        {
+            if(event->type() == QEvent::Enter)
+            {
+                switch (CurrentPointArea) 
+                {
+                case BackgroundArea::NullArea:
+                    OKButtonLabel->setPixmap(OKButtonHighlight);
+                    setCursor(Qt::PointingHandCursor);
+                    break;
+                case BackgroundArea::ExitOkArea:
+                    OKButtonLabel->setPixmap(OKButtonHighlight);
+                    setCursor(Qt::PointingHandCursor);
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if(event->type() == QEvent::Leave)
+            {
+                switch (CurrentPointArea)
+                {
+                case BackgroundArea::NullArea:
+                    OKButtonLabel->setPixmap(OKButtonNormal);
+                    setCursor(Qt::ArrowCursor);
+                    break;
+                case BackgroundArea::ExitOkArea:
+                    OKButtonLabel->setPixmap(OKButtonNormal);
+                    setCursor(Qt::ArrowCursor);
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if(event->type() == QEvent::MouseButtonPress)
+                CurrentPointArea = BackgroundArea::ExitOkArea;
+            else if(event->type() == QEvent::MouseButtonRelease)
+            {
+                if(CurrentPointArea == BackgroundArea::ExitOkArea)
+                {
+                    qApp->quit();
+                }
+            }
+            return true;
+        }
+        else if(obj == CancelButtonLabel)
+        {
+            
+        }*/
         break;
     default:
         break;
     }
     return false;
-    return WelcomeWidget::eventFilter(obj, event);
+    return AbstractWidget::eventFilter(obj, event);
 }
 
 void WelcomeWidget::SwitchBackground(Background background)

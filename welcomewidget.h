@@ -12,7 +12,7 @@ public:
     ~WelcomeWidget();
     
     enum class Background { Default, Exit, Help, Option };
-    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea };
+    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, ExitOkArea, ExitCancelArea };
     enum class WelcomeStatus { Normal, Exit};
     
     bool InArea(BackgroundArea, int, int);
