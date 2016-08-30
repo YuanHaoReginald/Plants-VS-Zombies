@@ -12,7 +12,7 @@ public:
     ~WelcomeWidget();
     
     enum class Background { Default, Exit, Help, Option };
-    enum class BackgroundArea { ExitArea, HelpArea, OptionArea };
+    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea };
     
     bool InArea(BackgroundArea, int, int);
     
@@ -23,6 +23,7 @@ public slots:
 	void SwitchBackground(Background);
     
 private:
+    BackgroundArea CurrentPointArea;
     QLabel *BackgroundLabel;
     //QLabel *ExitMainWidgetLabel;
     QPixmap *CurrentBackground;
