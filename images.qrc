@@ -3,5 +3,7 @@
         <file>res/images/surface/111.ico</file>
         <file>res/images/surface/WelcomeSurfaceBackground.png</file>
         <file>res/images/surface/SurfaceExit.png</file>
+        <file>res/images/surface/SurfaceHelp.png</file>
+        <file>res/images/surface/SurfaceOption.png</file>
     </qresource>
 </RCC>

@@ -11,7 +11,10 @@ public:
     WelcomeWidget(QWidget *parent);
     ~WelcomeWidget();
     
-    enum class Background { Default, Exit };
+    enum class Background { Default, Exit, Help, Option };
+    enum class BackgroundArea { ExitArea, HelpArea, OptionArea };
+    
+    bool InArea(BackgroundArea, int, int);
     
 protected:
     bool eventFilter(QObject *obj, QEvent *event); 
@@ -21,7 +24,9 @@ public slots:
     
 private:
     QLabel *BackgroundLabel;
+    //QLabel *ExitMainWidgetLabel;
     QPixmap *CurrentBackground;
+   // QPixmap *ExitMainWidget;
     Background BackgroundStatus;
 };
 
