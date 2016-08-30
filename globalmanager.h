@@ -9,11 +9,13 @@ private:
     
 public:
     static double DesktopScale;
-    static void initDesktopScale();
     static double StanradWindowWidth;
     static double StanradWindowWHeight;
 };
 
-    enum class GameStatus { Welcome };
+extern void initDesktopScale();
+double ForScale(double temp);
+
+enum class GameStatus { Welcome, Exit };
 
 #endif // GLOBALMANAGER_H

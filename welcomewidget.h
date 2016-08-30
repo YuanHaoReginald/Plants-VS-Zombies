@@ -13,6 +13,7 @@ public:
     
     enum class Background { Default, Exit, Help, Option };
     enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea };
+    enum class WelcomeStatus { Normal, Exit};
     
     bool InArea(BackgroundArea, int, int);
     
@@ -24,11 +25,16 @@ public slots:
     
 private:
     BackgroundArea CurrentPointArea;
+    WelcomeStatus CurrentWelcomeStatus;
+    
     QLabel *BackgroundLabel;
-    //QLabel *ExitMainWidgetLabel;
     QPixmap *CurrentBackground;
-   // QPixmap *ExitMainWidget;
     Background BackgroundStatus;
+    
+    QLabel *ExitMainWidgetLabel;
+    QPixmap ExitMainWidget;
+    QLabel *OKButtonLabel, *CancelButtonLabel;
+    QPixmap OKButtonNormal, CancelButtonNormal, OKButtonHighlight, CancelButtonHighlight; 
 };
 
 #endif // WELCOMEWIDGET_H

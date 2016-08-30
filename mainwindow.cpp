@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     CurrentStatusWidget = nullptr;
-    setFixedWidth(GlobalManager::StanradWindowWidth * GlobalManager::DesktopScale);
-    setFixedHeight(GlobalManager::StanradWindowWHeight * GlobalManager::DesktopScale);
+    setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
     SwitchStatus(GameStatus::Welcome); 
 }
 

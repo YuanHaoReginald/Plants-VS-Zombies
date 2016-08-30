@@ -11,7 +11,7 @@ double GlobalManager::DesktopScale = 1;
 double GlobalManager::StanradWindowWidth = 900;
 double GlobalManager::StanradWindowWHeight = 600;
 
-void GlobalManager::initDesktopScale()
+void initDesktopScale()
 {
     QDesktopWidget* desktopWidget = QApplication::desktop();
     double DesktopWidth = desktopWidget->width();
@@ -24,4 +24,9 @@ void GlobalManager::initDesktopScale()
         GlobalManager::DesktopScale = DesktopHeight / MinDesktopHeight;
     else if(ScaleTemp < StandradScale)
         GlobalManager::DesktopScale = DesktopWidth / MinDesktopWidth;
+}
+
+double ForScale(double temp)
+{
+    return (temp * GlobalManager::DesktopScale);
 }

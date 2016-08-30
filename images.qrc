@@ -5,5 +5,10 @@
         <file>res/images/surface/SurfaceExit.png</file>
         <file>res/images/surface/SurfaceHelp.png</file>
         <file>res/images/surface/SurfaceOption.png</file>
+        <file>res/images/surface/CancelButtonHighlight.png</file>
+        <file>res/images/surface/CancelButtonNormal.png</file>
+        <file>res/images/surface/OKButtonHighlight.png</file>
+        <file>res/images/surface/OKButtonNormal.png</file>
+        <file>res/images/surface/ExitMainWidgetBig.png</file>
     </qresource>
 </RCC>
