@@ -179,7 +179,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
         }
         break;
     case WelcomeStatus::Exit:
-        /*if(obj == OKButtonLabel)
+        if(obj == OKButtonLabel)
         {
             if(event->type() == QEvent::Enter)
             {
@@ -196,6 +196,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 default:
                     break;
                 }
+                return true;
             }
             else if(event->type() == QEvent::Leave)
             {
@@ -212,22 +213,25 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 default:
                     break;
                 }
+                return true;
             }
             else if(event->type() == QEvent::MouseButtonPress)
+            {
                 CurrentPointArea = BackgroundArea::ExitOkArea;
+                return true;
+            }
             else if(event->type() == QEvent::MouseButtonRelease)
             {
                 if(CurrentPointArea == BackgroundArea::ExitOkArea)
-                {
                     qApp->quit();
-                }
+                return true;
             }
-            return true;
+            return false;
         }
         else if(obj == CancelButtonLabel)
         {
             
-        }*/
+        }
         break;
     default:
         break;
