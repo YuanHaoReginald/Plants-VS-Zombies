@@ -11,30 +11,32 @@ public:
     WelcomeWidget(QWidget *parent);
     ~WelcomeWidget();
     
-    enum class Background { Default, Exit, Help, Option };
-    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, ExitOkArea, ExitCancelArea };
-    enum class WelcomeStatus { Normal, Exit};
+private:
+    enum class Background { NoBackGround, Default, Exit, Help, Option };
+    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, ExitOKArea, ExitCancelArea };
+    enum class ExitStatus { NotExit, ExitNormal, ExitOK, ExitCancel };
     
     bool InArea(BackgroundArea, int, int);
+    bool ComparePosition(int _x, int _y, int xMin, int xMax, int yMin, int yMax);
     
 protected:
     bool eventFilter(QObject *obj, QEvent *event); 
     
 public slots:
 	void SwitchBackground(Background);
+    void SwitchExitStatus(ExitStatus);
     
 private:
     BackgroundArea CurrentPointArea;
-    WelcomeStatus CurrentWelcomeStatus;
     
     QLabel *BackgroundLabel;
     QPixmap *CurrentBackground;
     Background BackgroundStatus;
     
     QLabel *ExitMainWidgetLabel;
-    QPixmap ExitMainWidget;
-    QLabel *OKButtonLabel, *CancelButtonLabel;
-    QPixmap OKButtonNormal, CancelButtonNormal, OKButtonHighlight, CancelButtonHighlight; 
+    QPixmap *ExitMainWidget;
+    ExitStatus CurrentExitStatus;
+    
 };
 
 #endif // WELCOMEWIDGET_H

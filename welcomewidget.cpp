@@ -11,29 +11,16 @@ WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
     setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
     
     ExitMainWidgetLabel = nullptr;
-    ExitMainWidget.load(":/surface/res/images/surface/ExitMainWidgetBig.png");
-    ExitMainWidget = ExitMainWidget.scaled(ForScale(GlobalManager::StanradWindowWidth), 
-                                           ForScale(GlobalManager::StanradWindowWHeight), 
-                                           Qt::KeepAspectRatio);
-    OKButtonLabel = nullptr;
-    CancelButtonLabel = nullptr;
-    OKButtonNormal.load(":/surface/res/images/surface/OKButtonNormal.png");
-    OKButtonNormal = OKButtonNormal.scaled(ForScale(163), ForScale(46));
-    OKButtonHighlight.load(":/surface/res/images/surface/OKButtonHighlight.png");
-    OKButtonHighlight = OKButtonHighlight.scaled(ForScale(163), ForScale(46));
-    CancelButtonNormal.load(":/surface/res/images/surface/CancelButtonNormal.png");
-    CancelButtonNormal = CancelButtonNormal.scaled(ForScale(163), ForScale(46));
-    CancelButtonHighlight.load(":/surface/res/images/surface/CancelButtonHighlight.png");
-    CancelButtonHighlight = CancelButtonHighlight.scaled(ForScale(163), ForScale(46));
+    ExitMainWidget = nullptr;
+    CurrentExitStatus = ExitStatus::NotExit;
     
     CurrentPointArea = BackgroundArea::NullArea;
-    CurrentWelcomeStatus = WelcomeStatus::Normal;
     
     BackgroundLabel = new QLabel(this);
     BackgroundLabel->installEventFilter(this);
     BackgroundLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
                                  ForScale(GlobalManager::StanradWindowWHeight));
-    BackgroundStatus = Background::Exit;
+    BackgroundStatus = Background::NoBackGround;
     CurrentBackground = nullptr;
     SwitchBackground(Background::Default);
     BackgroundLabel->setMouseTracking(true);
@@ -47,194 +34,230 @@ WelcomeWidget::~WelcomeWidget()
 
 bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
 {
-    switch(CurrentWelcomeStatus)
+    if(obj == BackgroundLabel)
     {
-    case WelcomeStatus::Normal:
-        if(obj == BackgroundLabel)
+        if(event->type() == QEvent::MouseMove)
         {
-            if(event->type() == QEvent::MouseMove)
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);            
+            switch (CurrentPointArea) 
             {
-                QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);            
-                switch (CurrentPointArea) 
+            case BackgroundArea::NullArea:
+                if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                 {
-                case BackgroundArea::NullArea:
-                    if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
-                        SwitchBackground(Background::Exit);
-                        setCursor(Qt::PointingHandCursor);
-                    }
-                    else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
-                        SwitchBackground(Background::Help);
-                        setCursor(Qt::PointingHandCursor);
-                    }
-                    else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                    {
-                        SwitchBackground(Background::Option);
-                        setCursor(Qt::PointingHandCursor);
-                    }
-                    else
-                    {
-                        SwitchBackground(Background::Default);
-                        setCursor(Qt::ArrowCursor);
-                    }
-                    break;
-                case BackgroundArea::OtherArea:
-                    SwitchBackground(Background::Default);
-                    break;
-                case BackgroundArea::ExitArea:
                     SwitchBackground(Background::Exit);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchBackground(Background::Help);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchBackground(Background::Option);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchBackground(Background::Default);
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            case BackgroundArea::OtherArea:
+                SwitchBackground(Background::Default);
+                break;
+            case BackgroundArea::ExitArea:
+                SwitchBackground(Background::Exit);
+                if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            case BackgroundArea::HelpArea:
+                SwitchBackground(Background::Help);
+                if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            case BackgroundArea::OptionArea:
+                SwitchBackground(Background::Option);
+                if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            default:
+                break;
+            }
+            return true;
+        }
+        else if(event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::ExitArea;
+                else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::HelpArea;
+                else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::OptionArea;
+                else
+                    CurrentPointArea = BackgroundArea::OtherArea;
+                return true;
+            }
+            return false;
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                switch(CurrentPointArea)
+                {
+                case BackgroundArea::ExitArea:
                     if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        setCursor(Qt::PointingHandCursor);
-                    else
-                        setCursor(Qt::ArrowCursor);
+                    {
+                        ExitMainWidgetLabel = new QLabel(this);
+                        ExitMainWidgetLabel->installEventFilter(this);
+                        ExitMainWidgetLabel->setMouseTracking(true);
+                        ExitMainWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
+                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                        SwitchExitStatus(ExitStatus::ExitNormal);
+                        ExitMainWidgetLabel->show();
+                    }
                     break;
                 case BackgroundArea::HelpArea:
-                    SwitchBackground(Background::Help);
                     if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        setCursor(Qt::PointingHandCursor);
-                    else
-                        setCursor(Qt::ArrowCursor);
+                    {
+                        // to do something
+                    }
                     break;
                 case BackgroundArea::OptionArea:
-                    SwitchBackground(Background::Option);
                     if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        setCursor(Qt::PointingHandCursor);
-                    else
-                        setCursor(Qt::ArrowCursor);
-                    break;
-                default:
-                    break;
-                }
-                return true;
-            }
-            else if(event->type() == QEvent::MouseButtonPress)
-            {
-                QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
-                if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
-                {
-                    if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        CurrentPointArea = BackgroundArea::ExitArea;
-                    else if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        CurrentPointArea = BackgroundArea::HelpArea;
-                    else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        CurrentPointArea = BackgroundArea::OptionArea;
-                    else
-                        CurrentPointArea = BackgroundArea::OtherArea;
-                    return true;
-                }
-                return false;
-            }
-            else if(event->type() == QEvent::MouseButtonRelease)
-            {
-                QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
-                if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
-                {
-                    switch(CurrentPointArea)
                     {
-                    case BackgroundArea::ExitArea:
-                        if(InArea(BackgroundArea::ExitArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        {
-                            CurrentWelcomeStatus = WelcomeStatus::Exit;
-                            ExitMainWidgetLabel = new QLabel(this);
-                            ExitMainWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
-                                                             ForScale(GlobalManager::StanradWindowWHeight));
-                            ExitMainWidgetLabel->setPixmap(ExitMainWidget);
-                            OKButtonLabel = new QLabel(this);
-                            OKButtonLabel->installEventFilter(this);
-                            OKButtonLabel->setGeometry(ForScale(282), ForScale(364), ForScale(163), ForScale(46));
-                            OKButtonLabel->setPixmap(OKButtonNormal);
-                            CancelButtonLabel = new QLabel(this);
-                            CancelButtonLabel->installEventFilter(this);
-                            CancelButtonLabel->setGeometry(ForScale(445), ForScale(364), ForScale(163), ForScale(46));
-                            CancelButtonLabel->setPixmap(CancelButtonNormal);
-                            ExitMainWidgetLabel->show();
-                            OKButtonLabel->show();
-                            CancelButtonLabel->show();
-                        }
-                        break;
-                    case BackgroundArea::HelpArea:
-                        if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        {
-                            // to do something
-                        }
-                        break;
-                    case BackgroundArea::OptionArea:
-                        if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
-                        {
-                            // to do something
-                        }
-                        break;
-                    default:
-                        break;
+                        // to do something
                     }
-                    setCursor(Qt::ArrowCursor);
-                    CurrentPointArea = BackgroundArea::NullArea;
-                    SwitchBackground(Background::Default);
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-        break;
-    case WelcomeStatus::Exit:
-        if(obj == OKButtonLabel)
-        {
-            if(event->type() == QEvent::Enter)
-            {
-                switch (CurrentPointArea) 
-                {
-                case BackgroundArea::NullArea:
-                    OKButtonLabel->setPixmap(OKButtonHighlight);
-                    setCursor(Qt::PointingHandCursor);
-                    break;
-                case BackgroundArea::ExitOkArea:
-                    OKButtonLabel->setPixmap(OKButtonHighlight);
-                    setCursor(Qt::PointingHandCursor);
                     break;
                 default:
                     break;
                 }
-                return true;
-            }
-            else if(event->type() == QEvent::Leave)
-            {
-                switch (CurrentPointArea)
-                {
-                case BackgroundArea::NullArea:
-                    OKButtonLabel->setPixmap(OKButtonNormal);
-                    setCursor(Qt::ArrowCursor);
-                    break;
-                case BackgroundArea::ExitOkArea:
-                    OKButtonLabel->setPixmap(OKButtonNormal);
-                    setCursor(Qt::ArrowCursor);
-                    break;
-                default:
-                    break;
-                }
-                return true;
-            }
-            else if(event->type() == QEvent::MouseButtonPress)
-            {
-                CurrentPointArea = BackgroundArea::ExitOkArea;
-                return true;
-            }
-            else if(event->type() == QEvent::MouseButtonRelease)
-            {
-                if(CurrentPointArea == BackgroundArea::ExitOkArea)
-                    qApp->quit();
+                setCursor(Qt::ArrowCursor);
+                CurrentPointArea = BackgroundArea::NullArea;
+                SwitchBackground(Background::Default);
                 return true;
             }
             return false;
         }
-        else if(obj == CancelButtonLabel)
+        return false;
+    }
+    else if(obj == ExitMainWidgetLabel)
+    {
+        if(event->type() == QEvent::MouseMove)
         {
-            
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);            
+            switch (CurrentPointArea) 
+            {
+            case BackgroundArea::NullArea:
+                if(InArea(BackgroundArea::ExitOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchExitStatus(ExitStatus::ExitOK);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::ExitCancelArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchExitStatus(ExitStatus::ExitCancel);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchExitStatus(ExitStatus::ExitNormal);
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            case BackgroundArea::OtherArea:
+                SwitchExitStatus(ExitStatus::ExitNormal);
+                break;
+            case BackgroundArea::ExitOKArea:
+                if(InArea(BackgroundArea::ExitOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchExitStatus(ExitStatus::ExitOK);                    
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchExitStatus(ExitStatus::ExitNormal);                    
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            case BackgroundArea::ExitCancelArea:
+                if(InArea(BackgroundArea::ExitCancelArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchExitStatus(ExitStatus::ExitCancel);                    
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchExitStatus(ExitStatus::ExitNormal);                    
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            default:
+                break;
+            }
+            return true;
         }
-        break;
-    default:
-        break;
+        else if(event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                if(InArea(BackgroundArea::ExitOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::ExitOKArea;
+                else if(InArea(BackgroundArea::ExitCancelArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::ExitCancelArea;
+                else
+                    CurrentPointArea = BackgroundArea::OtherArea;
+                return true;
+            }
+            return false;
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                switch(CurrentPointArea)
+                {
+                case BackgroundArea::ExitOKArea:
+                    if(InArea(BackgroundArea::ExitOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                        qApp->quit();
+                    break;
+                case BackgroundArea::ExitCancelArea:
+                    if(InArea(BackgroundArea::ExitCancelArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        delete ExitMainWidgetLabel;
+                        delete ExitMainWidget;
+                        ExitMainWidgetLabel = nullptr;
+                        ExitMainWidget = nullptr;
+                        setCursor(Qt::ArrowCursor);
+                        CurrentPointArea = BackgroundArea::NullArea;
+                        CurrentExitStatus = ExitStatus::NotExit;
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+                }
+                setCursor(Qt::ArrowCursor);
+                CurrentPointArea = BackgroundArea::NullArea;
+                SwitchExitStatus(ExitStatus::ExitNormal);
+                return true;
+            }
+            return false;
+        }
+        return false;        
     }
     return false;
     return AbstractWidget::eventFilter(obj, event);
@@ -271,30 +294,61 @@ void WelcomeWidget::SwitchBackground(Background background)
     BackgroundLabel->setPixmap(*CurrentBackground);
 }
 
+void WelcomeWidget::SwitchExitStatus(ExitStatus temp)
+{
+    if(CurrentExitStatus == temp)
+        return;
+    CurrentExitStatus = temp;
+    delete ExitMainWidget;
+    
+    ExitMainWidget = new QPixmap;
+    switch (CurrentExitStatus) {
+    case ExitStatus::ExitNormal:
+        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetNormal.png");
+        break;
+    case ExitStatus::ExitOK:
+        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetOK.png");
+        break;
+    case ExitStatus::ExitCancel:
+        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetCancel.png");
+    default:
+        break;
+    }
+    *ExitMainWidget = ExitMainWidget->scaled(ForScale(GlobalManager::StanradWindowWidth),
+                                             ForScale(GlobalManager::StanradWindowWHeight),
+                                             Qt::KeepAspectRatio);
+    ExitMainWidgetLabel->setPixmap(*ExitMainWidget);
+}
+
 bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
 {
     switch(currentArea)
     {
     case BackgroundArea::ExitArea:
-        if(_x >= (ForScale(811)) && _x <= (ForScale(864)) && _y >= (ForScale(518)) && _y <= (ForScale(538)))
-            return true;
-        else
-            return false;
+        return ComparePosition(_x, _y, 811, 864, 518, 538);
         break;
     case BackgroundArea::HelpArea:
-        if(_x >= (ForScale(730)) && _x <= (ForScale(784)) && _y >= (ForScale(528)) && _y <= (ForScale(548)))
-            return true;
-        else
-            return false;
+        return ComparePosition(_x, _y, 730, 784, 528, 548);
         break;
     case BackgroundArea::OptionArea:
-        if(_x >= (ForScale(649)) && _x <= (ForScale(715)) && _y >= (ForScale(493)) && _y <= (ForScale(517)))
-            return true;
-        else
-            return false;
+        return ComparePosition(_x, _y, 649, 715, 493, 517);        
+        break;
+    case BackgroundArea::ExitOKArea:
+        return ComparePosition(_x, _y, 282, 445, 364, 410);        
+        break;
+    case BackgroundArea::ExitCancelArea:
+        return ComparePosition(_x, _y, 445, 608, 364, 410);
         break;
     default:
         break;
     }
     return false;
+}
+
+bool WelcomeWidget::ComparePosition(int _x, int _y, int xMin, int xMax, int yMin, int yMax)
+{
+    if(_x >= (ForScale(xMin)) && _x <= (ForScale(xMax)) && _y >= (ForScale(yMin)) && _y <= (ForScale(yMax)))
+        return true;
+    else
+        return false;
 }
