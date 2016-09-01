@@ -11,6 +11,8 @@ public:
     static double DesktopScale;
     static double StanradWindowWidth;
     static double StanradWindowWHeight;
+    static bool MusicOn;
+    static bool EffectOn;
 };
 
 extern void initDesktopScale();

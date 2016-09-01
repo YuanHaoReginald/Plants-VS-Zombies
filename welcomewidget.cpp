@@ -18,6 +18,10 @@ WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
     HelpWidgetPixmap = nullptr;
     CurrentHelpStatus = HelpStatus::NotHelp;
     
+    MenuWidgetLabel = nullptr;
+    MenuWidgetPixmap = nullptr;
+    CurrentMenuStatus = MenuStatus::NotMenu;
+    
     CurrentPointArea = BackgroundArea::NullArea;
     
     BackgroundLabel = new QLabel(this);
@@ -189,7 +193,13 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 case BackgroundArea::OptionArea:
                     if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
-                        // to do something
+                        MenuWidgetLabel = new QLabel(this);
+                        MenuWidgetLabel->installEventFilter(this);
+                        MenuWidgetLabel->setMouseTracking(true);
+                        MenuWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
+                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                        SwitchMenuStatus(MenuStatus::MenuYYNormal);
+                        MenuWidgetLabel->show();
                     }
                     break;
                 case BackgroundArea::AdvenceArea:
@@ -413,7 +423,150 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
         }
         return false;        
     }
-    
+    else if(obj == MenuWidgetLabel)
+    {
+        if(event->type() == QEvent::MouseMove)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);            
+            switch (CurrentPointArea) 
+            {
+            case BackgroundArea::NullArea:
+                if(InArea(BackgroundArea::MenuOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchMenuStatusFromHighlight(true);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else if(InArea(BackgroundArea::MenuEffectArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                {
+                    SwitchMenuStatusFromHighlight(false);
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            case BackgroundArea::OtherArea:
+                SwitchMenuStatusFromHighlight(false);
+                break;
+            case BackgroundArea::MenuOKArea:
+                if(InArea(BackgroundArea::MenuOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchMenuStatusFromHighlight(true); 
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchMenuStatusFromHighlight(false);       
+                    setCursor(Qt::ArrowCursor);
+                }
+            case BackgroundArea::MenuMusicArea:
+                if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            case BackgroundArea::MenuEffectArea:
+                if(InArea(BackgroundArea::MenuEffectArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+            default:
+                break;
+            }
+            return true;
+        }
+        else if(event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                if(InArea(BackgroundArea::MenuOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::MenuOKArea;
+                else if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::MenuMusicArea;
+                else if(InArea(BackgroundArea::MenuEffectArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::MenuEffectArea;
+                else
+                    CurrentPointArea = BackgroundArea::OtherArea;
+                return true;
+            }
+            return false;
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                switch(CurrentPointArea)
+                {
+                case BackgroundArea::MenuOKArea:
+                    if(InArea(BackgroundArea::MenuOKArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        delete MenuWidgetLabel;
+                        delete MenuWidgetPixmap;
+                        MenuWidgetLabel = nullptr;
+                        MenuWidgetPixmap = nullptr;
+                        setCursor(Qt::ArrowCursor);
+                        CurrentPointArea = BackgroundArea::NullArea;
+                        CurrentMenuStatus = MenuStatus::NotMenu;
+                        return true;
+                    }
+                    break;
+                case BackgroundArea::MenuMusicArea:
+                    if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        GlobalManager::MusicOn = !(GlobalManager::MusicOn);
+                        SwitchMenuStatusFromHighlight(false);
+                        CurrentPointArea = BackgroundArea::NullArea;    
+                        setCursor(Qt::PointingHandCursor);
+                        return true;
+                    }
+                    break;
+                case BackgroundArea::MenuEffectArea:
+                    if(InArea(BackgroundArea::MenuEffectArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        GlobalManager::EffectOn = !(GlobalManager::EffectOn);
+                        SwitchMenuStatusFromHighlight(false);
+                        CurrentPointArea = BackgroundArea::NullArea;
+                        setCursor(Qt::PointingHandCursor);
+                        return true;
+                    }
+                default:
+                    break;
+                }
+                setCursor(Qt::ArrowCursor);
+                CurrentPointArea = BackgroundArea::NullArea;
+                SwitchMenuStatusFromHighlight(false);
+                return true;
+            }
+            return false;
+        }
+        else if(event->type() == QEvent::MouseButtonDblClick)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    GlobalManager::MusicOn = !(GlobalManager::MusicOn);
+                    SwitchMenuStatusFromHighlight(false);
+                    CurrentPointArea = BackgroundArea::NullArea;   
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::MenuEffectArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    GlobalManager::EffectOn = !(GlobalManager::EffectOn);
+                    SwitchMenuStatusFromHighlight(false);
+                    CurrentPointArea = BackgroundArea::NullArea;
+                    setCursor(Qt::PointingHandCursor);
+                } 
+                return true;
+            }
+            return false;
+        }
+        return false;        
+    }
     return false;
     return AbstractWidget::eventFilter(obj, event);
 }
@@ -474,6 +627,7 @@ void WelcomeWidget::SwitchExitStatus(ExitStatus temp)
         break;
     case ExitStatus::ExitCancel:
         ExitMainWidgetPixmap->load(":/surface/res/images/surface/ExitMainWidgetCancel.png");
+        break;
     default:
         break;
     }
@@ -505,6 +659,86 @@ void WelcomeWidget::SwitchHelpStatus(HelpStatus temp)
                                                  ForScale(GlobalManager::StanradWindowWHeight),
                                                  Qt::KeepAspectRatio);
     HelpWidgetLabel->setPixmap(*HelpWidgetPixmap);
+}
+
+void WelcomeWidget::SwitchMenuStatus(MenuStatus temp)
+{
+    if(CurrentMenuStatus == temp)
+        return;
+    CurrentMenuStatus = temp;
+    delete MenuWidgetPixmap;
+    
+    MenuWidgetPixmap = new QPixmap;
+    switch (CurrentMenuStatus) {
+    case MenuStatus::MenuNNHighlight:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuNNHighlight.png");
+        break;
+    case MenuStatus::MenuNNNormal:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuNNNormal.png");
+        break;
+    case MenuStatus::MenuNYHighlight:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuNYHighlight.png");
+        break;
+    case MenuStatus::MenuNYNormal:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuNYNormal.png");
+        break;
+    case MenuStatus::MenuYNHighlight:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuYNHighlight.png");
+        break;
+    case MenuStatus::MenuYNNormal:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuYNNormal.png");
+        break;
+    case MenuStatus::MenuYYHighlight:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuYYHighlight.png");
+        break;
+    case MenuStatus::MenuYYNormal:
+        MenuWidgetPixmap->load(":/surface/res/images/surface/MenuYYNormal.png");
+        break;
+    default:
+        break;
+    }
+    *MenuWidgetPixmap = MenuWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
+                                             ForScale(GlobalManager::StanradWindowWHeight),
+                                             Qt::KeepAspectRatio);
+    MenuWidgetLabel->setPixmap(*MenuWidgetPixmap);
+}
+
+void WelcomeWidget::SwitchMenuStatusFromHighlight(bool temp)
+{
+    if(temp)
+    {
+        if(GlobalManager::MusicOn)
+        {
+            if(GlobalManager::EffectOn)
+                SwitchMenuStatus(MenuStatus::MenuYYHighlight);
+            else
+                SwitchMenuStatus(MenuStatus::MenuYNHighlight);
+        }
+        else
+        {
+            if(GlobalManager::EffectOn)
+                SwitchMenuStatus(MenuStatus::MenuNYHighlight);
+            else
+                SwitchMenuStatus(MenuStatus::MenuNNHighlight);
+        }
+    }
+    else
+    {
+        if(GlobalManager::MusicOn)
+        {
+            if(GlobalManager::EffectOn)
+                SwitchMenuStatus(MenuStatus::MenuYYNormal);
+            else
+                SwitchMenuStatus(MenuStatus::MenuYNNormal);
+        }
+        else
+        {
+            if(GlobalManager::EffectOn)
+                SwitchMenuStatus(MenuStatus::MenuNYNormal);
+            else
+                SwitchMenuStatus(MenuStatus::MenuNNNormal);
+        }
+    }
 }
 
 bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
@@ -550,6 +784,16 @@ bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
         break;
     case BackgroundArea::HelpMainArea:
         return ComparePosition(_x, _y, 365, 540, 521, 560);        
+        break;
+    case BackgroundArea::MenuMusicArea:
+        return ComparePosition(_x, _y, 491, 526, 214, 249);
+        break;
+    case BackgroundArea::MenuEffectArea:
+        return ComparePosition(_x, _y, 491, 526, 277, 312);
+        break;
+    case BackgroundArea::MenuOKArea:
+        return ComparePosition(_x, _y, 295, 609, 453, 530);
+        break;
     default:
         break;
     }

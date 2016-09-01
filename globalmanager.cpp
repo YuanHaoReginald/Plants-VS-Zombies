@@ -10,6 +10,8 @@ GlobalManager::GlobalManager()
 double GlobalManager::DesktopScale = 1;
 double GlobalManager::StanradWindowWidth = 900;
 double GlobalManager::StanradWindowWHeight = 600;
+bool GlobalManager::EffectOn = true;
+bool GlobalManager::MusicOn = true;
 
 void initDesktopScale()
 {

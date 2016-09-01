@@ -13,5 +13,13 @@
         <file>res/images/surface/SurfaceMini.png</file>
         <file>res/images/surface/HelpWidgetHighlight.png</file>
         <file>res/images/surface/HelpWidgetNormal.png</file>
+        <file>res/images/surface/MenuNNHighlight.png</file>
+        <file>res/images/surface/MenuNNNormal.png</file>
+        <file>res/images/surface/MenuNYHighlight.png</file>
+        <file>res/images/surface/MenuNYNormal.png</file>
+        <file>res/images/surface/MenuYNHighlight.png</file>
+        <file>res/images/surface/MenuYNNormal.png</file>
+        <file>res/images/surface/MenuYYHighlight.png</file>
+        <file>res/images/surface/MenuYYNormal.png</file>
     </qresource>
 </RCC>
