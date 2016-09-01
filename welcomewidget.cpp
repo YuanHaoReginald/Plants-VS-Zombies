@@ -57,6 +57,21 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     SwitchBackground(Background::Option);
                     setCursor(Qt::PointingHandCursor);
                 }
+                else if(InArea(BackgroundArea::AdvenceArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchBackground(Background::Advence);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::MiniArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchBackground(Background::Mini);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else if(InArea(BackgroundArea::IQArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchBackground(Background::IQ);
+                    setCursor(Qt::PointingHandCursor);
+                }
                 else
                 {
                     SwitchBackground(Background::Default);
@@ -87,6 +102,27 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 else
                     setCursor(Qt::ArrowCursor);
                 break;
+            case BackgroundArea::AdvenceArea:
+                SwitchBackground(Background::Advence);
+                if(InArea(BackgroundArea::AdvenceArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            case BackgroundArea::MiniArea:
+                SwitchBackground(Background::Mini);
+                if(InArea(BackgroundArea::MiniArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
+            case BackgroundArea::IQArea:
+                SwitchBackground(Background::IQ);
+                if(InArea(BackgroundArea::IQArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    setCursor(Qt::PointingHandCursor);
+                else
+                    setCursor(Qt::ArrowCursor);
+                break;
             default:
                 break;
             }
@@ -103,6 +139,12 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     CurrentPointArea = BackgroundArea::HelpArea;
                 else if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     CurrentPointArea = BackgroundArea::OptionArea;
+                else if(InArea(BackgroundArea::AdvenceArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::AdvenceArea;
+                else if(InArea(BackgroundArea::MiniArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::MiniArea;
+                else if(InArea(BackgroundArea::IQArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::IQArea;
                 else
                     CurrentPointArea = BackgroundArea::OtherArea;
                 return true;
@@ -136,6 +178,24 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     break;
                 case BackgroundArea::OptionArea:
                     if(InArea(BackgroundArea::OptionArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        // to do something
+                    }
+                    break;
+                case BackgroundArea::AdvenceArea:
+                    if(InArea(BackgroundArea::AdvenceArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        // to do something
+                    }
+                    break;
+                case BackgroundArea::MiniArea:
+                    if(InArea(BackgroundArea::MiniArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        // to do something
+                    }
+                    break;
+                case BackgroundArea::IQArea:
+                    if(InArea(BackgroundArea::IQArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
                         // to do something
                     }
@@ -285,6 +345,14 @@ void WelcomeWidget::SwitchBackground(Background background)
     case Background::Option:
         CurrentBackground->load(":/surface/res/images/surface/SurfaceOption.png");
         break;
+    case Background::Advence:
+        CurrentBackground->load(":/surface/res/images/surface/SurfaceAdvence.png");
+        break;
+    case Background::Mini:
+        CurrentBackground->load(":/surface/res/images/surface/SurfaceMini.png");
+        break;
+    case Background::IQ:
+        CurrentBackground->load(":/surface/res/images/surface/SurfaceIQ.png");
     default:
         break;
     }
@@ -339,6 +407,28 @@ bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
     case BackgroundArea::ExitCancelArea:
         return ComparePosition(_x, _y, 445, 608, 364, 410);
         break;
+    case BackgroundArea::AdvenceArea:
+        if(_x >= ForScale(481) && _x <= ForScale(787) && _y >= AdvenceLabelTop(_x) && _y <= AdvenceLabelButton(_x))
+            return true;
+        else
+            return false;
+        break;
+    case BackgroundArea::MiniArea:
+        if(_x >= ForScale(478) && _x <= ForScale(776)
+                && _y >= ForScale((201 + ((248 - 201) * 1.0 * (_x / GlobalManager::DesktopScale - 478)) / (776 - 478)))
+                && _y <= ForScale((267 + ((323 - 267) * 1.0 * (_x / GlobalManager::DesktopScale - 478)) / (776 - 478))))
+            return true;
+        else
+            return false;        
+        break;
+    case BackgroundArea::IQArea:
+        if(_x >= ForScale(482) && _x <= ForScale(750)
+                && _y >= ForScale((308 + ((356 - 308) * 1.0 * (_x / GlobalManager::DesktopScale - 482)) / (750 - 482)))
+                && _y <= ForScale((365 + ((426 - 365) * 1.0 * (_x / GlobalManager::DesktopScale - 482)) / (750 - 482))))
+            return true;
+        else
+            return false;    
+        break;
     default:
         break;
     }
@@ -351,4 +441,25 @@ bool WelcomeWidget::ComparePosition(int _x, int _y, int xMin, int xMax, int yMin
         return true;
     else
         return false;
+}
+
+int WelcomeWidget::AdvenceLabelTop(int x)
+{
+    if(x >= ForScale(481) && x <= ForScale(539))
+        return ForScale(105);
+    else if(x > ForScale(539) && x <= ForScale(574))
+        return ForScale((105 + ((80 - 105) * 1.0 * (x / GlobalManager::DesktopScale - 539)) / (574 - 539)));
+    else if(x > ForScale(574) && x <= ForScale(687))
+        return ForScale(80);
+    else if(x > ForScale(687) && x <= ForScale(717))
+        return ForScale((80 + ((119 - 80) * 1.0 * (x / GlobalManager::DesktopScale - 687)) / (717 - 687)));
+    else if(x > ForScale(717) && x <= ForScale(787))
+        return ForScale((119 + ((129 - 119) * 1.0 * (x / GlobalManager::DesktopScale - 717)) / (787 - 717)));
+    else
+        return 0;
+}
+
+int WelcomeWidget::AdvenceLabelButton(int x)
+{
+    return ForScale((171 + ((218 - 171) * 1.0 * (x / GlobalManager::DesktopScale - 481)) / (787 - 481)));
 }

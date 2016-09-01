@@ -12,8 +12,9 @@ public:
     ~WelcomeWidget();
     
 private:
-    enum class Background { NoBackGround, Default, Exit, Help, Option };
-    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, ExitOKArea, ExitCancelArea };
+    enum class Background { NoBackGround, Default, Exit, Help, Option, Advence, Mini, IQ };
+    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, 
+                                ExitOKArea, ExitCancelArea, AdvenceArea, MiniArea, IQArea };
     enum class ExitStatus { NotExit, ExitNormal, ExitOK, ExitCancel };
     
     bool InArea(BackgroundArea, int, int);
@@ -36,6 +37,9 @@ private:
     QLabel *ExitMainWidgetLabel;
     QPixmap *ExitMainWidget;
     ExitStatus CurrentExitStatus;
+    
+    int AdvenceLabelTop(int x);
+    int AdvenceLabelButton(int x);
     
 };
 

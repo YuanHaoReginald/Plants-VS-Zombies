@@ -8,5 +8,8 @@
         <file>res/images/surface/ExitMainWidgetCancel.png</file>
         <file>res/images/surface/ExitMainWidgetNormal.png</file>
         <file>res/images/surface/ExitMainWidgetOK.png</file>
+        <file>res/images/surface/SurfaceAdvence.png</file>
+        <file>res/images/surface/SurfaceIQ.png</file>
+        <file>res/images/surface/SurfaceMini.png</file>
     </qresource>
 </RCC>
