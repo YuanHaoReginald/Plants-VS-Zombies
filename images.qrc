@@ -11,5 +11,7 @@
         <file>res/images/surface/SurfaceAdvence.png</file>
         <file>res/images/surface/SurfaceIQ.png</file>
         <file>res/images/surface/SurfaceMini.png</file>
+        <file>res/images/surface/HelpWidgetHighlight.png</file>
+        <file>res/images/surface/HelpWidgetNormal.png</file>
     </qresource>
 </RCC>

@@ -13,9 +13,10 @@ public:
     
 private:
     enum class Background { NoBackGround, Default, Exit, Help, Option, Advence, Mini, IQ };
-    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, 
+    enum class BackgroundArea { NullArea, OtherArea, ExitArea, HelpArea, OptionArea, HelpMainArea,
                                 ExitOKArea, ExitCancelArea, AdvenceArea, MiniArea, IQArea };
     enum class ExitStatus { NotExit, ExitNormal, ExitOK, ExitCancel };
+    enum class HelpStatus { NotHelp, HelpNormal, HelpHighlight};
     
     bool InArea(BackgroundArea, int, int);
     bool ComparePosition(int _x, int _y, int xMin, int xMax, int yMin, int yMax);
@@ -26,6 +27,7 @@ protected:
 public slots:
 	void SwitchBackground(Background);
     void SwitchExitStatus(ExitStatus);
+    void SwitchHelpStatus(HelpStatus);
     
 private:
     BackgroundArea CurrentPointArea;
@@ -35,8 +37,13 @@ private:
     Background BackgroundStatus;
     
     QLabel *ExitMainWidgetLabel;
-    QPixmap *ExitMainWidget;
+    QPixmap *ExitMainWidgetPixmap;
     ExitStatus CurrentExitStatus;
+    
+    QLabel *HelpWidgetLabel;
+    QPixmap *HelpWidgetPixmap;
+    HelpStatus CurrentHelpStatus;
+    
     
     int AdvenceLabelTop(int x);
     int AdvenceLabelButton(int x);

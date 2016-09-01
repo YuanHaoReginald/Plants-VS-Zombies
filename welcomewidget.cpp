@@ -11,8 +11,12 @@ WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
     setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
     
     ExitMainWidgetLabel = nullptr;
-    ExitMainWidget = nullptr;
+    ExitMainWidgetPixmap = nullptr;
     CurrentExitStatus = ExitStatus::NotExit;
+    
+    HelpWidgetLabel = nullptr;
+    HelpWidgetPixmap = nullptr;
+    CurrentHelpStatus = HelpStatus::NotHelp;
     
     CurrentPointArea = BackgroundArea::NullArea;
     
@@ -173,7 +177,13 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 case BackgroundArea::HelpArea:
                     if(InArea(BackgroundArea::HelpArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
-                        // to do something
+                        HelpWidgetLabel = new QLabel(this);
+                        HelpWidgetLabel->installEventFilter(this);
+                        HelpWidgetLabel->setMouseTracking(true);
+                        HelpWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
+                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                        SwitchHelpStatus(HelpStatus::HelpNormal);
+                        HelpWidgetLabel->show();
                     }
                     break;
                 case BackgroundArea::OptionArea:
@@ -298,9 +308,9 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     if(InArea(BackgroundArea::ExitCancelArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
                         delete ExitMainWidgetLabel;
-                        delete ExitMainWidget;
+                        delete ExitMainWidgetPixmap;
                         ExitMainWidgetLabel = nullptr;
-                        ExitMainWidget = nullptr;
+                        ExitMainWidgetPixmap = nullptr;
                         setCursor(Qt::ArrowCursor);
                         CurrentPointArea = BackgroundArea::NullArea;
                         CurrentExitStatus = ExitStatus::NotExit;
@@ -319,6 +329,91 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
         }
         return false;        
     }
+    else if(obj == HelpWidgetLabel)
+    {
+        if(event->type() == QEvent::MouseMove)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);            
+            switch (CurrentPointArea) 
+            {
+            case BackgroundArea::NullArea:
+                if(InArea(BackgroundArea::HelpMainArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchHelpStatus(HelpStatus::HelpHighlight);
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchHelpStatus(HelpStatus::HelpNormal);
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            case BackgroundArea::OtherArea:
+                SwitchHelpStatus(HelpStatus::HelpNormal);
+                break;
+            case BackgroundArea::HelpMainArea:
+                if(InArea(BackgroundArea::HelpMainArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                {
+                    SwitchHelpStatus(HelpStatus::HelpHighlight);                    
+                    setCursor(Qt::PointingHandCursor);
+                }
+                else
+                {
+                    SwitchHelpStatus(HelpStatus::HelpNormal);                    
+                    setCursor(Qt::ArrowCursor);
+                }
+                break;
+            default:
+                break;
+            }
+            return true;
+        }
+        else if(event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                if(InArea(BackgroundArea::HelpMainArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    CurrentPointArea = BackgroundArea::HelpMainArea;
+                else
+                    CurrentPointArea = BackgroundArea::OtherArea;
+                return true;
+            }
+            return false;
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            QMouseEvent *m_QMouseEvent = static_cast<QMouseEvent*>(event);
+            if(m_QMouseEvent->button() == Qt::MouseButton::LeftButton)
+            {
+                switch(CurrentPointArea)
+                {
+                case BackgroundArea::HelpMainArea:
+                    if(InArea(BackgroundArea::HelpMainArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
+                    {
+                        delete HelpWidgetLabel;
+                        delete HelpWidgetPixmap;
+                        HelpWidgetLabel = nullptr;
+                        HelpWidgetPixmap = nullptr;
+                        setCursor(Qt::ArrowCursor);
+                        CurrentPointArea = BackgroundArea::NullArea;
+                        CurrentHelpStatus = HelpStatus::NotHelp;
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+                }
+                setCursor(Qt::ArrowCursor);
+                CurrentPointArea = BackgroundArea::NullArea;
+                SwitchHelpStatus(HelpStatus::HelpNormal);
+                return true;
+            }
+            return false;
+        }
+        return false;        
+    }
+    
     return false;
     return AbstractWidget::eventFilter(obj, event);
 }
@@ -367,25 +462,49 @@ void WelcomeWidget::SwitchExitStatus(ExitStatus temp)
     if(CurrentExitStatus == temp)
         return;
     CurrentExitStatus = temp;
-    delete ExitMainWidget;
+    delete ExitMainWidgetPixmap;
     
-    ExitMainWidget = new QPixmap;
+    ExitMainWidgetPixmap = new QPixmap;
     switch (CurrentExitStatus) {
     case ExitStatus::ExitNormal:
-        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetNormal.png");
+        ExitMainWidgetPixmap->load(":/surface/res/images/surface/ExitMainWidgetNormal.png");
         break;
     case ExitStatus::ExitOK:
-        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetOK.png");
+        ExitMainWidgetPixmap->load(":/surface/res/images/surface/ExitMainWidgetOK.png");
         break;
     case ExitStatus::ExitCancel:
-        ExitMainWidget->load(":/surface/res/images/surface/ExitMainWidgetCancel.png");
+        ExitMainWidgetPixmap->load(":/surface/res/images/surface/ExitMainWidgetCancel.png");
     default:
         break;
     }
-    *ExitMainWidget = ExitMainWidget->scaled(ForScale(GlobalManager::StanradWindowWidth),
+    *ExitMainWidgetPixmap = ExitMainWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
                                              ForScale(GlobalManager::StanradWindowWHeight),
                                              Qt::KeepAspectRatio);
-    ExitMainWidgetLabel->setPixmap(*ExitMainWidget);
+    ExitMainWidgetLabel->setPixmap(*ExitMainWidgetPixmap);
+}
+
+void WelcomeWidget::SwitchHelpStatus(HelpStatus temp)
+{
+    if(CurrentHelpStatus == temp)
+        return;
+    CurrentHelpStatus = temp;
+    delete HelpWidgetPixmap;
+    
+    HelpWidgetPixmap = new QPixmap;
+    switch (CurrentHelpStatus) {
+    case HelpStatus::HelpNormal:
+        HelpWidgetPixmap->load(":/surface/res/images/surface/HelpWidgetNormal.png");
+        break;
+    case HelpStatus::HelpHighlight:
+        HelpWidgetPixmap->load(":/surface/res/images/surface/HelpWidgetHighlight.png");
+        break;
+    default:
+        break;
+    }
+    *HelpWidgetPixmap = HelpWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
+                                                 ForScale(GlobalManager::StanradWindowWHeight),
+                                                 Qt::KeepAspectRatio);
+    HelpWidgetLabel->setPixmap(*HelpWidgetPixmap);
 }
 
 bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
@@ -429,6 +548,8 @@ bool WelcomeWidget::InArea(BackgroundArea currentArea, int _x, int _y)
         else
             return false;    
         break;
+    case BackgroundArea::HelpMainArea:
+        return ComparePosition(_x, _y, 365, 540, 521, 560);        
     default:
         break;
     }
