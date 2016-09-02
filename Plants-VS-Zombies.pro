@@ -15,8 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     globalmanager.cpp \
-    abstractwindow.cpp \
-    welcomewidget.cpp
+    welcomewidget.cpp \
+    abstractwidget.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
