@@ -205,7 +205,8 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                 case BackgroundArea::AdvenceArea:
                     if(InArea(BackgroundArea::AdvenceArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
-                        // to do something
+                       emit StatusChanged(GameStatus::Advence);
+                       return true; 
                     }
                     break;
                 case BackgroundArea::MiniArea:

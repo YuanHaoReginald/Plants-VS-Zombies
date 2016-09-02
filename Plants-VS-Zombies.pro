@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     globalmanager.cpp \
     welcomewidget.cpp \
-    abstractwidget.cpp
+    abstractwidget.cpp \
+    advencewidget.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
     abstractwidget.h \
-    welcomewidget.h
+    welcomewidget.h \
+    advencewidget.h
 
 FORMS    += mainwindow.ui
 

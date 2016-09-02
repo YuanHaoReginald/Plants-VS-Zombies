@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "globalmanager.h"
 #include "welcomewidget.h"
+#include "advencewidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,6 +32,8 @@ void MainWindow::SwitchStatus(GameStatus TargetStatus)
         case GameStatus::Welcome:
 			CurrentStatusWidget = new WelcomeWidget(this);
 			break;
+        case GameStatus::Advence:
+            CurrentStatusWidget = new AdvenceWidget(this);
 		default:
 			break;
 		}

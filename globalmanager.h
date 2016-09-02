@@ -18,6 +18,6 @@ public:
 extern void initDesktopScale();
 double ForScale(double temp);
 
-enum class GameStatus { Welcome, Exit };
+enum class GameStatus { Welcome, Advence, Mini, IQ };
 
 #endif // GLOBALMANAGER_H
