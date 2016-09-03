@@ -7,6 +7,8 @@
 
 class WelcomeWidget : public AbstractWidget
 {
+    Q_OBJECT
+    
 public:
     WelcomeWidget(QWidget *parent);
     ~WelcomeWidget();

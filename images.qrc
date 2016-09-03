@@ -21,5 +21,15 @@
         <file>res/images/surface/MenuYNNormal.png</file>
         <file>res/images/surface/MenuYYHighlight.png</file>
         <file>res/images/surface/MenuYYNormal.png</file>
+        <file>res/images/surface/NormalGrass.png</file>
+        <file>res/images/surface/MenuButtonNormal.png</file>
+        <file>res/images/surface/MenuButtonHighlight.png</file>
+        <file>res/images/surface/Shovel.png</file>
+        <file>res/images/surface/ShovelBack.png</file>
+        <file>res/images/surface/StartPlant.png</file>
+        <file>res/images/surface/StartReady.png</file>
+        <file>res/images/surface/StartSet.png</file>
+        <file>res/images/surface/Approching.png</file>
+        <file>res/images/surface/CardSlot.png</file>
     </qresource>
 </RCC>

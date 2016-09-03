@@ -34,6 +34,7 @@ void MainWindow::SwitchStatus(GameStatus TargetStatus)
 			break;
         case GameStatus::Advence:
             CurrentStatusWidget = new AdvenceWidget(this);
+            break;
 		default:
 			break;
 		}
