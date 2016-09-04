@@ -31,9 +31,11 @@ void MainWindow::SwitchStatus(GameStatus TargetStatus)
 		{
         case GameStatus::Welcome:
 			CurrentStatusWidget = new WelcomeWidget(this);
+            GlobalManager::CurrentWidget = CurrentStatusWidget;
 			break;
         case GameStatus::Advence:
             CurrentStatusWidget = new AdvenceWidget(this);
+            GlobalManager::CurrentWidget = CurrentStatusWidget;            
             break;
 		default:
 			break;

@@ -17,13 +17,19 @@ SOURCES += main.cpp\
     globalmanager.cpp \
     welcomewidget.cpp \
     abstractwidget.cpp \
-    advencewidget.cpp
+    advencewidget.cpp \
+    sun.cpp \
+    label.cpp \
+    sunmanager.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
     abstractwidget.h \
     welcomewidget.h \
-    advencewidget.h
+    advencewidget.h \
+    sun.h \
+    label.h \
+    sunmanager.h
 
 FORMS    += mainwindow.ui
 

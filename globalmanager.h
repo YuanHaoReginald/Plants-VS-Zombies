@@ -1,5 +1,6 @@
 #ifndef GLOBALMANAGER_H
 #define GLOBALMANAGER_H
+#include <QWidget>
 
 
 class GlobalManager
@@ -13,9 +14,12 @@ public:
     static double StanradWindowWHeight;
     static bool MusicOn;
     static bool EffectOn;
+    static int posX[10];
+    static int posY[6];
+    static QWidget* CurrentWidget;
 };
 
-extern void initDesktopScale();
+extern void initGlobalManager();
 double ForScale(double temp);
 
 enum class GameStatus { Welcome, Advence, Mini, IQ };

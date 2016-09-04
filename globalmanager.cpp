@@ -12,8 +12,11 @@ double GlobalManager::StanradWindowWidth = 900;
 double GlobalManager::StanradWindowWHeight = 600;
 bool GlobalManager::EffectOn = true;
 bool GlobalManager::MusicOn = true;
+int GlobalManager::posX[10] = {260, 340, 420, 500, 580, 660, 740, 820, 900, 980};
+int GlobalManager::posY[6] = {89, 183, 277, 371, 465, 559};
+QWidget* GlobalManager::CurrentWidget = nullptr;
 
-void initDesktopScale()
+void initGlobalManager()
 {
     QDesktopWidget* desktopWidget = QApplication::desktop();
     double DesktopWidth = desktopWidget->width();

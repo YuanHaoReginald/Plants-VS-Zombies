@@ -31,5 +31,6 @@
         <file>res/images/surface/StartSet.png</file>
         <file>res/images/surface/Approching.png</file>
         <file>res/images/surface/CardSlot.png</file>
+        <file>res/images/surface/Sun.gif</file>
     </qresource>
 </RCC>

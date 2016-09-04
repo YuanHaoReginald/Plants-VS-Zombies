@@ -2,6 +2,7 @@
 #define ADVENCEWIDGET_H
 
 #include "abstractwidget.h"
+#include "sunmanager.h"
 #include <QLabel>
 #include <QPixmap>
 #include <QTimer>
@@ -19,7 +20,7 @@ public:
     
 private:
     enum class MainTimerStatus { Delay1, Push1Up, Push1Down, Delay2, Push2Up, Push2Down, 
-                                 StartSet, StartReady, StartPlant, ReadGame };
+                                 StartSet, StartReady, StartPlant, RealGame };
     
     QLabel *GrassBackgroundLabel;
     QPixmap *GrassBackgroundPixmap;
@@ -37,6 +38,7 @@ private:
     QPixmap *ShovelBackPixmap;
     QPixmap *ShovelPixmap;
     QPixmap *ReadyPixmap;
+    SunManager *GlobalSunManager;
     
     
 private slots:

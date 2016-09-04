@@ -82,7 +82,7 @@ void AdvenceWidget::SlotOfMainTimer()
         {
             MainTimer->stop();
             CurrentMainTimerStatus = MainTimerStatus::Delay2;
-            QTimer::singleShot(1500, this, SLOT(SlotOfMainTimer()));
+            QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));
         }
         break;
     case MainTimerStatus::Delay2:
@@ -131,13 +131,15 @@ void AdvenceWidget::SlotOfMainTimer()
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel->setPixmap(*ReadyPixmap);
         QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
-        CurrentMainTimerStatus = MainTimerStatus::ReadGame;
+        CurrentMainTimerStatus = MainTimerStatus::RealGame;
         break;
-    case MainTimerStatus::ReadGame:
+    case MainTimerStatus::RealGame:
         delete ReadyLabel;
         delete ReadyPixmap;
         ReadyLabel = nullptr;
         ReadyPixmap = nullptr;
+        GlobalSunManager = new SunManager(this);
+        GlobalSunManager->Start();
         MenuLabel->show();
         CardSlotLabel->show();
         ShovelBackLabel->show();
