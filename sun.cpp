@@ -18,6 +18,7 @@ Sun::Sun(int FallSiteX, QObject *parent, int TempType)
     SunLabel->setMovie(SunGif);
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
+    connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));
     SunGif->start();
     connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
     
@@ -47,6 +48,7 @@ Sun::Sun(int FlowerRow, int FlowerCulumn, QObject *parent, int TempType)
     SunLabel->setMovie(SunGif);
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
+    connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));    
     connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
     
     if(FlowerRow <= 0)
@@ -96,6 +98,7 @@ void Sun::FallEvent()
     {
         FallTimer->stop();
         DelayTimer->start();
+        //qDebug() << "   "  << DelayTimer->remainingTime() << "\n";
     }
 }
 
