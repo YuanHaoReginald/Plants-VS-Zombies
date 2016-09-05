@@ -2,6 +2,9 @@
 #define GLOBALMANAGER_H
 #include <QWidget>
 
+enum class GameStatus { Welcome, Advence, Mini, IQ };
+enum class PlantType { SunFlower, WallNut, Peashooter, Chomper };
+enum class CardStatus { Normal, Disable, Freezed };
 
 class GlobalManager
 {
@@ -17,11 +20,10 @@ public:
     static int posX[10];
     static int posY[6];
     static QWidget* CurrentWidget;
+    static int NumberOfSun;
 };
 
 extern void initGlobalManager();
 double ForScale(double temp);
-
-enum class GameStatus { Welcome, Advence, Mini, IQ };
 
 #endif // GLOBALMANAGER_H

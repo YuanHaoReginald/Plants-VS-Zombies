@@ -7,13 +7,12 @@
 
 SunManager::SunManager(QObject *parent) : QObject(parent)
 {
-    SunNumber = 50;
     MainManagerTimer = new QTimer;
     connect(MainManagerTimer, SIGNAL(timeout()), this, SLOT(GenerateSun()));
     showSunNum = new QLabel(GlobalManager::CurrentWidget);
     showSunNum->setGeometry(ForScale(26), ForScale(59), ForScale(54), ForScale(21));
     showSunNum->setAlignment(Qt::AlignCenter);
-    showSunNum->setText(QString::number(SunNumber));
+    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));
     showSunNum->show();
 }
 
@@ -29,11 +28,6 @@ void SunManager::Start()
     isPause = true;
     MainManagerTimer->setInterval(2000);
     MainManagerTimer->start();
-}
-
-int SunManager::getSunNumber()
-{
-    return SunNumber;
 }
 
 void SunManager::Pause()
@@ -87,8 +81,9 @@ void SunManager::FlowerSun(int Row, int Culumn)
 
 void SunManager::AddSunNumber(int nowType)
 {
-    SunNumber += nowType;
-    showSunNum->setText(QString::number(SunNumber));    
+    GlobalManager::NumberOfSun += nowType;
+    emit SunNumberUpdate();
+    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));    
 }
 
 void SunManager::DeleteSun(Sun * Point)
@@ -98,6 +93,7 @@ void SunManager::DeleteSun(Sun * Point)
 
 void SunManager::MinusSunNumber(int num)
 {
-    SunNumber -= num;
-    showSunNum->setText(QString::number(SunNumber));    
+    GlobalManager::NumberOfSun -= num;
+    emit SunNumberUpdate();
+    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));    
 }

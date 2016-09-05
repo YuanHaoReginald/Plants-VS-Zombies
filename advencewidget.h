@@ -3,6 +3,7 @@
 
 #include "abstractwidget.h"
 #include "sunmanager.h"
+#include "cardmanager.h"
 #include <QLabel>
 #include <QPixmap>
 #include <QTimer>
@@ -39,6 +40,7 @@ private:
     QPixmap *ShovelPixmap;
     QPixmap *ReadyPixmap;
     SunManager *GlobalSunManager;
+    CardManager *GlobalCardManager;
     
     
 private slots:

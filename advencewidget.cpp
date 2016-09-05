@@ -144,6 +144,8 @@ void AdvenceWidget::SlotOfMainTimer()
         CardSlotLabel->show();
         ShovelBackLabel->show();
         ShovelLabel->show();
+        GlobalCardManager = new CardManager(this);
+        connect(GlobalSunManager, SIGNAL(SunNumberUpdate()), GlobalCardManager, SIGNAL(CheckAllCard()));
         break;
     default:
         break;

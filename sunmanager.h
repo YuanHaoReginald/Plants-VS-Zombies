@@ -13,7 +13,6 @@ public:
     explicit SunManager(QObject *parent = 0);
     ~SunManager();
     
-    int getSunNumber();
     void Pause();
     void Restart();
     
@@ -22,9 +21,9 @@ signals:
     void PauseAllSun();
     void RestartAllSun();
     void DeleteAllSun();
+    void SunNumberUpdate();
     
 private:
-    int SunNumber;
     QTimer *MainManagerTimer;
     QLabel *showSunNum;
     bool isPause;

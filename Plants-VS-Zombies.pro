@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     advencewidget.cpp \
     sun.cpp \
     label.cpp \
-    sunmanager.cpp
+    sunmanager.cpp \
+    plantcard.cpp \
+    cardmanager.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -29,7 +31,9 @@ HEADERS  += mainwindow.h \
     advencewidget.h \
     sun.h \
     label.h \
-    sunmanager.h
+    sunmanager.h \
+    plantcard.h \
+    cardmanager.h
 
 FORMS    += mainwindow.ui
 
