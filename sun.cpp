@@ -84,12 +84,6 @@ int Sun::getType()
     return m_Type;
 }
 
-Label* Sun::getLabel()
-{
-    return SunLabel;
-}
-
-
 void Sun::FallEvent()
 {
     posY += 1;
@@ -98,7 +92,6 @@ void Sun::FallEvent()
     {
         FallTimer->stop();
         DelayTimer->start();
-        //qDebug() << "   "  << DelayTimer->remainingTime() << "\n";
     }
 }
 
@@ -124,7 +117,6 @@ void Sun::DelayDie()
 
 void Sun::GetSun()
 {
-    //emit GetSunUp(m_Type);
     if(FallTimer->isActive())
         FallTimer->stop();
     else if(DelayTimer->isActive())
@@ -146,7 +138,6 @@ void Sun::SunBack()
                           ForScale(posY + (posY - 9) * 1.0 * TimeUsed * TimeUsed / 250000 
                                    - (posY - 9) * 1.0 * TimeUsed / 250),
                           ForScale(70), ForScale(70));
-    //qDebug() << this << "    " << TimeUsed << "     " << SunLabel->x() << "     " << SunLabel->y() << "\n";
     if(TimeUsed == 500)
     {
         BackTimer->stop();

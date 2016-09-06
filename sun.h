@@ -20,7 +20,7 @@ public:
     ~Sun();
     
     int getType();
-    Label* getLabel();
+    Label *SunLabel;
     
 private:
     int m_Type;
@@ -31,7 +31,6 @@ private:
     QTimer *DelayTimer;
     QTimer *BackTimer;
     QTimer *FlowerTimer;
-    Label *SunLabel;
 
     int posX, posY;
     SunStatus CurrentStatus;

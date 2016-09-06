@@ -57,7 +57,7 @@ void SunManager::GenerateSun()
     srand(QTime::currentTime().msecsSinceStartOfDay());
     int TargetSite = rand() % 650 + 140;
     Sun *temp = new Sun(TargetSite, this);
-    temp->getLabel()->show();
+    temp->SunLabel->show();
     connect(this, SIGNAL(UpAllSun()), temp, SLOT(RaiseSun()));
     connect(this, SIGNAL(PauseAllSun()), temp, SLOT(Pause()));
     connect(this, SIGNAL(RestartAllSun()), temp, SLOT(Restart()));
@@ -66,16 +66,17 @@ void SunManager::GenerateSun()
     connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis()));
 }
 
-void SunManager::FlowerSun(int Row, int Culumn)
+void SunManager::FlowerSun(int Row, int Culumn, SunFlower* fatherFlower)
 {
     Sun *temp = new Sun(Row, Culumn, this);
-    temp->getLabel()->show();
+    temp->SunLabel->show();
     connect(this, SIGNAL(UpAllSun()), temp, SLOT(RaiseSun()));
     connect(this, SIGNAL(PauseAllSun()), temp, SLOT(Pause()));
     connect(this, SIGNAL(RestartAllSun()), temp, SLOT(Restart()));
     connect(temp, SIGNAL(GetSunUp(int)), this, SLOT(AddSunNumber(int)));
     connect(temp, SIGNAL(die(Sun*)), this, SLOT(DeleteSun(Sun*)));
-    connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis()));    
+    connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis())); 
+    connect(temp->SunLabel, SIGNAL(clicked()), fatherFlower, SLOT(ReProduce()));
 }
 
 

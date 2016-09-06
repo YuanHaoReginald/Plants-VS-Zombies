@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QLabel>
 #include "sun.h"
+#include "sunflower.h"
 
 class SunManager : public QObject
 {
@@ -31,10 +32,10 @@ private:
     
 public slots:
     void Start();
+    void FlowerSun(int, int, SunFlower*);
     
 private slots:
     void GenerateSun();
-    void FlowerSun(int, int);
     void AddSunNumber(int);
     void DeleteSun(Sun*);
     void MinusSunNumber(int);

@@ -35,7 +35,7 @@ int AbstractPlant::getHeight()
     return height;
 }
 
-PlantType AbstractPlant::getAttack()
+void AbstractPlant::getAttack()
 {
     blood--;
     if(blood == 0)
