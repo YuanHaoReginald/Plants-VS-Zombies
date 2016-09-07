@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     cardmanager.cpp \
     abstractplant.cpp \
     sunflower.cpp \
-    warmanager.cpp
+    warmanager.cpp \
+    managermanager.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -39,7 +40,9 @@ HEADERS  += mainwindow.h \
     cardmanager.h \
     abstractplant.h \
     sunflower.h \
-    warmanager.h
+    warmanager.h \
+    enumlist.h \
+    managermanager.h
 
 FORMS    += mainwindow.ui
 

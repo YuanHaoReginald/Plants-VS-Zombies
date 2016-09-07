@@ -12,10 +12,9 @@ public:
     ~SunFlower();
     
 signals:
-    void ProduceSun(int, int, SunFlower*);
+    void ProduceSun(int, int);
     
 public slots:
-    void ReProduce();
     void Pause();
     void Restart();
     

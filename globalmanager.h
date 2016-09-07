@@ -1,10 +1,7 @@
 #ifndef GLOBALMANAGER_H
 #define GLOBALMANAGER_H
 #include <QWidget>
-
-enum class GameStatus { Welcome, Advence, Mini, IQ };
-enum class PlantType { SunFlower, WallNut, Peashooter, Chomper };
-enum class CardStatus { Normal, Disable, Freezed };
+#include "enumlist.h"
 
 class GlobalManager
 {

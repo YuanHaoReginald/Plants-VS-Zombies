@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QLabel>
 #include <QMovie>
-#include "globalmanager.h"
+#include "enumlist.h"
 
 class AbstractPlant : public QObject
 {

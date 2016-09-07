@@ -10,6 +10,7 @@ SunManager::SunManager(QObject *parent) : QObject(parent)
     MainManagerTimer = new QTimer;
     connect(MainManagerTimer, SIGNAL(timeout()), this, SLOT(GenerateSun()));
     showSunNum = new QLabel(GlobalManager::CurrentWidget);
+    showSunNum->setMouseTracking(true);
     showSunNum->setGeometry(ForScale(26), ForScale(59), ForScale(54), ForScale(21));
     showSunNum->setAlignment(Qt::AlignCenter);
     showSunNum->setText(QString::number(GlobalManager::NumberOfSun));
@@ -66,17 +67,17 @@ void SunManager::GenerateSun()
     connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis()));
 }
 
-void SunManager::FlowerSun(int Row, int Culumn, SunFlower* fatherFlower)
+void SunManager::FlowerSun(int Row, int Culumn)
 {
     Sun *temp = new Sun(Row, Culumn, this);
     temp->SunLabel->show();
+    temp->SunLabel->raise();
     connect(this, SIGNAL(UpAllSun()), temp, SLOT(RaiseSun()));
     connect(this, SIGNAL(PauseAllSun()), temp, SLOT(Pause()));
     connect(this, SIGNAL(RestartAllSun()), temp, SLOT(Restart()));
     connect(temp, SIGNAL(GetSunUp(int)), this, SLOT(AddSunNumber(int)));
     connect(temp, SIGNAL(die(Sun*)), this, SLOT(DeleteSun(Sun*)));
     connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis())); 
-    connect(temp->SunLabel, SIGNAL(clicked()), fatherFlower, SLOT(ReProduce()));
 }
 
 

@@ -32,7 +32,7 @@ private:
     
 public slots:
     void Start();
-    void FlowerSun(int, int, SunFlower*);
+    void FlowerSun(int, int);
     
 private slots:
     void GenerateSun();

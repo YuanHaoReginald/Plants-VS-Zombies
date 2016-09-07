@@ -1,25 +1,47 @@
 #include "advencewidget.h"
 #include "globalmanager.h"
-#include <QtDebug>
+#include "enumlist.h"
+#include "managermanager.h"
+#include <QGraphicsOpacityEffect>
+#include <QDebug>
 
 AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
 {
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
     setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setMouseTracking(true);
+    MouseLabel = new QLabel(this);
+    MouseLabel->setMouseTracking(true);
+    MousePixmap = new QPixmap;
+    MouseLabel->setPixmap(*MousePixmap);
+    MouseLabel->hide();
+    MouseType = PlantType::NoPlant;
+    m_GOE = new QGraphicsOpacityEffect;
+    m_GOE->setOpacity(0.5);
+    VirtualPlant = new QLabel(this);
+    VirtualPlant->setMouseTracking(true);
+    VirtualPlantPixmap = new QPixmap;
+    VirtualPlant->setPixmap(*VirtualPlantPixmap);
+    VirtualPlant->hide();
+    ReadyLabel = nullptr;
+    ReadyPixmap = nullptr;
     
     GrassBackgroundPixmap = new QPixmap(":/surface/res/images/surface/NormalGrass.png");
     *GrassBackgroundPixmap = GrassBackgroundPixmap->scaled(ForScale(1400), ForScale(600), Qt::KeepAspectRatio);
     GrassBackgroundLabel = new QLabel(this);
+    GrassBackgroundLabel->setMouseTracking(true);
     GrassBackgroundLabel->setGeometry(0, 0, ForScale(1400), ForScale(600));
     GrassBackgroundLabel->setPixmap(*GrassBackgroundPixmap);
     CurrentMainTimerStatus = MainTimerStatus::Delay1;
     MainTimer = new QTimer;
     connect(MainTimer, SIGNAL(timeout()), this, SLOT(SlotOfMainTimer()));
-    QTimer::singleShot(1500, this, SLOT(SlotOfMainTimer()));
+    //QTimer::singleShot(1500, this, SLOT(SlotOfMainTimer()));
+    QTimer::singleShot(15, this, SLOT(SlotOfMainTimer()));    
     
     MenuPixmap = new QPixmap(":/surface/res/images/surface/MenuButtonNormal.png");
     *MenuPixmap = MenuPixmap->scaled(ForScale(113), ForScale(35), Qt::KeepAspectRatio);
     MenuLabel = new QLabel(this);
+    MenuLabel->setMouseTracking(true);
     MenuLabel->setGeometry(ForScale(780), ForScale(-6), ForScale(113), ForScale(35));
     MenuLabel->setPixmap(*MenuPixmap);
     MenuLabel->hide();
@@ -27,6 +49,7 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     CardSlotPixmap = new QPixmap(":/surface/res/images/surface/CardSlot.png");
     *CardSlotPixmap = CardSlotPixmap->scaled(ForScale(435), ForScale(84), Qt::KeepAspectRatio);
     CardSlotLabel = new QLabel(this);
+    CardSlotLabel->setMouseTracking(true);
     CardSlotLabel->setGeometry(ForScale(15), 0, ForScale(435), ForScale(84));
     CardSlotLabel->setPixmap(*CardSlotPixmap);
     CardSlotLabel->hide();
@@ -34,6 +57,7 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     ShovelBackPixmap = new QPixmap(":/surface/res/images/surface/ShovelBack.png");
     *ShovelBackPixmap = ShovelBackPixmap->scaled(ForScale(71), ForScale(72), Qt::KeepAspectRatio);
     ShovelBackLabel = new QLabel(this);
+    ShovelBackLabel->setMouseTracking(true);
     ShovelBackLabel->setGeometry(ForScale(450), 0, ForScale(71), ForScale(72));
     ShovelBackLabel->setPixmap(*ShovelBackPixmap);
     ShovelBackLabel->hide();
@@ -41,9 +65,38 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     ShovelPixmap = new QPixmap(":/surface/res/images/surface/Shovel.png");
     *ShovelPixmap = ShovelPixmap->scaled(ForScale(53), ForScale(57), Qt::KeepAspectRatio);
     ShovelLabel = new QLabel(this);
+    ShovelLabel->setMouseTracking(true);
     ShovelLabel->setGeometry(ForScale(459), 8, ForScale(53), ForScale(57));
     ShovelLabel->setPixmap(*ShovelPixmap);
     ShovelLabel->hide();
+}
+
+AdvenceWidget::~AdvenceWidget()
+{
+    delete GrassBackgroundLabel;
+    delete GrassBackgroundPixmap;
+    delete MainTimer;
+    delete MenuLabel;
+    delete CardSlotLabel;
+    delete ShovelBackLabel;
+    delete ShovelLabel;
+    delete ReadyLabel;
+    delete MouseLabel;
+    delete MenuPixmap;
+    delete CardSlotPixmap;
+    delete ShovelBackPixmap;
+    delete ShovelPixmap;
+    delete ReadyPixmap;
+    delete MousePixmap;
+    delete ManagerManager::GlobalSunManager;
+    ManagerManager::GlobalSunManager = nullptr;
+    delete ManagerManager::GlobalCardManager;
+    ManagerManager::GlobalCardManager = nullptr;
+    delete ManagerManager::GlobalWarManager;
+    ManagerManager::GlobalWarManager = nullptr;
+    delete m_GOE;
+    delete VirtualPlant;
+    delete VirtualPlantPixmap;
 }
 
 QPixmap *AdvenceWidget::getReadPixmap() const
@@ -82,7 +135,8 @@ void AdvenceWidget::SlotOfMainTimer()
         {
             MainTimer->stop();
             CurrentMainTimerStatus = MainTimerStatus::Delay2;
-            QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));
+            //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));
+            QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));            
         }
         break;
     case MainTimerStatus::Delay2:
@@ -113,24 +167,28 @@ void AdvenceWidget::SlotOfMainTimer()
         ReadyPixmap = new QPixmap(":/surface/res/images/surface/StartSet.png");
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel = new QLabel(this);
+        ReadyLabel->setMouseTracking(true);
         ReadyLabel->setGeometry(ForScale(300), ForScale(233), ForScale(300), ForScale(133));
         ReadyLabel->setPixmap(*ReadyPixmap);
         ReadyLabel->show();
-        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::StartReady;
         break;
     case MainTimerStatus::StartReady:
         ReadyPixmap->load(":/surface/res/images/surface/StartReady.png");
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel->setPixmap(*ReadyPixmap);
-        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::StartPlant;
         break;
     case MainTimerStatus::StartPlant:
         ReadyPixmap->load(":/surface/res/images/surface/StartPlant.png");
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel->setPixmap(*ReadyPixmap);
-        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::RealGame;
         break;
     case MainTimerStatus::RealGame:
@@ -138,16 +196,229 @@ void AdvenceWidget::SlotOfMainTimer()
         delete ReadyPixmap;
         ReadyLabel = nullptr;
         ReadyPixmap = nullptr;
-        GlobalSunManager = new SunManager(this);
-        GlobalSunManager->Start();
+        ManagerManager::GlobalSunManager = new SunManager(this);
+        ManagerManager::GlobalSunManager->Start();
         MenuLabel->show();
         CardSlotLabel->show();
         ShovelBackLabel->show();
         ShovelLabel->show();
-        GlobalCardManager = new CardManager(this);
-        connect(GlobalSunManager, SIGNAL(SunNumberUpdate()), GlobalCardManager, SIGNAL(CheckAllCard()));
+        ManagerManager::GlobalCardManager = new CardManager(this);
+        ManagerManager::GlobalWarManager = new WarManager(this);
+        connect(ManagerManager::GlobalSunManager, SIGNAL(SunNumberUpdate()),
+                ManagerManager::GlobalCardManager, SIGNAL(CheckAllCard()));
+        connect(ManagerManager::GlobalWarManager, SIGNAL(CostSun(int)),
+                ManagerManager::GlobalSunManager, SLOT(MinusSunNumber(int)));
+        CurrentMainTimerStatus = MainTimerStatus::HasStarted;        
         break;
     default:
         break;
     }
+}
+
+void AdvenceWidget::SwitchMouseType(PlantType PLVal, int xVal, int yVal)
+{
+    if(PLVal == MouseType)
+        return;
+    MouseType = PLVal;
+    delete MousePixmap;
+    
+    switch (MouseType) {
+    case PlantType::SunFlower:
+        MousePixmap = new QPixmap(":/plant/res/images/plant/SunFlower/0.gif");
+        *MousePixmap = MousePixmap->scaled(ForScale(63), ForScale(72));
+        MouseLabel->setPixmap(*MousePixmap);
+        MouseLabel->setGeometry(xVal - ForScale(63 / 2), yVal - ForScale(72 / 2),
+                                ForScale(63), ForScale(72));
+        MouseLabel->show();
+        MouseLabel->raise();
+        break;
+    case PlantType::Peashooter:
+        MousePixmap = new QPixmap(":/plant/res/images/plant/Peashooter/0.gif");
+        *MousePixmap = MousePixmap->scaled(ForScale(62), ForScale(70));
+        MouseLabel->setPixmap(*MousePixmap);
+        MouseLabel->setGeometry(xVal - ForScale(62 / 2), yVal - ForScale(70 / 2),
+                                ForScale(62), ForScale(70));
+        MouseLabel->show();
+        MouseLabel->raise();
+        break;
+    case PlantType::WallNut:
+        MousePixmap = new QPixmap(":/plant/res/images/plant/WallNut/0.gif");
+        *MousePixmap = MousePixmap->scaled(ForScale(61), ForScale(71));
+        MouseLabel->setPixmap(*MousePixmap);
+        MouseLabel->setGeometry(xVal - ForScale(61 / 2), yVal - ForScale(71 / 2),
+                                ForScale(61), ForScale(71));
+        MouseLabel->show();
+        MouseLabel->raise();
+        break;
+    case PlantType::Chomper:
+        MousePixmap = new QPixmap(":/plant/res/images/plant/Chomper/0.gif");
+        *MousePixmap = MousePixmap->scaled(ForScale(94), ForScale(95));
+        MouseLabel->setPixmap(*MousePixmap);
+        MouseLabel->setGeometry(xVal - ForScale(94 / 2), yVal - ForScale(95 / 2),
+                                ForScale(94), ForScale(95));
+        MouseLabel->show();
+        MouseLabel->raise();
+        break;
+    case PlantType::NoPlant:
+        MousePixmap = new QPixmap;
+        MouseLabel->hide();
+        break;
+    default:
+        break;
+    }
+}
+
+void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(CurrentMainTimerStatus == MainTimerStatus::HasStarted)
+    {
+        switch(MouseType)
+        {
+        case PlantType::SunFlower:
+            MouseLabel->move(event->x() - ForScale(63 / 2), event->y() - ForScale(72 / 2));
+            MouseLabel->show();
+            MouseLabel->raise();
+            break;
+        case PlantType::Peashooter:
+            MouseLabel->move(event->x() - ForScale(62 / 2), event->y() - ForScale(70 / 2));
+            MouseLabel->show();
+            MouseLabel->raise();
+            break;
+        case PlantType::WallNut:
+            MouseLabel->move(event->x() - ForScale(61 / 2), event->y() - ForScale(71 / 2));
+            MouseLabel->show();
+            MouseLabel->raise();
+            break;
+        case PlantType::Chomper:
+            MouseLabel->move(event->x() - ForScale(94 / 2), event->y() - ForScale(95 / 2));
+            MouseLabel->show();
+            MouseLabel->raise();
+            break;
+        default:
+            break;
+        }
+        
+        if(MouseType != PlantType::NoPlant)
+        {
+            if(event->x() >= ForScale(GlobalManager::posX[0]) 
+                    && event->x() < ForScale(GlobalManager::posX[9])
+                    && event->y() >= ForScale(GlobalManager::posY[0]) 
+                    && event->y() < ForScale(GlobalManager::posY[5]))
+            {
+                int CulumnTemp = (event->x() - ForScale(GlobalManager::posX[0])) / ForScale(80) + 1;
+                int RowTemp = (event->y() - ForScale(GlobalManager::posY[0])) / ForScale(94) + 1;
+                if(ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
+                {
+                    switch(MouseType)
+                    {
+                    case PlantType::SunFlower:
+                        VirtualPlantPixmap->load(":/plant/res/images/plant/SunFlower/0.gif");
+                        *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(63), ForScale(72));
+                        VirtualPlant->setPixmap(*VirtualPlantPixmap);
+                        VirtualPlant->setGraphicsEffect(m_GOE);
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 63 / 2), 
+                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 72 / 2),
+                                                  ForScale(63), ForScale(72));
+                        break;
+                    case PlantType::Peashooter:
+                        VirtualPlantPixmap->load(":/plant/res/images/plant/Peashooter/0.gif");
+                        *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(62), ForScale(70));
+                        VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
+                        VirtualPlant->setGraphicsEffect(m_GOE);
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 62 / 2), 
+                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 70 / 2),
+                                                  ForScale(62), ForScale(70));
+
+                        break;
+                    case PlantType::WallNut:
+                        VirtualPlantPixmap->load(":/plant/res/images/plant/WallNut/0.gif");
+                        *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(61), ForScale(71));
+                        VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
+                        VirtualPlant->setGraphicsEffect(m_GOE);
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 61 / 2), 
+                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 71 / 2),
+                                                  ForScale(61), ForScale(71));
+                        break;
+                    case PlantType::Chomper:
+                        VirtualPlantPixmap->load(":/plant/res/images/plant/Chomper/0.gif");
+                        *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(94), ForScale(95));
+                        VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
+                        VirtualPlant->setGraphicsEffect(m_GOE);
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 94 / 2), 
+                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 95 / 2),
+                                                  ForScale(94), ForScale(95));
+                        break;
+                    default:
+                        break;
+                    }
+                    VirtualPlant->show();
+                    VirtualPlant->raise();
+                    MouseLabel->raise();
+                }
+                else
+                    VirtualPlant->hide();
+                
+            }
+            else 
+                VirtualPlant->hide();
+            
+        }
+        else
+            VirtualPlant->hide();
+    }
+    AbstractWidget::mouseMoveEvent(event);
+}
+
+void AdvenceWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(CurrentMainTimerStatus == MainTimerStatus::HasStarted)
+    {
+        if(MouseType == PlantType::NoPlant)
+        {
+            if(InCardArea(1, event->x(), event->y()) 
+                    && ManagerManager::GlobalCardManager->CardVec[0]->getCardStatus() == CardStatus::Normal)
+                SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[0]->getType(),
+                        event->x(), event->y());
+            else if(InCardArea(2, event->x(), event->y()) 
+                    && ManagerManager::GlobalCardManager->CardVec[1]->getCardStatus() == CardStatus::Normal)
+                SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[1]->getType(),
+                        event->x(), event->y());
+            else if(InCardArea(3, event->x(), event->y()) 
+                    && ManagerManager::GlobalCardManager->CardVec[2]->getCardStatus() == CardStatus::Normal)
+                SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[2]->getType(),
+                        event->x(), event->y());
+            else if(InCardArea(4, event->x(), event->y()) 
+                    && ManagerManager::GlobalCardManager->CardVec[3]->getCardStatus() == CardStatus::Normal)
+                SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[3]->getType(),
+                        event->x(), event->y());
+        }
+        else
+        {
+            if(event->x() >= ForScale(GlobalManager::posX[0]) 
+                    && event->x() <= ForScale(GlobalManager::posX[9])
+                    && event->y() >= ForScale(GlobalManager::posY[0]) 
+                    && event->y() <= ForScale(GlobalManager::posY[5]))
+            {
+                int CulumnTemp = (event->x() - ForScale(GlobalManager::posX[0])) / ForScale(80) + 1;
+                int RowTemp = (event->y() - ForScale(GlobalManager::posY[0])) / ForScale(94) + 1;
+                if(ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
+                {
+                    ManagerManager::GlobalWarManager->RaisePlant(RowTemp, CulumnTemp, MouseType);
+                }
+            }
+            VirtualPlant->hide();
+            SwitchMouseType(PlantType::NoPlant, event->x(), event->y());
+        }
+    }
+    AbstractWidget::mousePressEvent(event);
+}
+
+bool AdvenceWidget::InCardArea(int CardID, int x, int y)
+{
+    int posX = (CardID <= 3) ? (43 + CardID * 57) : (45 + CardID * 57);
+    int posY = 10;
+    if(x >= ForScale(posX) && x <= ForScale(posX + 45) && y >= ForScale(posY) && y <= ForScale(posY + 63))
+        return true;
+    else
+        return false;
 }

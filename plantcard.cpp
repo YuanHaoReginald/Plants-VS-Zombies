@@ -26,14 +26,19 @@ PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(p
         Freezemsec = 7500;
         NormalPic = new QPixmap(":/card/res/images/card/Chomper.png");
         break;
+    default:
+        break;
     }
     
     posX = (CardID <= 3) ? (43 + CardID * 57) : (45 + CardID * 57);
     posY = 10;
     CurrentStatus = CardStatus::Normal;
     NormalCard = new QLabel(GlobalManager::CurrentWidget);
+    NormalCard->setMouseTracking(true);
     DisableCard = new QLabel(GlobalManager::CurrentWidget);
+    DisableCard->setMouseTracking(true);
     FreezeCard = new QLabel(GlobalManager::CurrentWidget);
+    FreezeCard->setMouseTracking(true);
     NormalCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));
     DisableCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));
     FreezeCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));    

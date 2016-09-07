@@ -1,6 +1,8 @@
 #include "sunflower.h"
 #include <QLabel>
 #include <QPixmap>
+#include <QDebug>
+#include "globalmanager.h"
 
 SunFlower::SunFlower(int RowVal, int CulumnVal)
 {
@@ -11,6 +13,9 @@ SunFlower::SunFlower(int RowVal, int CulumnVal)
     width = 63;
     height = 72;
     PlantLabel = new QLabel(GlobalManager::CurrentWidget);
+    PlantLabel->setMouseTracking(true);
+    PlantLabel->show();
+    PlantLabel->raise();
     PlantLabel->setGeometry(ForScale(GlobalManager::posX[Culumn] - 40 - width / 2), 
                             ForScale(GlobalManager::posY[Row] - 47 - height / 2),
                             ForScale(63), ForScale(72));
@@ -34,12 +39,8 @@ void SunFlower::ProduceSunSlot()
 {
     ProduceSunTimer->stop();
     ProduceSunTimer->setInterval(24000);
-    emit ProduceSun(Row, Culumn, this);
-}
-
-void SunFlower::ReProduce()
-{
     ProduceSunTimer->start();
+    emit ProduceSun(Row, Culumn);
 }
 
 void SunFlower::Pause()

@@ -9,12 +9,13 @@ Sun::Sun(int FallSiteX, QObject *parent, int TempType)
     : QObject(parent), m_Type(TempType)
 {
     m_Mode = Mode::Fall;
-    FlowerTimer = nullptr;
-    DelayTimer = nullptr;
-    BackTimer = nullptr;
+    FlowerTimer = new QTimer;
+    DelayTimer = new QTimer;
+    BackTimer = new QTimer;
     SunGif = new QMovie(":/surface/res/images/surface/Sun.gif");
     SunGif->setScaledSize(QSize(ForScale(70), ForScale(70)));
     SunLabel = new Label(GlobalManager::CurrentWidget);
+    SunLabel->setMouseTracking(true);
     SunLabel->setMovie(SunGif);
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
@@ -39,28 +40,29 @@ Sun::Sun(int FlowerRow, int FlowerCulumn, QObject *parent, int TempType)
     : QObject(parent), m_Type(TempType)
 {  
     m_Mode = Mode::Flower;
-    FallTimer = nullptr;
-    DelayTimer = nullptr;
-    BackTimer = nullptr;
+    FallTimer = new QTimer;
+    BackTimer = new QTimer;
     SunGif = new QMovie(":/surface/res/images/surface/Sun.gif");
     SunGif->setScaledSize(QSize(ForScale(70), ForScale(70)));
     SunLabel = new Label(GlobalManager::CurrentWidget);
+    SunLabel->setMouseTracking(true);
     SunLabel->setMovie(SunGif);
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
-    connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));    
+    connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));  
+    SunGif->start();
     connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
     
-    if(FlowerRow <= 0)
-        FlowerRow = 0;
-    else if(FlowerRow >= 4)
-        FlowerRow = 4;
-    if(FlowerCulumn <= 0)
-        FlowerCulumn = 0;
-    else if(FlowerCulumn >= 8)
-        FlowerCulumn = 8;
-    posX = GlobalManager::posX[FlowerCulumn] + 5;
-    posY = GlobalManager::posY[FlowerRow];
+    if(FlowerRow <= 1)
+        FlowerRow = 1;
+    else if(FlowerRow >= 5)
+        FlowerRow = 5;
+    if(FlowerCulumn <= 1)
+        FlowerCulumn = 1;
+    else if(FlowerCulumn >= 9)
+        FlowerCulumn = 9;
+    posX = GlobalManager::posX[FlowerCulumn - 1] + 5;
+    posY = GlobalManager::posY[FlowerRow - 1];
     SunLabel->setGeometry(ForScale(posX), ForScale(posY), ForScale(70), ForScale(70));
     FlowerTimer = new QTimer;
     FlowerTimer ->setInterval(5);
@@ -101,6 +103,8 @@ void Sun::FlowerFall()
     SunLabel->setGeometry(ForScale(posX - 0.07 * TimeUsed),ForScale(1.0 * 21 * TimeUsed * TimeUsed / 125000
                                                                     - 1.0 * 3 * TimeUsed / 125 + posY) 
                           , ForScale(70), ForScale(70));
+    qDebug() << posX - 0.07 * TimeUsed << "    "<< 1.0 * 21 * TimeUsed * TimeUsed / 125000
+                - 1.0 * 3 * TimeUsed / 125 + posY << "\n";
     if(TimeUsed == 500)
     {
         FlowerTimer->stop();
@@ -123,7 +127,6 @@ void Sun::GetSun()
         DelayTimer->stop();
     else if(FlowerTimer->isActive())
         FlowerTimer->stop();
-    BackTimer = new QTimer;
     BackTimer->setInterval(5);
     TimeUsed = 0;
     BackTimer->start();
