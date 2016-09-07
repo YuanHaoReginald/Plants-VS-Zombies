@@ -4,6 +4,7 @@
 #include <QObject>
 #include <vector>
 #include "plantcard.h"
+#include "enumlist.h"
 
 class CardManager : public QObject
 {
@@ -20,7 +21,7 @@ signals:
     void CheckAllCard();
     
 public slots:
-
+    void FreezeSomeone(PlantType);
 };
 
 #endif // CARDMANAGER_H

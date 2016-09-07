@@ -1,5 +1,6 @@
 #include "cardmanager.h"
 #include "globalmanager.h"
+#include "plantcard.h"
 #include <vector>
 
 CardManager::CardManager(QObject *parent) : QObject(parent)
@@ -31,5 +32,17 @@ CardManager::~CardManager()
     for(auto ch : CardVec)
     {
         delete ch;
+    }
+}
+
+void CardManager::FreezeSomeone(PlantType TypeVal)
+{
+    for(auto ca : CardVec)
+    {
+        if(ca->getType() == TypeVal)
+        {
+            ca->FreezeThis();
+            break;
+        }
     }
 }

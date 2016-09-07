@@ -208,6 +208,8 @@ void AdvenceWidget::SlotOfMainTimer()
                 ManagerManager::GlobalCardManager, SIGNAL(CheckAllCard()));
         connect(ManagerManager::GlobalWarManager, SIGNAL(CostSun(int)),
                 ManagerManager::GlobalSunManager, SLOT(MinusSunNumber(int)));
+        connect(this, SIGNAL(HasPlanted(PlantType)),
+                ManagerManager::GlobalCardManager, SLOT(FreezeSomeone(PlantType)));
         CurrentMainTimerStatus = MainTimerStatus::HasStarted;        
         break;
     default:
@@ -404,6 +406,7 @@ void AdvenceWidget::mousePressEvent(QMouseEvent *event)
                 if(ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
                 {
                     ManagerManager::GlobalWarManager->RaisePlant(RowTemp, CulumnTemp, MouseType);
+                    emit HasPlanted(MouseType);
                 }
             }
             VirtualPlant->hide();

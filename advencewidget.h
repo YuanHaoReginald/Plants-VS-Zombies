@@ -23,6 +23,9 @@ public:
     QPixmap *getReadPixmap() const;
     void setReadPixmap(QPixmap *value);
     
+signals:
+    void HasPlanted(PlantType);
+    
 private:
     enum class MainTimerStatus { Delay1, Push1Up, Push1Down, Delay2, Push2Up, Push2Down, 
                                  StartSet, StartReady, StartPlant, RealGame, HasStarted };
