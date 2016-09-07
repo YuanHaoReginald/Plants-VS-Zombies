@@ -39,5 +39,15 @@ void AbstractPlant::getAttack()
 {
     blood--;
     if(blood == 0)
-        emit die();
+        emit die(this);
+}
+
+void AbstractPlant::Pause()
+{
+    
+}
+
+void AbstractPlant::Restart()
+{
+    
 }

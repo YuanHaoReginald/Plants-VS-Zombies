@@ -10,6 +10,7 @@ class WarManager : public QObject
     Q_OBJECT
 public:
     explicit WarManager(QObject *parent = 0);
+    ~WarManager();
     
     AbstractPlant* grass[5][9];
 signals:
@@ -17,6 +18,7 @@ signals:
     
 public slots:
     void RaisePlant(int, int, PlantType);
+    void DeletePlant(AbstractPlant*);
 };
 
 #endif // WARMANAGER_H

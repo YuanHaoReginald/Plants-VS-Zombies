@@ -21,11 +21,11 @@ public:
     virtual void getAttack();
     
 signals:
-    die();
+    die(AbstractPlant*);
     
 public slots:
-    virtual void Pause() = 0;
-    virtual void Restart() = 0;
+    virtual void Pause();
+    virtual void Restart();
     
 protected:
     PlantType m_Type;
