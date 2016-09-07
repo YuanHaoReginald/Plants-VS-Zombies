@@ -14,7 +14,10 @@ public:
     
     AbstractPlant* grass[5][9];
 signals:
-   void  CostSun(int);
+   void CostSun(int);
+   
+private slots:
+   void GeneratePea(int, int);
     
 public slots:
     void RaisePlant(int, int, PlantType);

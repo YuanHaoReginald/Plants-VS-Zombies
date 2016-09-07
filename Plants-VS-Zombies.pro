@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     sunflower.cpp \
     warmanager.cpp \
     managermanager.cpp \
-    wallnut.cpp
+    wallnut.cpp \
+    peashooter.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     warmanager.h \
     enumlist.h \
     managermanager.h \
-    wallnut.h
+    wallnut.h \
+    peashooter.h
 
 FORMS    += mainwindow.ui
 
