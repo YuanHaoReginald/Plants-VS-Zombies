@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include "abstractplant.h"
+#include "pea.h"
 #include "enumlist.h"
+#include <QVector>
 
 class WarManager : public QObject
 {
@@ -13,6 +15,8 @@ public:
     ~WarManager();
     
     AbstractPlant* grass[5][9];
+    QVector<Pea*> PeaManager[5];
+    
 signals:
    void CostSun(int);
    
@@ -22,6 +26,7 @@ private slots:
 public slots:
     void RaisePlant(int, int, PlantType);
     void DeletePlant(AbstractPlant*);
+    void DeletePea(Pea*);
 };
 
 #endif // WARMANAGER_H

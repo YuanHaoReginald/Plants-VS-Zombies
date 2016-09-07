@@ -16,6 +16,8 @@ signals:
 public slots:
     void Pause();
     void Restart();
+    void StartEmitPea();
+    void StopEmitPea();
     
 private slots:
     void EmitPeaSlot();

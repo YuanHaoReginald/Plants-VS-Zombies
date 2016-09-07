@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     warmanager.cpp \
     managermanager.cpp \
     wallnut.cpp \
-    peashooter.cpp
+    peashooter.cpp \
+    pea.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -46,7 +47,8 @@ HEADERS  += mainwindow.h \
     enumlist.h \
     managermanager.h \
     wallnut.h \
-    peashooter.h
+    peashooter.h \
+    pea.h
 
 FORMS    += mainwindow.ui
 

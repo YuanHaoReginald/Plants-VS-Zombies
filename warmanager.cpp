@@ -2,6 +2,7 @@
 #include "sunflower.h"
 #include "wallnut.h"
 #include "peashooter.h"
+#include "pea.h"
 #include "globalmanager.h"
 #include "managermanager.h"
 #include "enumlist.h"
@@ -28,9 +29,12 @@ WarManager::~WarManager()
     }
 }
 
-void WarManager::GeneratePea(int, int)
+void WarManager::GeneratePea(int RowVal, int CulumnVal)
 {
-    
+    Pea* temp = new Pea(RowVal, CulumnVal);
+    ManagerManager::GlobalSunManager->UpAllSun();
+    PeaManager[RowVal - 1].push_back(temp);
+    connect(temp, SIGNAL(die(Pea*)), this, SLOT(DeletePea(Pea*)));
 }
 
 void WarManager::RaisePlant(int RowVal, int CulumnVal, PlantType tempType)
@@ -73,4 +77,9 @@ void WarManager::RaisePlant(int RowVal, int CulumnVal, PlantType tempType)
 void WarManager::DeletePlant(AbstractPlant* m_point)
 {
     delete m_point;
+}
+
+void WarManager::DeletePea(Pea * m_Pea)
+{
+    delete m_Pea;
 }

@@ -48,5 +48,6 @@
         <file>res/images/plant/WallNut/Wallnut_cracked1.gif</file>
         <file>res/images/plant/WallNut/Wallnut_cracked2.gif</file>
         <file>res/images/plant/WallNut/0.gif</file>
+        <file>res/images/plant/pea.png</file>
     </qresource>
 </RCC>

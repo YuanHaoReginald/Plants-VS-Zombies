@@ -21,14 +21,13 @@ Peashooter::Peashooter(int RowVal, int CulumnVal)
                             ForScale(width), ForScale(height));
     PlantMovie = new QMovie(":/plant/res/images/plant/Peashooter/Peashooter.gif");
     PlantMovie->setScaledSize(QSize(ForScale(width), ForScale(height)));
-    PlantMovie->setSpeed(90);
+    PlantMovie->setSpeed(80);
     PlantLabel->setMovie(PlantMovie);
     PlantMovie->start();
     
     EmitPeaTimer = new QTimer;
-    EmitPeaTimer->setInterval(300);
+    EmitPeaTimer->setInterval(500);
     connect(EmitPeaTimer, SIGNAL(timeout()), this, SLOT(EmitPeaSlot()));
-    EmitPeaTimer->start();
 }
 
 Peashooter::~Peashooter()
@@ -39,7 +38,7 @@ Peashooter::~Peashooter()
 void Peashooter::EmitPeaSlot()
 {
     EmitPeaTimer->stop();
-    EmitPeaTimer->setInterval(1300);
+    EmitPeaTimer->setInterval(1500);
     EmitPeaTimer->start();
     emit EmitPea(Row, Culumn);
 }
@@ -56,3 +55,12 @@ void Peashooter::Restart()
     EmitPeaTimer->start();
 }
 
+void Peashooter::StartEmitPea()
+{
+    EmitPeaTimer->start();    
+}
+
+void Peashooter::StopEmitPea()
+{
+    EmitPeaTimer->stop();
+}

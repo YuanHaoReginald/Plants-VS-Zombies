@@ -15,7 +15,8 @@ bool GlobalManager::MusicOn = true;
 int GlobalManager::posX[10] = {140, 220, 300, 380, 460, 540, 620, 700, 780, 860};
 int GlobalManager::posY[6] = {89, 183, 277, 371, 465, 559};
 QWidget* GlobalManager::CurrentWidget = nullptr;
-int GlobalManager::NumberOfSun = 50;
+//int GlobalManager::NumberOfSun = 50;
+int GlobalManager::NumberOfSun = 100;
 
 void initGlobalManager()
 {
