@@ -33,9 +33,6 @@ void WarManager::RaisePlant(int RowVal, int CulumnVal, PlantType tempType)
     case PlantType::WallNut:
         
         break;
-    case PlantType::Chomper:
-        
-        break;
     default:
         break;
     }

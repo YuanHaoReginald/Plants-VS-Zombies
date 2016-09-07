@@ -252,15 +252,6 @@ void AdvenceWidget::SwitchMouseType(PlantType PLVal, int xVal, int yVal)
         MouseLabel->show();
         MouseLabel->raise();
         break;
-    case PlantType::Chomper:
-        MousePixmap = new QPixmap(":/plant/res/images/plant/Chomper/0.gif");
-        *MousePixmap = MousePixmap->scaled(ForScale(94), ForScale(95));
-        MouseLabel->setPixmap(*MousePixmap);
-        MouseLabel->setGeometry(xVal - ForScale(94 / 2), yVal - ForScale(95 / 2),
-                                ForScale(94), ForScale(95));
-        MouseLabel->show();
-        MouseLabel->raise();
-        break;
     case PlantType::NoPlant:
         MousePixmap = new QPixmap;
         MouseLabel->hide();
@@ -288,11 +279,6 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
             break;
         case PlantType::WallNut:
             MouseLabel->move(event->x() - ForScale(61 / 2), event->y() - ForScale(71 / 2));
-            MouseLabel->show();
-            MouseLabel->raise();
-            break;
-        case PlantType::Chomper:
-            MouseLabel->move(event->x() - ForScale(94 / 2), event->y() - ForScale(95 / 2));
             MouseLabel->show();
             MouseLabel->raise();
             break;
@@ -341,15 +327,6 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
                                                   ForScale(GlobalManager::posY[RowTemp] - 47 - 71 / 2),
                                                   ForScale(61), ForScale(71));
                         break;
-                    case PlantType::Chomper:
-                        VirtualPlantPixmap->load(":/plant/res/images/plant/Chomper/0.gif");
-                        *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(94), ForScale(95));
-                        VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
-                        VirtualPlant->setGraphicsEffect(m_GOE);
-                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 94 / 2), 
-                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 95 / 2),
-                                                  ForScale(94), ForScale(95));
-                        break;
                     default:
                         break;
                     }
@@ -388,10 +365,6 @@ void AdvenceWidget::mousePressEvent(QMouseEvent *event)
             else if(InCardArea(3, event->x(), event->y()) 
                     && ManagerManager::GlobalCardManager->CardVec[2]->getCardStatus() == CardStatus::Normal)
                 SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[2]->getType(),
-                        event->x(), event->y());
-            else if(InCardArea(4, event->x(), event->y()) 
-                    && ManagerManager::GlobalCardManager->CardVec[3]->getCardStatus() == CardStatus::Normal)
-                SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[3]->getType(),
                         event->x(), event->y());
         }
         else

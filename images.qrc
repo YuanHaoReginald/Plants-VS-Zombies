@@ -34,17 +34,12 @@
         <file>res/images/surface/Sun.gif</file>
     </qresource>
     <qresource prefix="/card">
-        <file>res/images/card/Chomper.png</file>
         <file>res/images/card/DisableCard.png</file>
         <file>res/images/card/Peashooter.png</file>
         <file>res/images/card/Sunflower.png</file>
         <file>res/images/card/WallNut.png</file>
     </qresource>
     <qresource prefix="/plant">
-        <file>res/images/plant/Chomper/0.gif</file>
-        <file>res/images/plant/Chomper/Chomper.gif</file>
-        <file>res/images/plant/Chomper/ChomperAttack.gif</file>
-        <file>res/images/plant/Chomper/ChomperDigest.gif</file>
         <file>res/images/plant/Peashooter/0.gif</file>
         <file>res/images/plant/Peashooter/Peashooter.gif</file>
         <file>res/images/plant/SunFlower/0.gif</file>

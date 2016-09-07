@@ -20,11 +20,6 @@ CardManager::CardManager(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(Pause()), temp, SLOT(Pause()));
     connect(this, SIGNAL(Restart()), temp, SLOT(Restart()));
     connect(this, SIGNAL(CheckAllCard()), temp, SLOT(CheckThis()));
-    temp = new PlantCard(PlantType::Chomper, 4);
-    CardVec.push_back(temp);
-    connect(this, SIGNAL(Pause()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(Restart()), temp, SLOT(Restart()));
-    connect(this, SIGNAL(CheckAllCard()), temp, SLOT(CheckThis()));
 }
 
 CardManager::~CardManager()

@@ -21,11 +21,6 @@ PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(p
         Freezemsec = 7500;
         NormalPic = new QPixmap(":/card/res/images/card/Peashooter.png");
         break;
-    case PlantType::Chomper:
-        SunCost = 150;
-        Freezemsec = 7500;
-        NormalPic = new QPixmap(":/card/res/images/card/Chomper.png");
-        break;
     default:
         break;
     }
