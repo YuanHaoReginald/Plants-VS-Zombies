@@ -19,6 +19,7 @@ public:
     int getHeight();
     int getPosX();
     int getPoxY();
+    int getSpeed();
     virtual void getAttack();
     
     int id;

@@ -41,9 +41,14 @@ int AbstractZombie::getPoxY()
     return PosY;
 }
 
+int AbstractZombie::getSpeed()
+{
+    return speed;
+}
+
 void AbstractZombie::getAttack()
 {
     blood--;
-    if(blood <= 0)
+    if(blood == 0)
         emit die(this);
 }
