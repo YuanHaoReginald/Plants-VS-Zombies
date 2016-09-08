@@ -25,7 +25,7 @@ public:
     int id;
     
 signals:
-    void die(AbstractZombie*);
+    void die(AbstractZombie*, int);
     
 public slots:
     

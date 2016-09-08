@@ -2,7 +2,7 @@
 #include "globalmanager.h"
 #include <QTimer>
 
-NormalZombie::NormalZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
+NormalZombie::NormalZombie(int RowVal, int idVal) : Row(RowVal), id(idVal)
 {
     m_Type = ZombieType::NormalZombie;
     blood = 10;
@@ -122,5 +122,5 @@ void NormalZombie::DeleteBody()
     delete BodyMovie;
     BodyLabel = nullptr;
     BodyMovie = nullptr;
-    emit die(this);
+    emit die(this, id);
 }

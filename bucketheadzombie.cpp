@@ -161,5 +161,5 @@ void BucketheadZombie::DeleteBody()
     delete BodyMovie;
     BodyLabel = nullptr;
     BodyMovie = nullptr;
-    emit die(this);
+    emit die(this, id);
 }
