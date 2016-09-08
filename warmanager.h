@@ -39,6 +39,7 @@ private:
     int GenerateZombieClockNow, GenerateZombieClockLimit;
     int ZombieClockNow[150] = { 0 };
     int ZombieClockLimit[150] = { 0 };
+    int EatClockNow[150] = { 0 };
 };
 
 #endif // WARMANAGER_H

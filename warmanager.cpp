@@ -98,7 +98,284 @@ void WarManager::ClockUpdate()
         //胜利结算
     }
     //检查部分
-    
+    bool RowTemp[5] = { false, false, false, false, false };
+    for(int i = firstZombie; i < lastZombie; i++)
+    {
+        if(ZombieManager[i] != nullptr)
+        {
+            RowTemp[ZombieManager[i]->getRow() - 1] = true;
+            if(ZombieManager[i]->getType() == ZombieType::NormalZombie)
+            {
+                NormalZombie* temp = static_cast<NormalZombie*>(ZombieManager[i]);
+                int RowVal = temp->getRow() - 1;
+                int site = (temp->getPosX() + 40 - GlobalManager::posX[0]) / 80;                
+                switch(temp->getStatus())
+                {
+                case 0:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 2)
+                            break;
+                    }
+                    if(grass[RowVal][site] != nullptr)
+                    {
+                        temp->SwitchStatus();
+                        ZombieClockNow[i] = 0;
+                    }
+                    break;
+                case 1:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 2)
+                            break;
+                    }
+                    if(grass[RowVal][site] == nullptr)
+                    {
+                        temp->SwitchStatus();
+                        EatClockNow[i] = 0;
+                    }
+                    else
+                    {
+                        EatClockNow[i] += 5;
+                        if(EatClockNow[i] == 800)
+                        {
+                            grass[i][site]->getAttack();
+                            EatClockNow[i] = 0;
+                        }
+                    }
+                default:
+                    break;
+                }
+            }
+            else if(ZombieManager[i]->getType() == ZombieType::BucketheadZombie)
+            {
+                BucketheadZombie* temp = static_cast<BucketheadZombie*>(ZombieManager[i]);
+                int RowVal = temp->getRow() - 1;
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 40) / 80;                
+                switch(temp->getStatus())
+                {
+                case 0:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 2)
+                            break;
+                    }
+                    if(grass[RowVal][site] != nullptr)
+                    {
+                        temp->SwitchStatus();
+                        ZombieClockNow[i] = 0;
+                    }
+                    break;
+                case 1:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 3)
+                            break;
+                    }
+                    if(grass[RowVal][site] == nullptr)
+                    {
+                        temp->SwitchStatus();
+                        EatClockNow[i] = 0;
+                    }
+                    else
+                    {
+                        EatClockNow[i] += 5;
+                        if(EatClockNow[i] == 800)
+                        {
+                            grass[i][site]->getAttack();
+                            EatClockNow[i] = 0;
+                        }
+                    }
+                    break;
+                case 2:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 4)
+                            break;
+                    }
+                    if(grass[RowVal][site] != nullptr)
+                    {
+                        temp->SwitchStatus();
+                        ZombieClockNow[i] = 0;
+                    }
+                    break;
+                case 3:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 4)
+                            break;
+                    }
+                    if(grass[RowVal][site] == nullptr)
+                    {
+                        temp->SwitchStatus();
+                        EatClockNow[i] = 0;
+                    }
+                    else
+                    {
+                        EatClockNow[i] += 5;
+                        if(EatClockNow[i] == 800)
+                        {
+                            grass[i][site]->getAttack();
+                            EatClockNow[i] = 0;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if(ZombieManager[i]->getType() == ZombieType::PoleVaultingZombie)
+            {
+                PoleVaultingZombie* temp = static_cast<PoleVaultingZombie*>(ZombieManager[i]);
+                int RowVal = temp->getRow() - 1;
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 170) / 80;                
+                switch(temp->getStatus())
+                {
+                case 0:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 4)
+                            break;
+                    }
+                    if(grass[i][site] != nullptr)
+                        temp->jump();
+                    break;
+                case 2:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 4)
+                            break;
+                    }
+                    if(grass[RowVal][site] != nullptr)
+                    {
+                        temp->SwitchStatus();
+                        ZombieClockNow[i] = 0;
+                    }
+                    break;
+                case 3:
+                    for(int j = 0; j < PeaManager[RowVal].size(); ++j)
+                    {
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        {
+                            delete PeaManager[RowVal][j];
+                            PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
+                            j--;
+                            temp->getAttack();
+                        }
+                        if(temp->getStatus() == 4)
+                            break;
+                    }
+                    if(grass[RowVal][site] == nullptr)
+                    {
+                        temp->SwitchStatus();
+                        EatClockNow[i] = 0;
+                    }
+                    else
+                    {
+                        EatClockNow[i] += 5;
+                        if(EatClockNow[i] == 800)
+                        {
+                            grass[i][site]->getAttack();
+                            EatClockNow[i] = 0;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }          
+            }
+        }
+    }
+    for(int i = 0; i < 5; ++i)
+    {
+        if(RowTemp[i])
+        {
+            for(int j = 0; i < 9; j++)
+            {
+                if(grass[i][j]->getType() == PlantType::Peashooter)
+                {
+                    Peashooter* temp = static_cast<Peashooter*>(grass[i][j]);
+                    temp->StartEmitPea();
+                }
+            }
+        }
+        else
+        {
+            for(int j = 0; i < 9; j++)
+            {
+                if(grass[i][j]->getType() == PlantType::Peashooter)
+                {
+                    Peashooter* temp = static_cast<Peashooter*>(grass[i][j]);
+                    temp->StopEmitPea();
+                }
+            }
+        }
+    }
     
     //更新坐标
     if(lastZombie != 150)
