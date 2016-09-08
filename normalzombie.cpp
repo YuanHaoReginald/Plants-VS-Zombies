@@ -28,6 +28,14 @@ NormalZombie::NormalZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
     BodyMovie = nullptr;
 }
 
+NormalZombie::~NormalZombie()
+{
+    delete HeadLabel;
+    delete HeadMovie;
+    delete BodyLabel;
+    delete BodyMovie;
+}
+
 int NormalZombie::getType()
 {
     return static_cast<int>(m_status);
