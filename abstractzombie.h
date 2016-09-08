@@ -6,14 +6,14 @@
 #include <QMovie>
 #include "enumlist.h"
 
-class AbstractZombies : public QObject
+class AbstractZombie : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractZombies(QObject *parent = 0);
-    ~AbstractZombies();
+    explicit AbstractZombie(QObject *parent = 0);
+    ~AbstractZombie();
     
-    ZombiesType getType();
+    ZombieType getType();
     int getRow();
     int getWidth();
     int getHeight();
@@ -21,17 +21,19 @@ public:
     int getPoxY();
     virtual void getAttack();
     
+    int id;
+    
 signals:
-    void die(AbstractZombies*);
+    void die(AbstractZombie*);
     
 public slots:
     
 protected:
-    QLabel* ZombiesLabel;
-    QMovie* ZombiesMovie;
+    QLabel* ZombieLabel;
+    QMovie* ZombieMovie;
     int blood, speed;
     int Row, width, height, PosX, PosY;
-    ZombiesType m_Type;
+    ZombieType m_Type;
 };
 
 #endif // ABSTRACTZOMBIES_H

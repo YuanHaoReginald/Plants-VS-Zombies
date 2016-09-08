@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     wallnut.cpp \
     peashooter.cpp \
     pea.cpp \
-    abstractzombies.cpp
+    abstractzombie.cpp \
+    normalzombie.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -50,7 +51,8 @@ HEADERS  += mainwindow.h \
     wallnut.h \
     peashooter.h \
     pea.h \
-    abstractzombies.h
+    abstractzombie.h \
+    normalzombie.h
 
 FORMS    += mainwindow.ui
 
