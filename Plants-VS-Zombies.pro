@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     managermanager.cpp \
     wallnut.cpp \
     peashooter.cpp \
-    pea.cpp
+    pea.cpp \
+    abstractzombies.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     managermanager.h \
     wallnut.h \
     peashooter.h \
-    pea.h
+    pea.h \
+    abstractzombies.h
 
 FORMS    += mainwindow.ui
 
