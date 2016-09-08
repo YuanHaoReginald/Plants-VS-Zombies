@@ -18,6 +18,7 @@ public:
     static int posY[6];
     static QWidget* CurrentWidget;
     static int NumberOfSun;
+    static int ZombieLine[150];
 };
 
 extern void initGlobalManager();
