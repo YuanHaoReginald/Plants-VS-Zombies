@@ -12,7 +12,7 @@ public:
     explicit PoleVaultingZombie(int, int);
     ~PoleVaultingZombie();
     
-    enum class PoleVaultingZombieStatus {Pole, Jump, Normal, Eating};
+    enum class PoleVaultingZombieStatus {Pole, Jump, Normal, Eating, Die};
     
     void getAttack();
     void SwitchStatus();
@@ -21,7 +21,7 @@ public:
 signals:
     
 public slots:
-    int ZombieMove();
+    void ZombieMove();
     void jump();
     
 private slots:

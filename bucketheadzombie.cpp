@@ -2,8 +2,10 @@
 #include "globalmanager.h"
 #include <QTimer>
 
-BucketheadZombie::BucketheadZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
+BucketheadZombie::BucketheadZombie(int RowVal, int idVal)
 {
+    Row = RowVal;
+    id = idVal;
     m_Type = ZombieType::BucketheadZombie;
     blood = 65;
     speed = 150;
@@ -12,6 +14,7 @@ BucketheadZombie::BucketheadZombie(int RowVal, int isVal) : Row(RowVal), id(idVa
     PosX = 900;
     PosY = GlobalManager::posY[Row] - height;
     ZombieLabel = new QLabel(GlobalManager::CurrentWidget);
+    ZombieLabel->setMouseTracking(true);
     ZombieMovie = new QMovie(":/zombie/res/images/zombie/BucketheadZombie/BucketheadZombie.gif");
     ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
     ZombieLabel->setMovie(ZombieMovie);
@@ -36,7 +39,7 @@ BucketheadZombie::~BucketheadZombie()
     delete BodyMovie;
 }
 
-int BucketheadZombie::getType()
+int BucketheadZombie::getStatus()
 {
     return static_cast<int>(m_status);
 }
@@ -73,6 +76,7 @@ void BucketheadZombie::getAttack()
         ZombieMovie = nullptr;
         
         HeadLabel = new QLabel(GlobalManager::CurrentWidget);
+        HeadLabel->setMouseTracking(true);
         HeadMovie = new QMovie(":/zombie/res/images/zombie/Zombie/ZombieHead.gif");
         HeadMovie->setScaledSize(QSize(ForScale(150), ForScale(186)));
         HeadLabel->setMovie(HeadMovie);
@@ -80,7 +84,8 @@ void BucketheadZombie::getAttack()
         HeadLabel->move(ForScale(PosX), ForScale(PosY - 42));
         
         BodyLabel = new QLabel(GlobalManager::CurrentWidget);
-        BodyMovie = new QPixmap(":/zombie/res/images/zombie/Zombie/ZombieDie.gif");
+        BodyLabel->setMouseTracking(true);
+        BodyMovie = new QMovie(":/zombie/res/images/zombie/Zombie/ZombieDie.gif");
         BodyMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
         BodyLabel->setMovie(BodyMovie);
         BodyLabel->resize(ForScale(166), ForScale(144));
@@ -95,6 +100,7 @@ void BucketheadZombie::getAttack()
         
         QTimer::singleShot(560, this, SLOT(DeleteHead()));
         QTimer::singleShot(2000, this, SLOT(DeleteBody()));
+        m_status = BucketheadZombieStatus::Die;
     }
 }
 
@@ -140,7 +146,7 @@ void BucketheadZombie::SwitchStatus()
 
 void BucketheadZombie::ZombieMove()
 {
-    if(m_status = BucketheadZombieStatus::Normal || m_status == BucketheadZombieStatus::HeadNormal)
+    if(m_status == BucketheadZombieStatus::Normal || m_status == BucketheadZombieStatus::HeadNormal)
     {
         PosX--;
         ZombieLabel->move(ForScale(PosX), ForScale(PosY));

@@ -12,7 +12,7 @@ public:
     explicit BucketheadZombie(int, int);
     ~BucketheadZombie();
     
-    enum class BucketheadZombieStatus {HeadNormal, HeadEating, Normal, Eating};
+    enum class BucketheadZombieStatus {HeadNormal, HeadEating, Normal, Eating, Die};
     
     void getAttack();
     void SwitchStatus();
@@ -21,7 +21,7 @@ public:
 signals:
     
 public slots:
-    int ZombieMove();
+    void ZombieMove();
     
 private slots:
     void DeleteHead();

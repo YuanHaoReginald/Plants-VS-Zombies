@@ -19,8 +19,6 @@ signals:
     void die(Pea*);
     
 public slots:
-    void Pause();
-    void Restart();
     void PeaMove();
     
 private:

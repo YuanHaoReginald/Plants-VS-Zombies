@@ -10,6 +10,7 @@ Pea::Pea(int RowVal, int CulumnVal, QObject *parent) : QObject(parent)
     PeaPixmap = new QPixmap(":/plant/res/images/plant/pea.png");
     *PeaPixmap = PeaPixmap->scaled(ForScale(width), ForScale(height));
     PeaLabel = new QLabel(GlobalManager::CurrentWidget);
+    PeaLabel->setMouseTracking(true);
     PeaLabel->setPixmap(*PeaPixmap);
     PeaLabel->setGeometry(ForScale(xVal), ForScale(yVal), ForScale(width), ForScale(height));
     PeaLabel->show();
@@ -38,14 +39,4 @@ void Pea::PeaMove()
     PeaLabel->move(ForScale(xVal), ForScale(yVal));
     if(xVal >= 900)
         emit die(this);
-}
-
-void Pea::Pause()
-{
-    PeaRunTimer->stop();
-}
-
-void Pea::Restart()
-{
-    PeaRunTimer->start();
 }

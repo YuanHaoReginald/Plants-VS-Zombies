@@ -12,7 +12,7 @@ public:
     explicit NormalZombie(int, int);
     ~NormalZombie();
     
-    enum class NormalZombieStatus {Normal, Eating};
+    enum class NormalZombieStatus {Normal, Eating, Die};
     
     void getAttack();
     void SwitchStatus();
@@ -21,7 +21,7 @@ public:
 signals:
     
 public slots:
-    int ZombieMove();
+    void ZombieMove();
     
 private slots:
     void DeleteHead();

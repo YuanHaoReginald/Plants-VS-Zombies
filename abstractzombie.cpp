@@ -50,5 +50,5 @@ void AbstractZombie::getAttack()
 {
     blood--;
     if(blood == 0)
-        emit die(this);
+        emit die(this, id);
 }
