@@ -16,7 +16,6 @@ public:
     int getX();
     
 signals:
-    void die(Pea*);
     
 public slots:
     void PeaMove();

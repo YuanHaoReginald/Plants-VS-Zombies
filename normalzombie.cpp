@@ -8,7 +8,7 @@ NormalZombie::NormalZombie(int RowVal, int idVal)
     id = idVal;
     m_Type = ZombieType::NormalZombie;
     blood = 10;
-    speed = 150;
+    speed = 75;
     width = 166;
     height = 144;
     PosX = 900;

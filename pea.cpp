@@ -37,6 +37,4 @@ void Pea::PeaMove()
 {
     xVal++;
     PeaLabel->move(ForScale(xVal), ForScale(yVal));
-    if(xVal >= 900)
-        emit die(this);
 }

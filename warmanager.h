@@ -31,12 +31,14 @@ private slots:
 public slots:
     void RaisePlant(int, int, PlantType);
     void DeletePlant(AbstractPlant*);
-    void DeletePea(Pea*);
+    void DeleteZombie(AbstractZombie*, int);
     
 private:
     QTimer *WarClock;
     int firstZombie, lastZombie;
     int GenerateZombieClockNow, GenerateZombieClockLimit;
+    int ZombieClockNow[150] = { 0 };
+    int ZombieClockLimit[150] = { 0 };
 };
 
 #endif // WARMANAGER_H

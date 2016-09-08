@@ -8,7 +8,7 @@ PoleVaultingZombie::PoleVaultingZombie(int RowVal, int idVal)
     id = idVal;
     m_Type = ZombieType::PoleVaultingZombie;
     blood = 17;
-    speed = 100;
+    speed = 50;
     width = 348;
     height = 218;
     PosX = 900;
@@ -164,6 +164,6 @@ void PoleVaultingZombie::jump3()
     ZombieMovie->setScaledSize(QSize(ForScale(349), ForScale(218)));
     ZombieLabel->setMovie(ZombieMovie);
     ZombieMovie->start();
-    speed = 250;
+    speed = 100;
     m_status = PoleVaultingZombieStatus::Normal;
 }
