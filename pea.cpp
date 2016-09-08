@@ -14,18 +14,12 @@ Pea::Pea(int RowVal, int CulumnVal, QObject *parent) : QObject(parent)
     PeaLabel->setGeometry(ForScale(xVal), ForScale(yVal), ForScale(width), ForScale(height));
     PeaLabel->show();
     PeaLabel->raise();
-    
-    PeaRunTimer = new QTimer;
-    PeaRunTimer->setInterval(5);
-    connect(PeaRunTimer, SIGNAL(timeout()), this, SLOT(RunSlot()));
-    PeaRunTimer->start();
 }
 
 Pea::~Pea()
 {
     delete PeaLabel;
     delete PeaPixmap;
-    delete PeaRunTimer;
 }
 
 int Pea::getWidth()
@@ -38,7 +32,7 @@ int Pea::getX()
     return xVal;
 }
 
-void Pea::RunSlot()
+void Pea::PeaMove()
 {
     xVal++;
     PeaLabel->move(ForScale(xVal), ForScale(yVal));

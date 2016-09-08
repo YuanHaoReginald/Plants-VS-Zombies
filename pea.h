@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QLabel>
-#include <QTimer>
 #include <QPixmap>
 
 class Pea : public QObject
@@ -22,14 +21,11 @@ signals:
 public slots:
     void Pause();
     void Restart();
-    
-private slots:
-    void RunSlot();
+    void PeaMove();
     
 private:
     QLabel *PeaLabel;
     QPixmap *PeaPixmap;
-    QTimer *PeaRunTimer;
     
     int width, height, xVal, yVal;
 };
