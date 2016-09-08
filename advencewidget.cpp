@@ -66,7 +66,7 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     *ShovelPixmap = ShovelPixmap->scaled(ForScale(53), ForScale(57), Qt::KeepAspectRatio);
     ShovelLabel = new QLabel(this);
     ShovelLabel->setMouseTracking(true);
-    ShovelLabel->setGeometry(ForScale(459), 8, ForScale(53), ForScale(57));
+    ShovelLabel->setGeometry(ForScale(459), ForScale(8), ForScale(53), ForScale(57));
     ShovelLabel->setPixmap(*ShovelPixmap);
     ShovelLabel->hide();
 }
@@ -252,6 +252,12 @@ void AdvenceWidget::SwitchMouseType(PlantType PLVal, int xVal, int yVal)
         MouseLabel->show();
         MouseLabel->raise();
         break;
+    case PlantType::Shovel:
+        MousePixmap = new QPixmap;
+        MouseLabel->hide();
+        ShovelLabel->move(xVal - ForScale(53 / 2), yVal - ForScale(57 / 2));
+        ShovelLabel->raise();
+        break;        
     case PlantType::NoPlant:
         MousePixmap = new QPixmap;
         MouseLabel->hide();
@@ -282,11 +288,16 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
             MouseLabel->show();
             MouseLabel->raise();
             break;
+        case PlantType::Shovel:
+            ShovelLabel->move(event->x() - ForScale(53 / 2), event->y() - ForScale(57 / 2));
+            ShovelLabel->show();
+            ShovelLabel->raise();
+            break;
         default:
             break;
         }
         
-        if(MouseType != PlantType::NoPlant)
+        if(MouseType != PlantType::NoPlant && MouseType != PlantType::Shovel)
         {
             if(event->x() >= ForScale(GlobalManager::posX[0]) 
                     && event->x() < ForScale(GlobalManager::posX[9])
@@ -366,6 +377,9 @@ void AdvenceWidget::mousePressEvent(QMouseEvent *event)
                     && ManagerManager::GlobalCardManager->CardVec[2]->getCardStatus() == CardStatus::Normal)
                 SwitchMouseType(ManagerManager::GlobalCardManager->CardVec[2]->getType(),
                         event->x(), event->y());
+            else if(event->x() >= ForScale(459) && event->x() < ForScale(512)
+                    && event->y() >= ForScale(8) && event->y() <= ForScale(65))
+                SwitchMouseType(PlantType::Shovel, event->x(), event->y());
         }
         else
         {
@@ -376,13 +390,21 @@ void AdvenceWidget::mousePressEvent(QMouseEvent *event)
             {
                 int CulumnTemp = (event->x() - ForScale(GlobalManager::posX[0])) / ForScale(80) + 1;
                 int RowTemp = (event->y() - ForScale(GlobalManager::posY[0])) / ForScale(94) + 1;
-                if(ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
+                if(MouseType != PlantType::Shovel 
+                        && ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
                 {
                     ManagerManager::GlobalWarManager->RaisePlant(RowTemp, CulumnTemp, MouseType);
                     emit HasPlanted(MouseType);
                 }
+                else if(MouseType == PlantType::Shovel
+                        && ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] != nullptr)
+                {
+                    delete ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1];
+                    ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] = nullptr;
+                }
             }
             VirtualPlant->hide();
+            ShovelLabel->move(ForScale(459), ForScale(8));
             SwitchMouseType(PlantType::NoPlant, event->x(), event->y());
         }
     }

@@ -7,7 +7,8 @@ AbstractPlant::AbstractPlant(QObject *parent) : QObject(parent)
 
 AbstractPlant::~AbstractPlant()
 {
-    
+    delete PlantLabel;
+    delete PlantMovie;
 }
 
 PlantType AbstractPlant::getType()
