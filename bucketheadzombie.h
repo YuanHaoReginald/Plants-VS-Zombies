@@ -1,18 +1,18 @@
-#ifndef NORMALZOMBIES_H
-#define NORMALZOMBIES_H
+#ifndef BUCKETHEADZOMBIE_H
+#define BUCKETHEADZOMBIE_H
 
-#include "abstractzombie.h"
 #include <QLabel>
 #include <QMovie>
+#include "abstractzombie.h"
 
-class NormalZombie : public AbstractZombie
+class BucketheadZombie : public AbstractZombie
 {
     Q_OBJECT
 public:
-    explicit NormalZombie(int, int);
-    ~NormalZombie();
+    explicit BucketheadZombie(int, int);
+    ~BucketheadZombie();
     
-    enum class NormalZombieStatus {Normal, Eating};
+    enum class BucketheadZombieStatus {HeadNormal, HeadEating, Normal, Eating};
     
     void getAttack();
     void SwitchStatus();
@@ -32,7 +32,7 @@ private:
     QMovie* HeadMovie;
     QLabel* BodyLabel;
     QMovie* BodyMovie;
-    NormalZombieStatus m_status;
+    BucketheadZombieStatus m_status;
 };
 
-#endif // NORMALZOMBIES_H
+#endif // BUCKETHEADZOMBIE_H

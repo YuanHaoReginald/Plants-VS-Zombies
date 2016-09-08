@@ -1,18 +1,18 @@
-#include "normalzombie.h"
+#include "bucketheadzombie.h"
 #include "globalmanager.h"
 #include <QTimer>
 
-NormalZombie::NormalZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
+BucketheadZombie::BucketheadZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
 {
-    m_Type = ZombieType::NormalZombie;
-    blood = 10;
+    m_Type = ZombieType::BucketheadZombie;
+    blood = 65;
     speed = 150;
     width = 166;
     height = 144;
     PosX = 900;
     PosY = GlobalManager::posY[Row] - height;
     ZombieLabel = new QLabel(GlobalManager::CurrentWidget);
-    ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/Zombie.gif");
+    ZombieMovie = new QMovie(":/zombie/res/images/zombie/BucketheadZombie/BucketheadZombie.gif");
     ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
     ZombieLabel->setMovie(ZombieMovie);
     ZombieLabel->resize(ForScale(166), ForScale(144));
@@ -20,7 +20,7 @@ NormalZombie::NormalZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
     ZombieMovie->start();
     ZombieLabel->show();
     ZombieLabel->raise();
-    m_status = NormalZombieStatus::Normal;
+    m_status = BucketheadZombieStatus::HeadNormal;
     
     HeadLabel = nullptr;
     HeadMovie = nullptr;
@@ -28,7 +28,7 @@ NormalZombie::NormalZombie(int RowVal, int isVal) : Row(RowVal), id(idVal)
     BodyMovie = nullptr;
 }
 
-NormalZombie::~NormalZombie()
+BucketheadZombie::~BucketheadZombie()
 {
     delete HeadLabel;
     delete HeadMovie;
@@ -36,15 +36,36 @@ NormalZombie::~NormalZombie()
     delete BodyMovie;
 }
 
-int NormalZombie::getStatus()
+int BucketheadZombie::getType()
 {
     return static_cast<int>(m_status);
 }
 
-void NormalZombie::getAttack()
+void BucketheadZombie::getAttack()
 {
     blood--;
-    if(blood == 0)
+    if(blood == 10)
+    {
+        if(m_status == BucketheadZombieStatus::HeadNormal)
+        {
+            delete ZombieMovie;
+            ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/Zombie.gif");
+            ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
+            ZombieLabel->setMovie(ZombieMovie);
+            ZombieMovie->start();
+            m_status = BucketheadZombieStatus::Normal;            
+        }
+        else
+        {
+            delete ZombieMovie;
+            ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/ZombieAttack.gif");
+            ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
+            ZombieLabel->setMovie(ZombieMovie);
+            ZombieMovie->start();
+            m_status = BucketheadZombieStatus::Eating;
+        }
+    }
+    else if(blood == 0)
     {
         delete ZombieLabel;
         ZombieLabel = nullptr;
@@ -77,38 +98,56 @@ void NormalZombie::getAttack()
     }
 }
 
-void NormalZombie::SwitchStatus()
+void BucketheadZombie::SwitchStatus()
 {    
-    if(m_status == NormalZombieStatus::Normal)
+    if(m_status == BucketheadZombieStatus::HeadNormal)
+    {
+        delete ZombieMovie;
+        ZombieMovie = new QMovie(":/zombie/res/images/zombie/BucketheadZombie/BucketheadZombieAttack.gif");
+        ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
+        ZombieLabel->setMovie(ZombieMovie);
+        ZombieMovie->start();
+        m_status = BucketheadZombieStatus::HeadEating;
+    }
+    else if(m_status == BucketheadZombieStatus::HeadEating)
+    {
+        delete ZombieMovie;
+        ZombieMovie = new QMovie(":/zombie/res/images/zombie/BucketheadZombie/BucketheadZombie.gif");
+        ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
+        ZombieLabel->setMovie(ZombieMovie);
+        ZombieMovie->start();
+        m_status = BucketheadZombieStatus::HeadNormal;
+    }
+    else if(m_status == BucketheadZombieStatus::Normal)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/ZombieAttack.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = NormalZombieStatus::Eating;
+        m_status = BucketheadZombieStatus::Eating;
     }
-    else if(m_status == NormalZombieStatus::Eating)
+    else if(m_status == BucketheadZombieStatus::Eating)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/Zombie.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = NormalZombieStatus::Normal;
+        m_status = BucketheadZombieStatus::Normal;
     }
 }
 
-void NormalZombie::ZombieMove()
+void BucketheadZombie::ZombieMove()
 {
-    if(m_status = NormalZombieStatus::Normal)
+    if(m_status = BucketheadZombieStatus::Normal || m_status == BucketheadZombieStatus::HeadNormal)
     {
         PosX--;
         ZombieLabel->move(ForScale(PosX), ForScale(PosY));
     }
 }
 
-void NormalZombie::DeleteHead()
+void BucketheadZombie::DeleteHead()
 {
     delete HeadLabel;
     delete HeadMovie;
@@ -116,7 +155,7 @@ void NormalZombie::DeleteHead()
     HeadMovie = nullptr;
 }
 
-void NormalZombie::DeleteBody()
+void BucketheadZombie::DeleteBody()
 {
     delete BodyLabel;
     delete BodyMovie;

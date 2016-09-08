@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     peashooter.cpp \
     pea.cpp \
     abstractzombie.cpp \
-    normalzombie.cpp
+    normalzombie.cpp \
+    bucketheadzombie.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -52,7 +53,8 @@ HEADERS  += mainwindow.h \
     peashooter.h \
     pea.h \
     abstractzombie.h \
-    normalzombie.h
+    normalzombie.h \
+    bucketheadzombie.h
 
 FORMS    += mainwindow.ui
 
