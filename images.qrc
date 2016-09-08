@@ -50,4 +50,19 @@
         <file>res/images/plant/WallNut/0.gif</file>
         <file>res/images/plant/pea.png</file>
     </qresource>
+    <qresource prefix="/zombie">
+        <file>res/images/zombie/Zombie/Zombie.gif</file>
+        <file>res/images/zombie/Zombie/ZombieAttack.gif</file>
+        <file>res/images/zombie/Zombie/ZombieDie.gif</file>
+        <file>res/images/zombie/Zombie/ZombieHead.gif</file>
+        <file>res/images/zombie/BucketheadZombie/BucketheadZombie.gif</file>
+        <file>res/images/zombie/BucketheadZombie/BucketheadZombieAttack.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombie.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieAttack.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieDie.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieHead.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump2.gif</file>
+        <file>res/images/zombie/PoleVaultingZombie/PoleVaultingZombieWalk.gif</file>
+    </qresource>
 </RCC>
