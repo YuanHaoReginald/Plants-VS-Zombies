@@ -1,9 +1,13 @@
 #include "enumlist.h"
 #include "winwidget.h"
 #include "globalmanager.h"
+#include "qapplication.h"
 
 WinWidget::WinWidget(QWidget* parent) : AbstractWidget(parent)
 {
+    setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setMouseTracking(true);
     WinLabel = new QLabel(this);
     WinLabel->setMouseTracking(true);
     WinPixmap = new QPixmap(":/surface/res/images/surface/Win.png");
@@ -12,7 +16,7 @@ WinWidget::WinWidget(QWidget* parent) : AbstractWidget(parent)
     WinLabel->resize(ForScale(GlobalManager::StanradWindowWidth),
                      ForScale(GlobalManager::StanradWindowWHeight));
     WinLabel->move(0, 0);
-    WinLabel->setPixmap(WinPixmap);
+    WinLabel->setPixmap(*WinPixmap);
     WinLabel->show();
 }
 
@@ -22,7 +26,7 @@ WinWidget::~WinWidget()
     delete WinPixmap;
 }
 
-void WinWidget::mousePressEvent()
+void WinWidget::mousePressEvent(QMouseEvent *event)
 {
-    emit StatusChanged(GameStatus::Welcome);
+    qApp->quit();;
 }

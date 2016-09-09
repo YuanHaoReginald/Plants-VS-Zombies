@@ -4,6 +4,7 @@
 #include "abstractwidget.h"
 #include <QLabel>
 #include <QPixmap>
+#include <QMouseEvent>
 
 class WinWidget : public AbstractWidget
 {
@@ -18,7 +19,7 @@ private:
     QPixmap* WinPixmap;
     
 protected:
-    void mousePressEvent();
+    void mousePressEvent(QMouseEvent* event);
 };
 
 #endif // WINWIDGET_H

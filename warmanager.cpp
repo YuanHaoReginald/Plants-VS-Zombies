@@ -30,6 +30,10 @@ WarManager::WarManager(QObject *parent) : QObject(parent)
     lastZombie = 0;
     GenerateZombieClockNow = 0;
     GenerateZombieClockLimit = 5000;
+    for(int i = 0; i < 150; ++i)
+    {
+        ZombieManager[i] = nullptr;
+    }
     
     WarClock->start();
 }
@@ -43,7 +47,6 @@ WarManager::~WarManager()
             delete grass[i][j];
         }
     }
-    AbstractZombie* ZombieManager[150];
     delete WarClock;
     for(int i = 0; i < 5; ++i)
     {
@@ -108,7 +111,9 @@ void WarManager::ClockUpdate()
 {
     if(firstZombie == 150)
     {
+        WarClock->stop();
         emit EndGame(GameStatus::Win);
+        return;
     }
     //检查部分
     bool RowTemp[5] = { false, false, false, false, false };
@@ -116,6 +121,12 @@ void WarManager::ClockUpdate()
     {
         if(ZombieManager[i] != nullptr)
         {
+            if(ZombieManager[i]->getPosX() + ZombieManager[i]->getWidth() <= 0)
+            {
+                WarClock->stop();
+                emit EndGame(GameStatus::Fail);
+                return;
+            }
             RowTemp[ZombieManager[i]->getRow() - 1] = true;
             if(ZombieManager[i]->getType() == ZombieType::NormalZombie)
             {

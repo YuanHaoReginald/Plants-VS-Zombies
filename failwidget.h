@@ -3,6 +3,7 @@
 
 #include "abstractwidget.h"
 #include <QLabel>
+#include <QMouseEvent>
 #include <QPixmap>
 
 class FailWidget : public AbstractWidget
@@ -18,7 +19,7 @@ private:
     QPixmap* FailPixmap;
     
 protected:
-    void mousePressEvent();
+    void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // FAILWIDGET_H
