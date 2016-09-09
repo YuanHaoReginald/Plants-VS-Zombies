@@ -35,8 +35,8 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     CurrentMainTimerStatus = MainTimerStatus::Delay1;
     MainTimer = new QTimer;
     connect(MainTimer, SIGNAL(timeout()), this, SLOT(SlotOfMainTimer()));
-    //QTimer::singleShot(1500, this, SLOT(SlotOfMainTimer()));
-    QTimer::singleShot(15, this, SLOT(SlotOfMainTimer()));    
+    QTimer::singleShot(1500, this, SLOT(SlotOfMainTimer()));
+    //QTimer::singleShot(15, this, SLOT(SlotOfMainTimer()));    
     
     MenuPixmap = new QPixmap(":/surface/res/images/surface/MenuButtonNormal.png");
     *MenuPixmap = MenuPixmap->scaled(ForScale(113), ForScale(35), Qt::KeepAspectRatio);
@@ -135,8 +135,8 @@ void AdvenceWidget::SlotOfMainTimer()
         {
             MainTimer->stop();
             CurrentMainTimerStatus = MainTimerStatus::Delay2;
-            //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));
-            QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));            
+            QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));
+            //QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));            
         }
         break;
     case MainTimerStatus::Delay2:
@@ -171,24 +171,24 @@ void AdvenceWidget::SlotOfMainTimer()
         ReadyLabel->setGeometry(ForScale(300), ForScale(233), ForScale(300), ForScale(133));
         ReadyLabel->setPixmap(*ReadyPixmap);
         ReadyLabel->show();
-        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
-        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
+        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::StartReady;
         break;
     case MainTimerStatus::StartReady:
         ReadyPixmap->load(":/surface/res/images/surface/StartReady.png");
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel->setPixmap(*ReadyPixmap);
-        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
-        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
+        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::StartPlant;
         break;
     case MainTimerStatus::StartPlant:
         ReadyPixmap->load(":/surface/res/images/surface/StartPlant.png");
         *ReadyPixmap = ReadyPixmap->scaled(ForScale(300), ForScale(133), Qt::KeepAspectRatio);
         ReadyLabel->setPixmap(*ReadyPixmap);
-        //QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
-        QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
+        QTimer::singleShot(1000, this, SLOT(SlotOfMainTimer()));   
+        //QTimer::singleShot(10, this, SLOT(SlotOfMainTimer()));           
         CurrentMainTimerStatus = MainTimerStatus::RealGame;
         break;
     case MainTimerStatus::RealGame:
