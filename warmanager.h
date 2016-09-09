@@ -22,6 +22,7 @@ public:
     
 signals:
     void CostSun(int);
+    void EndGame(GameStatus);
    
 private slots:
     void GeneratePea(int, int);

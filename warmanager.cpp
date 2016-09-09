@@ -43,6 +43,17 @@ WarManager::~WarManager()
             delete grass[i][j];
         }
     }
+    AbstractZombie* ZombieManager[150];
+    delete WarClock;
+    for(int i = 0; i < 5; ++i)
+    {
+        for(int j = 0; j < PeaManager[i].size(); j++)
+            delete PeaManager[i][j];
+    }
+    for(int i = 0; i < 150; ++i)
+    {
+        delete ZombieManager[i];
+    }
 }
 
 void WarManager::GeneratePea(int RowVal, int CulumnVal)
@@ -97,7 +108,7 @@ void WarManager::ClockUpdate()
 {
     if(firstZombie == 150)
     {
-        //胜利结算
+        emit EndGame(GameStatus::Win);
     }
     //检查部分
     bool RowTemp[5] = { false, false, false, false, false };

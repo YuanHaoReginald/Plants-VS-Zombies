@@ -210,6 +210,8 @@ void AdvenceWidget::SlotOfMainTimer()
                 ManagerManager::GlobalSunManager, SLOT(MinusSunNumber(int)));
         connect(this, SIGNAL(HasPlanted(PlantType)),
                 ManagerManager::GlobalCardManager, SLOT(FreezeSomeone(PlantType)));
+        connect(ManagerManager::GlobalWarManager, SIGNAL(EndGame(GameStatus)),
+                this, SIGNAL(StatusChanged(GameStatus)));
         CurrentMainTimerStatus = MainTimerStatus::HasStarted;        
         break;
     default:

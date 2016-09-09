@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     abstractzombie.cpp \
     normalzombie.cpp \
     bucketheadzombie.cpp \
-    polevaultingzombie.cpp
+    polevaultingzombie.cpp \
+    winwidget.cpp \
+    failwidget.cpp
 
 HEADERS  += mainwindow.h \
     globalmanager.h \
@@ -56,7 +58,9 @@ HEADERS  += mainwindow.h \
     abstractzombie.h \
     normalzombie.h \
     bucketheadzombie.h \
-    polevaultingzombie.h
+    polevaultingzombie.h \
+    winwidget.h \
+    failwidget.h
 
 FORMS    += mainwindow.ui
 

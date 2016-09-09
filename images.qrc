@@ -32,6 +32,8 @@
         <file>res/images/surface/Approching.png</file>
         <file>res/images/surface/CardSlot.png</file>
         <file>res/images/surface/Sun.gif</file>
+        <file>res/images/surface/Fail.png</file>
+        <file>res/images/surface/Win.png</file>
     </qresource>
     <qresource prefix="/card">
         <file>res/images/card/DisableCard.png</file>
