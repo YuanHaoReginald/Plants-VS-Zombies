@@ -35,6 +35,6 @@ int Pea::getX()
 
 void Pea::PeaMove()
 {
-    xVal++;
+    xVal += 2;
     PeaLabel->move(ForScale(xVal), ForScale(yVal));
 }

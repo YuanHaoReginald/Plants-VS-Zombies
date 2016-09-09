@@ -23,7 +23,7 @@ WarManager::WarManager(QObject *parent) : QObject(parent)
         }
     }
     WarClock = new QTimer;
-    WarClock->setInterval(5);
+    WarClock->setInterval(10);
     connect(WarClock, SIGNAL(timeout()), this, SLOT(ClockUpdate()));
     
     firstZombie = 0;
@@ -179,8 +179,8 @@ void WarManager::ClockUpdate()
                         }
                         else
                         {
-                            EatClockNow[i] += 5;
-                            if(EatClockNow[i] == 800)
+                            EatClockNow[i] += 10;
+                            if(EatClockNow[i] == 400)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -242,8 +242,8 @@ void WarManager::ClockUpdate()
                         }
                         else
                         {
-                            EatClockNow[i] += 5;
-                            if(EatClockNow[i] == 800)
+                            EatClockNow[i] += 10;
+                            if(EatClockNow[i] == 400)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -294,8 +294,8 @@ void WarManager::ClockUpdate()
                         }
                         else
                         {
-                            EatClockNow[i] += 5;
-                            if(EatClockNow[i] == 800)
+                            EatClockNow[i] += 10;
+                            if(EatClockNow[i] == 400)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -379,8 +379,8 @@ void WarManager::ClockUpdate()
                         }
                         else
                         {
-                            EatClockNow[i] += 5;
-                            if(EatClockNow[i] == 800)
+                            EatClockNow[i] += 10;
+                            if(EatClockNow[i] == 400)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -426,7 +426,7 @@ void WarManager::ClockUpdate()
     {
         if(lastZombie % 10 != 0 || (lastZombie % 10 == 0 && lastZombie == firstZombie))
         {
-            GenerateZombieClockNow += 5;
+            GenerateZombieClockNow += 10;
             if(GenerateZombieClockNow == GenerateZombieClockLimit)
             {
                 GenerateZombie();
@@ -455,7 +455,7 @@ void WarManager::ClockUpdate()
                 NormalZombie* temp = static_cast<NormalZombie*>(ZombieManager[i]);
                 if(temp->getStatus() == 0)
                 {
-                    ZombieClockNow[i] += 5;
+                    ZombieClockNow[i] += 10;
                     if(ZombieClockNow[i] == ZombieClockLimit[i])
                     {
                         ZombieClockNow[i] = 0;
@@ -468,7 +468,7 @@ void WarManager::ClockUpdate()
                 PoleVaultingZombie* temp = static_cast<PoleVaultingZombie*>(ZombieManager[i]);
                 if(temp->getStatus() == 0 || temp->getStatus() == 2)
                 {
-                    ZombieClockNow[i] += 5;
+                    ZombieClockNow[i] += 10;
                     if(ZombieClockNow[i] == ZombieClockLimit[i])
                     {
                         ZombieClockNow[i] = 0;
@@ -481,7 +481,7 @@ void WarManager::ClockUpdate()
                 BucketheadZombie* temp = static_cast<BucketheadZombie*>(ZombieManager[i]);
                 if(temp->getStatus() == 0 || temp->getStatus() == 2)
                 {
-                    ZombieClockNow[i] += 5;
+                    ZombieClockNow[i] += 10;
                     if(ZombieClockNow[i] == ZombieClockLimit[i])
                     {
                         ZombieClockNow[i] = 0;
