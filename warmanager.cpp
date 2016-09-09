@@ -101,7 +101,6 @@ void WarManager::GenerateZombie()
         ZombieManager[lastZombie - 1] = new PoleVaultingZombie(templine, lastZombie - 1);
     connect(ZombieManager[lastZombie - 1], SIGNAL(die(AbstractZombie*, int)),
             this, SLOT(DeleteZombie(AbstractZombie*, int)));
-    qDebug() << lastZombie - 1 << "     " << templine - 1;
     ZombieClockLimit[lastZombie - 1] = ZombieManager[lastZombie - 1]->getSpeed();
     ZombieClockNow[lastZombie - 1] = 0;
     ManagerManager::GlobalSunManager->UpAllSun();
@@ -117,6 +116,7 @@ void WarManager::ClockUpdate()
     }
     //检查部分
     bool RowTemp[5] = { false, false, false, false, false };
+    int RowSite[5] = { 0 };
     for(int i = firstZombie; i < lastZombie; i++)
     {
         if(ZombieManager[i] != nullptr)
@@ -132,7 +132,10 @@ void WarManager::ClockUpdate()
             {
                 NormalZombie* temp = static_cast<NormalZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() + 80 - GlobalManager::posX[0]) / 80;                
+                int site = (temp->getPosX() + 80 - GlobalManager::posX[0]) / 80;
+                if(site <= 8)
+                    RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
+                                site : RowSite[temp->getRow() - 1];
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -195,7 +198,10 @@ void WarManager::ClockUpdate()
             {
                 BucketheadZombie* temp = static_cast<BucketheadZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 80) / 80;                
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 80) / 80;        
+                if(site <= 8)
+                    RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
+                                site : RowSite[temp->getRow() - 1];
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -311,7 +317,10 @@ void WarManager::ClockUpdate()
             {
                 PoleVaultingZombie* temp = static_cast<PoleVaultingZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 200) / 80;                
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 200) / 80;  
+                if(site <= 8)
+                    RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
+                                site : RowSite[temp->getRow() - 1];
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -399,7 +408,7 @@ void WarManager::ClockUpdate()
     {
         if(RowTemp[i])
         {
-            for(int j = 0; j < 9; j++)
+            for(int j = 0; j <= RowSite[i]; j++)
             {
                 if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {
@@ -410,7 +419,7 @@ void WarManager::ClockUpdate()
         }
         else
         {
-            for(int j = 0; j < 9; j++)
+            for(int j = 0; j <= RowSite[i]; j++)
             {
                 if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {

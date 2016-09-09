@@ -525,6 +525,18 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                     if(InArea(BackgroundArea::MenuMusicArea, m_QMouseEvent->x(), m_QMouseEvent->y()))
                     {
                         GlobalManager::MusicOn = !(GlobalManager::MusicOn);
+                        if(GlobalManager::MusicOn)
+                        {
+                            WelcomeMedia = new QMediaPlayer();
+                            WelcomeMedia->setMedia(QUrl("qrc:/background/res/audio/Faster.mp3"));
+                            WelcomeMedia->setVolume(30);
+                            WelcomeMedia->play();
+                        }
+                        else
+                        {
+                            delete WelcomeMedia;
+                            WelcomeMedia = nullptr;
+                        }
                         SwitchMenuStatusFromHighlight(false);
                         CurrentPointArea = BackgroundArea::NullArea;    
                         setCursor(Qt::PointingHandCursor);

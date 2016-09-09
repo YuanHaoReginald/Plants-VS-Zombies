@@ -17,7 +17,7 @@ int GlobalManager::posY[6] = {89, 183, 277, 371, 465, 559};
 QWidget* GlobalManager::CurrentWidget = nullptr;
 //int GlobalManager::NumberOfSun = 50;
 int GlobalManager::NumberOfSun = 100;
-int GlobalManager::ZombieLine[150] = {3, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+int GlobalManager::ZombieLine[150] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                       1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 
                                       1, 1, 2, 1, 1, 1, 1, 1, 2, 1,
                                       1, 1, 2, 1, 2, 1, 2, 3, 1, 1, 
