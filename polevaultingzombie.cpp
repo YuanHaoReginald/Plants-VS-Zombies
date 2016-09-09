@@ -60,7 +60,7 @@ void PoleVaultingZombie::getAttack()
         HeadMovie->setScaledSize(QSize(ForScale(348), ForScale(218)));
         HeadLabel->setMovie(HeadMovie);
         HeadLabel->resize(ForScale(348), ForScale(218));
-        HeadLabel->move(ForScale(PosX), ForScale(PosY));
+        HeadLabel->move(ForScale(PosX - 27), ForScale(PosY));
         
         BodyLabel = new QLabel(GlobalManager::CurrentWidget);
         BodyLabel->setMouseTracking(true);
@@ -148,7 +148,7 @@ void PoleVaultingZombie::DeleteBody()
 void PoleVaultingZombie::jump2()
 {
     delete ZombieMovie;
-    ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump.gif");
+    ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump2.gif");
     ZombieMovie->setScaledSize(QSize(ForScale(348), ForScale(218)));
     ZombieLabel->setMovie(ZombieMovie);
     ZombieMovie->start();

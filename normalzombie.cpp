@@ -60,7 +60,7 @@ void NormalZombie::getAttack()
         HeadMovie->setScaledSize(QSize(ForScale(150), ForScale(186)));
         HeadLabel->setMovie(HeadMovie);
         HeadLabel->resize(ForScale(150), ForScale(186));
-        HeadLabel->move(ForScale(PosX), ForScale(PosY - 42));
+        HeadLabel->move(ForScale(PosX + 80), ForScale(PosY - 42));
         
         BodyLabel = new QLabel(GlobalManager::CurrentWidget);
         BodyLabel->setMouseTracking(true);

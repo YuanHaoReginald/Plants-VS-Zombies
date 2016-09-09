@@ -103,8 +103,6 @@ void Sun::FlowerFall()
     SunLabel->setGeometry(ForScale(posX - 0.07 * TimeUsed),ForScale(1.0 * 21 * TimeUsed * TimeUsed / 125000
                                                                     - 1.0 * 3 * TimeUsed / 125 + posY) 
                           , ForScale(70), ForScale(70));
-    qDebug() << posX - 0.07 * TimeUsed << "    "<< 1.0 * 21 * TimeUsed * TimeUsed / 125000
-                - 1.0 * 3 * TimeUsed / 125 + posY << "\n";
     if(TimeUsed == 500)
     {
         FlowerTimer->stop();
@@ -121,6 +119,7 @@ void Sun::DelayDie()
 
 void Sun::GetSun()
 {
+    disconnect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));    
     if(FallTimer->isActive())
         FallTimer->stop();
     else if(DelayTimer->isActive())

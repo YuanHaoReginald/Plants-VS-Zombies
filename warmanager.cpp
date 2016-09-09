@@ -11,6 +11,7 @@
 #include "polevaultingzombie.h"
 #include <QtGlobal>
 #include <QTime>
+#include <QDebug>
 
 WarManager::WarManager(QObject *parent) : QObject(parent)
 {
@@ -79,13 +80,14 @@ void WarManager::GenerateZombie()
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
     int templine = qrand() % 5 + 1;
     if(GlobalManager::ZombieLine[lastZombie - 1] == 1)
-        ZombieManager[lastZombie - 1] = new NormalZombie(templine, lastZombie);
+        ZombieManager[lastZombie - 1] = new NormalZombie(templine, lastZombie - 1);
     else if(GlobalManager::ZombieLine[lastZombie - 1] == 2)
-        ZombieManager[lastZombie - 1] = new BucketheadZombie(templine, lastZombie);
+        ZombieManager[lastZombie - 1] = new BucketheadZombie(templine, lastZombie - 1);
     else if(GlobalManager::ZombieLine[lastZombie - 1] == 3)
-        ZombieManager[lastZombie - 1] = new PoleVaultingZombie(templine, lastZombie);
+        ZombieManager[lastZombie - 1] = new PoleVaultingZombie(templine, lastZombie - 1);
     connect(ZombieManager[lastZombie - 1], SIGNAL(die(AbstractZombie*, int)),
             this, SLOT(DeleteZombie(AbstractZombie*, int)));
+    qDebug() << lastZombie - 1 << "     " << templine - 1;
     ZombieClockLimit[lastZombie - 1] = ZombieManager[lastZombie - 1]->getSpeed();
     ZombieClockNow[lastZombie - 1] = 0;
     ManagerManager::GlobalSunManager->UpAllSun();
@@ -108,7 +110,7 @@ void WarManager::ClockUpdate()
             {
                 NormalZombie* temp = static_cast<NormalZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() + 40 - GlobalManager::posX[0]) / 80;                
+                int site = (temp->getPosX() + 80 - GlobalManager::posX[0]) / 80;                
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -125,7 +127,8 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 2)
                             break;
                     }
-                    if(grass[RowVal][site] != nullptr)
+                    if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
+                            && temp->getPosX() + 80 > GlobalManager::posX[site] + 40)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -145,18 +148,21 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 2)
                             break;
                     }
-                    if(grass[RowVal][site] == nullptr)
+                    if(site >= 0 && site <= 8)
                     {
-                        temp->SwitchStatus();
-                        EatClockNow[i] = 0;
-                    }
-                    else
-                    {
-                        EatClockNow[i] += 5;
-                        if(EatClockNow[i] == 800)
+                        if(grass[RowVal][site] == nullptr)
                         {
-                            grass[i][site]->getAttack();
+                            temp->SwitchStatus();
                             EatClockNow[i] = 0;
+                        }
+                        else
+                        {
+                            EatClockNow[i] += 5;
+                            if(EatClockNow[i] == 800)
+                            {
+                                grass[RowVal][site]->getAttack();
+                                EatClockNow[i] = 0;
+                            }
                         }
                     }
                 default:
@@ -167,7 +173,7 @@ void WarManager::ClockUpdate()
             {
                 BucketheadZombie* temp = static_cast<BucketheadZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 40) / 80;                
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 80) / 80;                
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -184,7 +190,8 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 2)
                             break;
                     }
-                    if(grass[RowVal][site] != nullptr)
+                    if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
+                            && temp->getPosX() + 80 > GlobalManager::posX[site] + 40)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -204,18 +211,21 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 3)
                             break;
                     }
-                    if(grass[RowVal][site] == nullptr)
+                    if(site >= 0 && site <= 8)
                     {
-                        temp->SwitchStatus();
-                        EatClockNow[i] = 0;
-                    }
-                    else
-                    {
-                        EatClockNow[i] += 5;
-                        if(EatClockNow[i] == 800)
+                        if(grass[RowVal][site] == nullptr)
                         {
-                            grass[i][site]->getAttack();
+                            temp->SwitchStatus();
                             EatClockNow[i] = 0;
+                        }
+                        else
+                        {
+                            EatClockNow[i] += 5;
+                            if(EatClockNow[i] == 800)
+                            {
+                                grass[RowVal][site]->getAttack();
+                                EatClockNow[i] = 0;
+                            }
                         }
                     }
                     break;
@@ -253,18 +263,21 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 4)
                             break;
                     }
-                    if(grass[RowVal][site] == nullptr)
+                    if(site >= 0 && site <= 8)
                     {
-                        temp->SwitchStatus();
-                        EatClockNow[i] = 0;
-                    }
-                    else
-                    {
-                        EatClockNow[i] += 5;
-                        if(EatClockNow[i] == 800)
+                        if(grass[RowVal][site] == nullptr)
                         {
-                            grass[i][site]->getAttack();
+                            temp->SwitchStatus();
                             EatClockNow[i] = 0;
+                        }
+                        else
+                        {
+                            EatClockNow[i] += 5;
+                            if(EatClockNow[i] == 800)
+                            {
+                                grass[RowVal][site]->getAttack();
+                                EatClockNow[i] = 0;
+                            }
                         }
                     }
                     break;
@@ -276,7 +289,7 @@ void WarManager::ClockUpdate()
             {
                 PoleVaultingZombie* temp = static_cast<PoleVaultingZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 170) / 80;                
+                int site = (temp->getPosX() - GlobalManager::posX[0] + 200) / 80;                
                 switch(temp->getStatus())
                 {
                 case 0:
@@ -293,14 +306,18 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 4)
                             break;
                     }
-                    if(grass[i][site] != nullptr)
+                    if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
+                            && temp->getPosX() + 220 > GlobalManager::posX[site] + 20)
+                    {
                         temp->jump();
+                        ZombieClockLimit[i] = 100;
+                    }
                     break;
                 case 2:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -310,7 +327,8 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 4)
                             break;
                     }
-                    if(grass[RowVal][site] != nullptr)
+                    if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
+                            && temp->getPosX() + 220 > GlobalManager::posX[site] + 20)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -319,8 +337,8 @@ void WarManager::ClockUpdate()
                 case 3:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -330,18 +348,21 @@ void WarManager::ClockUpdate()
                         if(temp->getStatus() == 4)
                             break;
                     }
-                    if(grass[RowVal][site] == nullptr)
+                    if(site >= 0 && site <= 8)
                     {
-                        temp->SwitchStatus();
-                        EatClockNow[i] = 0;
-                    }
-                    else
-                    {
-                        EatClockNow[i] += 5;
-                        if(EatClockNow[i] == 800)
+                        if(grass[RowVal][site] == nullptr)
                         {
-                            grass[i][site]->getAttack();
+                            temp->SwitchStatus();
                             EatClockNow[i] = 0;
+                        }
+                        else
+                        {
+                            EatClockNow[i] += 5;
+                            if(EatClockNow[i] == 800)
+                            {
+                                grass[RowVal][site]->getAttack();
+                                EatClockNow[i] = 0;
+                            }
                         }
                     }
                     break;
@@ -351,13 +372,14 @@ void WarManager::ClockUpdate()
             }
         }
     }
+   
     for(int i = 0; i < 5; ++i)
     {
         if(RowTemp[i])
         {
-            for(int j = 0; i < 9; j++)
+            for(int j = 0; j < 9; j++)
             {
-                if(grass[i][j]->getType() == PlantType::Peashooter)
+                if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {
                     Peashooter* temp = static_cast<Peashooter*>(grass[i][j]);
                     temp->StartEmitPea();
@@ -366,9 +388,9 @@ void WarManager::ClockUpdate()
         }
         else
         {
-            for(int j = 0; i < 9; j++)
+            for(int j = 0; j < 9; j++)
             {
-                if(grass[i][j]->getType() == PlantType::Peashooter)
+                if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {
                     Peashooter* temp = static_cast<Peashooter*>(grass[i][j]);
                     temp->StopEmitPea();
@@ -488,6 +510,7 @@ void WarManager::RaisePlant(int RowVal, int CulumnVal, PlantType tempType)
 
 void WarManager::DeletePlant(AbstractPlant* m_point)
 {
+    grass[m_point->getRow() - 1][m_point->getCulumn() - 1] = nullptr;
     delete m_point;
 }
 
@@ -495,7 +518,6 @@ void WarManager::DeleteZombie(AbstractZombie* point, int idVal)
 {
     delete point;
     ZombieManager[idVal] = nullptr;
-    firstZombie++;
     while(ZombieManager[firstZombie] == nullptr && firstZombie < lastZombie)
     {
         firstZombie++;

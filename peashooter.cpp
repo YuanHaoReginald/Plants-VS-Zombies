@@ -57,6 +57,8 @@ void Peashooter::Restart()
 
 void Peashooter::StartEmitPea()
 {
+    if(EmitPeaTimer->isActive())
+        return;
     EmitPeaTimer->start();    
 }
 
