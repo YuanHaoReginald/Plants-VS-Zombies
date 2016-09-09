@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QMouseEvent>
+#include <QString>
 #include <qapplication.h>
 
 WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
@@ -32,12 +33,18 @@ WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
     CurrentBackground = nullptr;
     SwitchBackground(Background::Default);
     BackgroundLabel->setMouseTracking(true);
+    
+    WelcomeMedia = new QMediaPlayer();
+    WelcomeMedia->setMedia(QUrl("qrc:/background/res/audio/Faster.mp3"));
+    WelcomeMedia->setVolume(30);
+    WelcomeMedia->play();
 }
 
 WelcomeWidget::~WelcomeWidget()
 {
     delete BackgroundLabel;
     delete CurrentBackground;
+    delete WelcomeMedia;
 }
 
 bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)

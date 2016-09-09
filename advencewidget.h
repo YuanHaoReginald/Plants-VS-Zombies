@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include <QGraphicsOpacityEffect>
+#include <QMediaPlayer>
 
 class AdvenceWidget : public AbstractWidget
 {
@@ -51,6 +52,7 @@ private:
     QPixmap *ReadyPixmap;
     QPixmap *MousePixmap;
     QPixmap *VirtualPlantPixmap;
+    QMediaPlayer* AdvenceMediaPlayer;
 
     QGraphicsOpacityEffect *m_GOE;
     

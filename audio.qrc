@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/background">
+        <file>res/audio/Faster.mp3</file>
+        <file>res/audio/Kitanai Sekai.mp3</file>
+    </qresource>
+</RCC>

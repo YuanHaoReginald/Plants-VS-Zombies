@@ -69,6 +69,11 @@ AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
     ShovelLabel->setGeometry(ForScale(459), ForScale(8), ForScale(53), ForScale(57));
     ShovelLabel->setPixmap(*ShovelPixmap);
     ShovelLabel->hide();
+    
+    AdvenceMediaPlayer = new QMediaPlayer;
+    AdvenceMediaPlayer->setMedia(QUrl("qrc:/background/res/audio/Kitanai Sekai.mp3"));
+    AdvenceMediaPlayer->setVolume(30);
+    AdvenceMediaPlayer->play();
 }
 
 AdvenceWidget::~AdvenceWidget()
@@ -97,6 +102,7 @@ AdvenceWidget::~AdvenceWidget()
     delete m_GOE;
     delete VirtualPlant;
     delete VirtualPlantPixmap;
+    delete AdvenceMediaPlayer;
 }
 
 QPixmap *AdvenceWidget::getReadPixmap() const

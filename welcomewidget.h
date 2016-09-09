@@ -3,6 +3,7 @@
 
 #include "abstractwidget.h"
 #include <QLabel>
+#include <QMediaPlayer>
 #include <QPixmap>
 
 class WelcomeWidget : public AbstractWidget
@@ -55,6 +56,7 @@ private:
     QPixmap *MenuWidgetPixmap;
     MenuStatus CurrentMenuStatus;
     
+    QMediaPlayer* WelcomeMedia;
     
     int AdvenceLabelTop(int x);
     int AdvenceLabelButton(int x);
