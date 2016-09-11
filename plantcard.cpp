@@ -13,7 +13,7 @@ PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(p
         break;
     case PlantType::WallNut:
         SunCost = 50;
-        FreezeMsec = 30000;
+        FreezeMsec = 25000;
         NormalPixmap = new QPixmap(":/card/res/images/card/WallNut.png");
         break;
     case PlantType::Peashooter:

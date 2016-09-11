@@ -183,7 +183,7 @@ void WarManager::ClockUpdate()
                         else
                         {
                             EatClockNow[i] += 10;
-                            if(EatClockNow[i] == 400)
+                            if(EatClockNow[i] == 600)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -249,7 +249,7 @@ void WarManager::ClockUpdate()
                         else
                         {
                             EatClockNow[i] += 10;
-                            if(EatClockNow[i] == 400)
+                            if(EatClockNow[i] == 600)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -301,7 +301,7 @@ void WarManager::ClockUpdate()
                         else
                         {
                             EatClockNow[i] += 10;
-                            if(EatClockNow[i] == 400)
+                            if(EatClockNow[i] == 600)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
@@ -389,7 +389,7 @@ void WarManager::ClockUpdate()
                         else
                         {
                             EatClockNow[i] += 10;
-                            if(EatClockNow[i] == 400)
+                            if(EatClockNow[i] == 600)
                             {
                                 grass[RowVal][site]->getAttack();
                                 EatClockNow[i] = 0;
