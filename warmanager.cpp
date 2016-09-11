@@ -419,7 +419,7 @@ void WarManager::ClockUpdate()
         }
         else
         {
-            for(int j = 0; j <= 9; j++)
+            for(int j = 0; j < 9; j++)
             {
                 if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {
@@ -433,7 +433,9 @@ void WarManager::ClockUpdate()
     //更新坐标
     if(lastZombie != 150)
     {
-        if(lastZombie % 10 != 0 || (lastZombie % 10 == 0 && lastZombie == firstZombie))
+        if(!((lastZombie == 10 || lastZombie == 20 || lastZombie == 30 || lastZombie == 40 || lastZombie ==50
+            || lastZombie == 60 || lastZombie == 80 || lastZombie == 100 || lastZombie == 120 || lastZombie ==150)
+            && lastZombie != firstZombie))
         {
             GenerateZombieClockNow += 10;
             if(GenerateZombieClockNow == GenerateZombieClockLimit)
