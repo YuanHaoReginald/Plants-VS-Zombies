@@ -1,27 +1,28 @@
 #ifndef GLOBALMANAGER_H
 #define GLOBALMANAGER_H
+
 #include <QWidget>
 #include "enumlist.h"
 
 class GlobalManager
 {
 private:
-    GlobalManager();
+    GlobalManager() { }
     
 public:
     static double DesktopScale;
     static double StanradWindowWidth;
-    static double StanradWindowWHeight;
+    static double StanradWindowHeight;
     static bool MusicOn;
     static bool EffectOn;
-    static int posX[10];
-    static int posY[6];
+    static int PosX[10];
+    static int PosY[6];
     static QWidget* CurrentWidget;
-    static int NumberOfSun;
-    static int ZombieLine[150];
+    static int SunNumber;
+    static int ZombieOrder[150];
 };
 
 extern void initGlobalManager();
-double ForScale(double temp);
+inline double ForScale(double temp) { return (temp * GlobalManager::DesktopScale); }
 
 #endif // GLOBALMANAGER_H

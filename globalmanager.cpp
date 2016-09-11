@@ -2,36 +2,30 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-GlobalManager::GlobalManager()
-{
-    
-}
-
 double GlobalManager::DesktopScale = 1;
 double GlobalManager::StanradWindowWidth = 900;
-double GlobalManager::StanradWindowWHeight = 600;
+double GlobalManager::StanradWindowHeight = 600;
 bool GlobalManager::EffectOn = true;
 bool GlobalManager::MusicOn = true;
-int GlobalManager::posX[10] = {140, 220, 300, 380, 460, 540, 620, 700, 780, 860};
-int GlobalManager::posY[6] = {89, 183, 277, 371, 465, 559};
+int GlobalManager::PosX[10] = {140, 220, 300, 380, 460, 540, 620, 700, 780, 860};
+int GlobalManager::PosY[6] = {89, 183, 277, 371, 465, 559};
 QWidget* GlobalManager::CurrentWidget = nullptr;
-//int GlobalManager::NumberOfSun = 50;
-int GlobalManager::NumberOfSun = 100;
-int GlobalManager::ZombieLine[150] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                      1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 
-                                      1, 1, 2, 1, 1, 1, 1, 1, 2, 1,
-                                      1, 1, 2, 1, 2, 1, 2, 3, 1, 1, 
-                                      1, 2, 2, 1, 3, 1, 2, 2, 3, 1,
-                                      2, 2, 1, 3, 2, 2, 2, 1, 2, 3,
-                                      1, 2, 1, 2, 1, 2, 2, 2, 3, 3,
-                                      1, 2, 1, 2, 3, 3, 3, 1, 2, 3, 
-                                      1, 2, 2, 3, 2, 1, 2, 3, 3, 2, 
-                                      1, 2, 2, 3, 2, 1, 2, 3, 3, 2,
-                                      1, 2, 2, 3, 2, 1, 2, 3, 3, 2, 
-                                      1, 2, 2, 3, 2, 1, 2, 3, 3, 2,
-                                      1, 2, 2, 1, 3, 3, 2, 2, 2, 3,
-                                      1, 2, 2, 2, 3, 3, 3, 2, 2, 1,
-                                      1, 2, 2, 3, 3, 3, 3, 2, 2, 2};
+int GlobalManager::SunNumber = 100;
+int GlobalManager::ZombieOrder[150] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                       1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 
+                                       1, 1, 2, 1, 1, 1, 1, 1, 2, 1,
+                                       1, 1, 2, 1, 2, 1, 2, 3, 1, 1, 
+                                       1, 2, 2, 1, 3, 1, 2, 2, 3, 1,
+                                       2, 2, 1, 3, 2, 2, 2, 1, 2, 3,
+                                       1, 2, 1, 2, 1, 2, 2, 2, 3, 3,
+                                       1, 2, 1, 2, 3, 3, 3, 1, 2, 3, 
+                                       1, 2, 2, 3, 2, 1, 2, 3, 3, 2, 
+                                       1, 2, 2, 3, 2, 1, 2, 3, 3, 2,
+                                       1, 2, 2, 3, 2, 1, 2, 3, 3, 2, 
+                                       1, 2, 2, 3, 2, 1, 2, 3, 3, 2,
+                                       1, 2, 2, 1, 3, 3, 2, 2, 2, 3,
+                                       1, 2, 2, 2, 3, 3, 3, 2, 2, 1,
+                                       1, 2, 2, 3, 3, 3, 3, 2, 2, 2};
 
 void initGlobalManager()
 {
@@ -42,13 +36,6 @@ void initGlobalManager()
     const double MinDesktopWidth = 1280;
     const double MinDesktopHeight = 800;
     double StandradScale = MinDesktopHeight / MinDesktopWidth;
-    if(ScaleTemp >= StandradScale)
-        GlobalManager::DesktopScale = DesktopHeight / MinDesktopHeight;
-    else if(ScaleTemp < StandradScale)
-        GlobalManager::DesktopScale = DesktopWidth / MinDesktopWidth;
-}
-
-double ForScale(double temp)
-{
-    return (temp * GlobalManager::DesktopScale);
+    GlobalManager::DesktopScale = (ScaleTemp >= StandradScale) ? (DesktopHeight / MinDesktopHeight) 
+                                                               : (DesktopWidth / MinDesktopWidth);
 }

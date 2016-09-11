@@ -8,7 +8,7 @@
 AdvenceWidget::AdvenceWidget(QWidget *parent) : AbstractWidget(parent)
 {
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
-    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowHeight));
     setMouseTracking(true);
     MouseLabel = new QLabel(this);
     MouseLabel->setMouseTracking(true);
@@ -312,13 +312,13 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
         
         if(MouseType != PlantType::NoPlant && MouseType != PlantType::Shovel)
         {
-            if(event->x() >= ForScale(GlobalManager::posX[0]) 
-                    && event->x() < ForScale(GlobalManager::posX[9])
-                    && event->y() >= ForScale(GlobalManager::posY[0]) 
-                    && event->y() < ForScale(GlobalManager::posY[5]))
+            if(event->x() >= ForScale(GlobalManager::PosX[0]) 
+                    && event->x() < ForScale(GlobalManager::PosX[9])
+                    && event->y() >= ForScale(GlobalManager::PosY[0]) 
+                    && event->y() < ForScale(GlobalManager::PosY[5]))
             {
-                int CulumnTemp = (event->x() - ForScale(GlobalManager::posX[0])) / ForScale(80) + 1;
-                int RowTemp = (event->y() - ForScale(GlobalManager::posY[0])) / ForScale(94) + 1;
+                int CulumnTemp = (event->x() - ForScale(GlobalManager::PosX[0])) / ForScale(80) + 1;
+                int RowTemp = (event->y() - ForScale(GlobalManager::PosY[0])) / ForScale(94) + 1;
                 if(ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
                 {
                     switch(MouseType)
@@ -328,8 +328,8 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
                         *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(63), ForScale(72));
                         VirtualPlant->setPixmap(*VirtualPlantPixmap);
                         VirtualPlant->setGraphicsEffect(m_GOE);
-                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 63 / 2), 
-                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 72 / 2),
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::PosX[CulumnTemp] - 40 - 63 / 2), 
+                                                  ForScale(GlobalManager::PosY[RowTemp] - 47 - 72 / 2),
                                                   ForScale(63), ForScale(72));
                         break;
                     case PlantType::Peashooter:
@@ -337,8 +337,8 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
                         *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(62), ForScale(70));
                         VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
                         VirtualPlant->setGraphicsEffect(m_GOE);
-                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 62 / 2), 
-                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 70 / 2),
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::PosX[CulumnTemp] - 40 - 62 / 2), 
+                                                  ForScale(GlobalManager::PosY[RowTemp] - 47 - 70 / 2),
                                                   ForScale(62), ForScale(70));
 
                         break;
@@ -347,8 +347,8 @@ void AdvenceWidget::mouseMoveEvent(QMouseEvent *event)
                         *VirtualPlantPixmap = VirtualPlantPixmap->scaled(ForScale(61), ForScale(71));
                         VirtualPlant->setPixmap(*VirtualPlantPixmap);                        
                         VirtualPlant->setGraphicsEffect(m_GOE);
-                        VirtualPlant->setGeometry(ForScale(GlobalManager::posX[CulumnTemp] - 40 - 61 / 2), 
-                                                  ForScale(GlobalManager::posY[RowTemp] - 47 - 71 / 2),
+                        VirtualPlant->setGeometry(ForScale(GlobalManager::PosX[CulumnTemp] - 40 - 61 / 2), 
+                                                  ForScale(GlobalManager::PosY[RowTemp] - 47 - 71 / 2),
                                                   ForScale(61), ForScale(71));
                         break;
                     default:
@@ -396,13 +396,13 @@ void AdvenceWidget::mousePressEvent(QMouseEvent *event)
         }
         else
         {
-            if(event->x() >= ForScale(GlobalManager::posX[0]) 
-                    && event->x() <= ForScale(GlobalManager::posX[9])
-                    && event->y() >= ForScale(GlobalManager::posY[0]) 
-                    && event->y() <= ForScale(GlobalManager::posY[5]))
+            if(event->x() >= ForScale(GlobalManager::PosX[0]) 
+                    && event->x() <= ForScale(GlobalManager::PosX[9])
+                    && event->y() >= ForScale(GlobalManager::PosY[0]) 
+                    && event->y() <= ForScale(GlobalManager::PosY[5]))
             {
-                int CulumnTemp = (event->x() - ForScale(GlobalManager::posX[0])) / ForScale(80) + 1;
-                int RowTemp = (event->y() - ForScale(GlobalManager::posY[0])) / ForScale(94) + 1;
+                int CulumnTemp = (event->x() - ForScale(GlobalManager::PosX[0])) / ForScale(80) + 1;
+                int RowTemp = (event->y() - ForScale(GlobalManager::PosY[0])) / ForScale(94) + 1;
                 if(MouseType != PlantType::Shovel 
                         && ManagerManager::GlobalWarManager->grass[RowTemp - 1][CulumnTemp - 1] == nullptr)
                 {

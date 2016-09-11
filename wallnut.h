@@ -6,15 +6,15 @@
 class WallNut : public AbstractPlant
 {
 public:
-    WallNut(int RowVal, int CulumnVal);
-    ~WallNut();
+    WallNut(int RowVal, int ColumnVal);
+    ~WallNut() { }
     
     enum class WallNutStatus { Normal, Crash1, Crash2 };
     
     void getAttack();
     
 private:
-    void checkStatus();
+    void CheckStatus();
     WallNutStatus CurrentStatus;
 };
 

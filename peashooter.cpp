@@ -4,29 +4,29 @@
 #include <QMovie>
 #include <QTimer>
 
-Peashooter::Peashooter(int RowVal, int CulumnVal)
+Peashooter::Peashooter(int RowVal, int ColumnVal)
 {
-    m_Type = PlantType::Peashooter;
+    ThisPlantType = PlantType::Peashooter;
     Row = RowVal;
-    Culumn = CulumnVal;
-    blood = 6;
-    width = 62;
-    height = 70;
+    Column = ColumnVal;
+    Blood = 6;
+    Width = 62;
+    Height = 70;
     PlantLabel = new QLabel(GlobalManager::CurrentWidget);
     PlantLabel->setMouseTracking(true);
     PlantLabel->show();
     PlantLabel->raise();
-    PlantLabel->setGeometry(ForScale(GlobalManager::posX[Culumn] - 40 - width / 2), 
-                            ForScale(GlobalManager::posY[Row] - 47 - height / 2),
-                            ForScale(width), ForScale(height));
+    PlantLabel->setGeometry(ForScale(GlobalManager::PosX[Column] - 40 - Width / 2), 
+                            ForScale(GlobalManager::PosY[Row] - 47 - Height / 2),
+                            ForScale(Width), ForScale(Height));
     PlantMovie = new QMovie(":/plant/res/images/plant/Peashooter/Peashooter.gif");
-    PlantMovie->setScaledSize(QSize(ForScale(width), ForScale(height)));
+    PlantMovie->setScaledSize(QSize(ForScale(Width), ForScale(Height)));
     PlantMovie->setSpeed(80);
     PlantLabel->setMovie(PlantMovie);
     PlantMovie->start();
     
     EmitPeaTimer = new QTimer;
-    EmitPeaTimer->setInterval(500);
+    EmitPeaTimer->setInterval(1500);
     connect(EmitPeaTimer, SIGNAL(timeout()), this, SLOT(EmitPeaSlot()));
 }
 
@@ -37,22 +37,7 @@ Peashooter::~Peashooter()
 
 void Peashooter::EmitPeaSlot()
 {
-    EmitPeaTimer->stop();
-    EmitPeaTimer->setInterval(1500);
-    EmitPeaTimer->start();
-    emit EmitPea(Row, Culumn);
-}
-
-void Peashooter::Pause()
-{
-    leftmsec = EmitPeaTimer->remainingTime();
-    EmitPeaTimer->stop();
-}
-
-void Peashooter::Restart()
-{
-    EmitPeaTimer->setInterval(leftmsec);
-    EmitPeaTimer->start();
+    emit EmitPea(Row, Column);
 }
 
 void Peashooter::StartEmitPea()

@@ -10,16 +10,16 @@ class AbstractZombie : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractZombie(QObject *parent = 0);
+    explicit AbstractZombie(QObject *parent = 0) : QObject(parent) { }
     ~AbstractZombie();
     
-    ZombieType getType();
-    int getRow();
-    int getWidth();
-    int getHeight();
-    int getPosX();
-    int getPoxY();
-    int getSpeed();
+    ZombieType getType() const { return ThisZombieType; }
+    int getRow() const { return Row; }
+    int getWidth() const { return Width; }
+    int getHeight() const { return Height; }
+    int getPosX() const { return PosX; }
+    int getPoxY() const { return PosY; }
+    int getSpeed() const { return Speed; }
     virtual void getAttack();
     
     int id;
@@ -27,14 +27,12 @@ public:
 signals:
     void die(AbstractZombie*, int);
     
-public slots:
-    
 protected:
     QLabel* ZombieLabel;
     QMovie* ZombieMovie;
-    int blood, speed;
-    int Row, width, height, PosX, PosY;
-    ZombieType m_Type;
+    int Blood, Speed;
+    int Row, Width, Height, PosX, PosY;
+    ZombieType ThisZombieType;
 };
 
 #endif // ABSTRACTZOMBIES_H

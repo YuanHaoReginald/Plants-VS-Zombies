@@ -13,22 +13,15 @@ class SunManager : public QObject
 public:
     explicit SunManager(QObject *parent = 0);
     ~SunManager();
-    
-    void Pause();
-    void Restart();
-    
+
 signals:
     void UpAllSun();
-    void PauseAllSun();
-    void RestartAllSun();
     void DeleteAllSun();
     void SunNumberUpdate();
     
 private:
     QTimer *MainManagerTimer;
-    QLabel *showSunNum;
-    bool isPause;
-    int leftmsec;
+    QLabel *ShowSunNumberLabel;
     
 public slots:
     void Start();

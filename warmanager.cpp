@@ -93,11 +93,11 @@ void WarManager::GenerateZombie()
     
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
     int templine = qrand() % 5 + 1;
-    if(GlobalManager::ZombieLine[lastZombie - 1] == 1)
+    if(GlobalManager::ZombieOrder[lastZombie - 1] == 1)
         ZombieManager[lastZombie - 1] = new NormalZombie(templine, lastZombie - 1);
-    else if(GlobalManager::ZombieLine[lastZombie - 1] == 2)
+    else if(GlobalManager::ZombieOrder[lastZombie - 1] == 2)
         ZombieManager[lastZombie - 1] = new BucketheadZombie(templine, lastZombie - 1);
-    else if(GlobalManager::ZombieLine[lastZombie - 1] == 3)
+    else if(GlobalManager::ZombieOrder[lastZombie - 1] == 3)
         ZombieManager[lastZombie - 1] = new PoleVaultingZombie(templine, lastZombie - 1);
     connect(ZombieManager[lastZombie - 1], SIGNAL(die(AbstractZombie*, int)),
             this, SLOT(DeleteZombie(AbstractZombie*, int)));
@@ -132,7 +132,7 @@ void WarManager::ClockUpdate()
             {
                 NormalZombie* temp = static_cast<NormalZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() + 80 - GlobalManager::posX[0]) / 80;
+                int site = (temp->getPosX() + 80 - GlobalManager::PosX[0]) / 80;
                 if(site <= 8)
                     RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
                                 site : RowSite[temp->getRow() - 1];
@@ -141,8 +141,8 @@ void WarManager::ClockUpdate()
                 case 0:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -153,7 +153,7 @@ void WarManager::ClockUpdate()
                             break;
                     }
                     if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
-                            && temp->getPosX() + 80 > GlobalManager::posX[site] + 40)
+                            && temp->getPosX() + 80 > GlobalManager::PosX[site] + 40)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -162,8 +162,8 @@ void WarManager::ClockUpdate()
                 case 1:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -198,7 +198,7 @@ void WarManager::ClockUpdate()
             {
                 BucketheadZombie* temp = static_cast<BucketheadZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 80) / 80;        
+                int site = (temp->getPosX() - GlobalManager::PosX[0] + 80) / 80;        
                 if(site <= 8)
                     RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
                                 site : RowSite[temp->getRow() - 1];
@@ -207,8 +207,8 @@ void WarManager::ClockUpdate()
                 case 0:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -219,7 +219,7 @@ void WarManager::ClockUpdate()
                             break;
                     }
                     if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
-                            && temp->getPosX() + 80 > GlobalManager::posX[site] + 40)
+                            && temp->getPosX() + 80 > GlobalManager::PosX[site] + 40)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -228,8 +228,8 @@ void WarManager::ClockUpdate()
                 case 1:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -260,8 +260,8 @@ void WarManager::ClockUpdate()
                 case 2:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -280,8 +280,8 @@ void WarManager::ClockUpdate()
                 case 3:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 80 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 85)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 80 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 85)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -317,7 +317,7 @@ void WarManager::ClockUpdate()
             {
                 PoleVaultingZombie* temp = static_cast<PoleVaultingZombie*>(ZombieManager[i]);
                 int RowVal = temp->getRow() - 1;
-                int site = (temp->getPosX() - GlobalManager::posX[0] + 200) / 80;  
+                int site = (temp->getPosX() - GlobalManager::PosX[0] + 200) / 80;  
                 if(site <= 8)
                     RowSite[temp->getRow() - 1] = site > RowSite[temp->getRow() - 1] ?
                                 site : RowSite[temp->getRow() - 1];
@@ -326,8 +326,8 @@ void WarManager::ClockUpdate()
                 case 0:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 215)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -338,17 +338,17 @@ void WarManager::ClockUpdate()
                             break;
                     }
                     if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
-                            && temp->getPosX() + 220 > GlobalManager::posX[site] + 20)
+                            && temp->getPosX() + 220 > GlobalManager::PosX[site] + 20)
                     {
-                        temp->jump();
+                        temp->Jump();
                         ZombieClockLimit[i] = 100;
                     }
                     break;
                 case 2:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 215)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -359,7 +359,7 @@ void WarManager::ClockUpdate()
                             break;
                     }
                     if(site >= 0 && site <= 8 && grass[RowVal][site] != nullptr
-                            && temp->getPosX() + 220 > GlobalManager::posX[site] + 20)
+                            && temp->getPosX() + 220 > GlobalManager::PosX[site] + 20)
                     {
                         temp->SwitchStatus();
                         ZombieClockNow[i] = 0;
@@ -368,8 +368,8 @@ void WarManager::ClockUpdate()
                 case 3:
                     for(int j = 0; j < PeaManager[RowVal].size(); ++j)
                     {
-                        if(PeaManager[RowVal][j]->getX() >= temp->getPosX() + 210 
-                                && PeaManager[RowVal][j]->getX() <= temp->getPosX() + 215)
+                        if(PeaManager[RowVal][j]->getPosX() >= temp->getPosX() + 210 
+                                && PeaManager[RowVal][j]->getPosX() <= temp->getPosX() + 215)
                         {
                             delete PeaManager[RowVal][j];
                             PeaManager[RowVal].erase(PeaManager[RowVal].begin() + j);
@@ -403,7 +403,7 @@ void WarManager::ClockUpdate()
             }
         }
     }
-   
+    
     for(int i = 0; i < 5; ++i)
     {
         if(RowTemp[i])
@@ -419,7 +419,7 @@ void WarManager::ClockUpdate()
         }
         else
         {
-            for(int j = 0; j <= RowSite[i]; j++)
+            for(int j = 0; j <= 9; j++)
             {
                 if(grass[i][j] != nullptr && grass[i][j]->getType() == PlantType::Peashooter)
                 {
@@ -447,7 +447,7 @@ void WarManager::ClockUpdate()
         for(int j = 0; j < PeaManager[i].size(); j++)
         {
             PeaManager[i][j]->PeaMove();
-            if(PeaManager[i][j]->getX() >= 900)
+            if(PeaManager[i][j]->getPosX() >= 900)
             {
                 delete PeaManager[i][j];
                 PeaManager[i].erase(PeaManager[i].begin() + j);

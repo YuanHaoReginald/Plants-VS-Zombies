@@ -16,10 +16,8 @@ public:
     
     void getAttack();
     void SwitchStatus();
-    int getStatus();
-    
-signals:
-    
+    int getStatus() const { return static_cast<int>(CurrentStatus); }
+
 public slots:
     void ZombieMove();
     
@@ -32,7 +30,7 @@ private:
     QMovie* HeadMovie;
     QLabel* BodyLabel;
     QMovie* BodyMovie;
-    BucketheadZombieStatus m_status;
+    BucketheadZombieStatus CurrentStatus;
 };
 
 #endif // BUCKETHEADZOMBIE_H

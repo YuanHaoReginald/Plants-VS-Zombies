@@ -9,7 +9,7 @@
 WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
 {
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
-    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowHeight));
     
     ExitMainWidgetLabel = nullptr;
     ExitMainWidgetPixmap = nullptr;
@@ -28,7 +28,7 @@ WelcomeWidget::WelcomeWidget(QWidget *parent = 0) : AbstractWidget(parent)
     BackgroundLabel = new QLabel(this);
     BackgroundLabel->installEventFilter(this);
     BackgroundLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
-                                 ForScale(GlobalManager::StanradWindowWHeight));
+                                 ForScale(GlobalManager::StanradWindowHeight));
     BackgroundStatus = Background::NoBackGround;
     CurrentBackground = nullptr;
     SwitchBackground(Background::Default);
@@ -180,7 +180,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                         ExitMainWidgetLabel->installEventFilter(this);
                         ExitMainWidgetLabel->setMouseTracking(true);
                         ExitMainWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
-                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                                                         ForScale(GlobalManager::StanradWindowHeight));
                         SwitchExitStatus(ExitStatus::ExitNormal);
                         ExitMainWidgetLabel->show();
                     }
@@ -192,7 +192,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                         HelpWidgetLabel->installEventFilter(this);
                         HelpWidgetLabel->setMouseTracking(true);
                         HelpWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
-                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                                                         ForScale(GlobalManager::StanradWindowHeight));
                         SwitchHelpStatus(HelpStatus::HelpNormal);
                         HelpWidgetLabel->show();
                     }
@@ -204,7 +204,7 @@ bool WelcomeWidget::eventFilter(QObject *obj, QEvent *event)
                         MenuWidgetLabel->installEventFilter(this);
                         MenuWidgetLabel->setMouseTracking(true);
                         MenuWidgetLabel->setGeometry(0, 0, ForScale(GlobalManager::StanradWindowWidth), 
-                                                         ForScale(GlobalManager::StanradWindowWHeight));
+                                                         ForScale(GlobalManager::StanradWindowHeight));
                         SwitchMenuStatus(MenuStatus::MenuYYNormal);
                         MenuWidgetLabel->show();
                     }
@@ -625,7 +625,7 @@ void WelcomeWidget::SwitchBackground(Background background)
         break;
     }
     *CurrentBackground = CurrentBackground->scaled(ForScale(GlobalManager::StanradWindowWidth), 
-                                                   ForScale(GlobalManager::StanradWindowWHeight), 
+                                                   ForScale(GlobalManager::StanradWindowHeight), 
                                                    Qt::KeepAspectRatio);
     BackgroundLabel->setPixmap(*CurrentBackground);
 }
@@ -652,7 +652,7 @@ void WelcomeWidget::SwitchExitStatus(ExitStatus temp)
         break;
     }
     *ExitMainWidgetPixmap = ExitMainWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
-                                             ForScale(GlobalManager::StanradWindowWHeight),
+                                             ForScale(GlobalManager::StanradWindowHeight),
                                              Qt::KeepAspectRatio);
     ExitMainWidgetLabel->setPixmap(*ExitMainWidgetPixmap);
 }
@@ -676,7 +676,7 @@ void WelcomeWidget::SwitchHelpStatus(HelpStatus temp)
         break;
     }
     *HelpWidgetPixmap = HelpWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
-                                                 ForScale(GlobalManager::StanradWindowWHeight),
+                                                 ForScale(GlobalManager::StanradWindowHeight),
                                                  Qt::KeepAspectRatio);
     HelpWidgetLabel->setPixmap(*HelpWidgetPixmap);
 }
@@ -718,7 +718,7 @@ void WelcomeWidget::SwitchMenuStatus(MenuStatus temp)
         break;
     }
     *MenuWidgetPixmap = MenuWidgetPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
-                                             ForScale(GlobalManager::StanradWindowWHeight),
+                                             ForScale(GlobalManager::StanradWindowHeight),
                                              Qt::KeepAspectRatio);
     MenuWidgetLabel->setPixmap(*MenuWidgetPixmap);
 }

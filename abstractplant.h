@@ -10,30 +10,26 @@ class AbstractPlant : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractPlant(QObject *parent = 0);
+    explicit AbstractPlant(QObject *parent = 0) : QObject(parent) { }
     ~AbstractPlant();
     
-    PlantType getType();
-    int getRow();
-    int getCulumn();
-    int getWidth();
-    int getHeight();
+    PlantType getType() const { return ThisPlantType; }
+    int getRow() const { return Row; }
+    int getCulumn() const { return Column; }
+    int getWidth() const { return Width; }
+    int getHeight() const { return Height; }
     virtual void getAttack();
     
 signals:
     die(AbstractPlant*);
     
-public slots:
-    virtual void Pause();
-    virtual void Restart();
-    
 protected:
-    PlantType m_Type;
-    int blood;
-    int Row, Culumn;
+    PlantType ThisPlantType;
+    int Blood;
+    int Row, Column;
     QLabel* PlantLabel;
     QMovie* PlantMovie;
-    int width, height;
+    int Width, Height;
 };
 
 #endif // ABSTRACTPLANT_H

@@ -6,15 +6,15 @@
 FailWidget::FailWidget(QWidget* parent) : AbstractWidget(parent)
 {
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
-    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowHeight));
     setMouseTracking(true);
     FailLabel = new QLabel(this);
     FailLabel->setMouseTracking(true);
     FailPixmap = new QPixmap(":/surface/res/images/surface/Fail.png");
     *FailPixmap = FailPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
-                                   ForScale(GlobalManager::StanradWindowWHeight));
+                                   ForScale(GlobalManager::StanradWindowHeight));
     FailLabel->resize(ForScale(GlobalManager::StanradWindowWidth),
-                     ForScale(GlobalManager::StanradWindowWHeight));
+                     ForScale(GlobalManager::StanradWindowHeight));
     FailLabel->move(0, 0);
     FailLabel->setPixmap(*FailPixmap);
     FailLabel->show();

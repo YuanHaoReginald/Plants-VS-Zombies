@@ -58,7 +58,6 @@ private:
     
     PlantType MouseType;
     
-    //bool InGrassArea(int, int, int, int);
     bool InCardArea(int, int, int);
     
 private slots:

@@ -6,13 +6,13 @@ PoleVaultingZombie::PoleVaultingZombie(int RowVal, int idVal)
 {
     Row = RowVal;
     id = idVal;
-    m_Type = ZombieType::PoleVaultingZombie;
-    blood = 17;
-    speed = 50;
-    width = 348;
-    height = 218;
+    ThisZombieType = ZombieType::PoleVaultingZombie;
+    Blood = 17;
+    Speed = 50;
+    Width = 348;
+    Height = 218;
     PosX = 900;
-    PosY = GlobalManager::posY[Row] - height;
+    PosY = GlobalManager::PosY[Row] - Height;
     ZombieLabel = new QLabel(GlobalManager::CurrentWidget);
     ZombieLabel->setMouseTracking(true);
     ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombie.gif");
@@ -23,7 +23,7 @@ PoleVaultingZombie::PoleVaultingZombie(int RowVal, int idVal)
     ZombieMovie->start();
     ZombieLabel->show();
     ZombieLabel->raise();
-    m_status = PoleVaultingZombieStatus::Pole;
+    CurrentStatus = PoleVaultingZombieStatus::Pole;
     
     HeadLabel = nullptr;
     HeadMovie = nullptr;
@@ -39,15 +39,10 @@ PoleVaultingZombie::~PoleVaultingZombie()
     delete BodyMovie;
 }
 
-int PoleVaultingZombie::getStatus()
-{
-    return static_cast<int>(m_status);
-}
-
 void PoleVaultingZombie::getAttack()
 {
-    blood--;
-    if(blood == 0)
+    Blood--;
+    if(Blood == 0)
     {
         delete ZombieLabel;
         ZombieLabel = nullptr;
@@ -79,52 +74,52 @@ void PoleVaultingZombie::getAttack()
         
         QTimer::singleShot(560, this, SLOT(DeleteHead()));
         QTimer::singleShot(2000, this, SLOT(DeleteBody()));
-        m_status = PoleVaultingZombieStatus::Die;
+        CurrentStatus = PoleVaultingZombieStatus::Die;
     }
 }
 
 void PoleVaultingZombie::SwitchStatus()
 {    
-    if(m_status == PoleVaultingZombieStatus::Normal)
+    if(CurrentStatus == PoleVaultingZombieStatus::Normal)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieAttack.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(348), ForScale(218)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = PoleVaultingZombieStatus::Eating;
+        CurrentStatus = PoleVaultingZombieStatus::Eating;
     }
-    else if(m_status == PoleVaultingZombieStatus::Eating)
+    else if(CurrentStatus == PoleVaultingZombieStatus::Eating)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieWalk.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(348), ForScale(218)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = PoleVaultingZombieStatus::Normal;
+        CurrentStatus = PoleVaultingZombieStatus::Normal;
     }
 }
 
 void PoleVaultingZombie::ZombieMove()
 {
-    if(m_status == PoleVaultingZombieStatus::Normal || m_status == PoleVaultingZombieStatus::Pole)
+    if(CurrentStatus == PoleVaultingZombieStatus::Normal || CurrentStatus == PoleVaultingZombieStatus::Pole)
     {
         PosX--;
         ZombieLabel->move(ForScale(PosX), ForScale(PosY));
     }
 }
 
-void PoleVaultingZombie::jump()
+void PoleVaultingZombie::Jump()
 {
-    if(m_status == PoleVaultingZombieStatus::Pole)
+    if(CurrentStatus == PoleVaultingZombieStatus::Pole)
     {
-        m_status = PoleVaultingZombieStatus::Jump;
+        CurrentStatus = PoleVaultingZombieStatus::Jump;
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(348), ForScale(218)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        QTimer::singleShot(1000, this, SLOT(jump2()));
+        QTimer::singleShot(1000, this, SLOT(Jump2()));
     }
 }
 
@@ -145,7 +140,7 @@ void PoleVaultingZombie::DeleteBody()
     emit die(this, id);
 }
 
-void PoleVaultingZombie::jump2()
+void PoleVaultingZombie::Jump2()
 {
     delete ZombieMovie;
     ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieJump2.gif");
@@ -154,16 +149,16 @@ void PoleVaultingZombie::jump2()
     ZombieMovie->start();
     PosX -= 124;
     ZombieLabel->move(ForScale(PosX), ForScale(PosY));
-    QTimer::singleShot(700, this, SLOT(jump3()));
+    QTimer::singleShot(700, this, SLOT(Jump3()));
 }
 
-void PoleVaultingZombie::jump3()
+void PoleVaultingZombie::Jump3()
 {
     delete ZombieMovie;
     ZombieMovie = new QMovie(":/zombie/res/images/zombie/PoleVaultingZombie/PoleVaultingZombieWalk.gif");
     ZombieMovie->setScaledSize(QSize(ForScale(349), ForScale(218)));
     ZombieLabel->setMovie(ZombieMovie);
     ZombieMovie->start();
-    speed = 100;
-    m_status = PoleVaultingZombieStatus::Normal;
+    Speed = 100;
+    CurrentStatus = PoleVaultingZombieStatus::Normal;
 }

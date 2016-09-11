@@ -8,13 +8,12 @@
 class ManagerManager
 {
 private:
-    ManagerManager();
+    ManagerManager() { }
     
 public:
     static SunManager *GlobalSunManager;
     static CardManager *GlobalCardManager;
     static WarManager *GlobalWarManager;
-    
 };
 
 #endif // MANAGERMANAGER_H

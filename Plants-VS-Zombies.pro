@@ -17,7 +17,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     globalmanager.cpp \
     welcomewidget.cpp \
-    abstractwidget.cpp \
     advencewidget.cpp \
     sun.cpp \
     label.cpp \

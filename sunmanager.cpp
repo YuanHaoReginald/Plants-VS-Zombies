@@ -9,50 +9,31 @@ SunManager::SunManager(QObject *parent) : QObject(parent)
 {
     MainManagerTimer = new QTimer;
     connect(MainManagerTimer, SIGNAL(timeout()), this, SLOT(GenerateSun()));
-    showSunNum = new QLabel(GlobalManager::CurrentWidget);
-    showSunNum->setMouseTracking(true);
-    showSunNum->setGeometry(ForScale(26), ForScale(59), ForScale(54), ForScale(21));
-    showSunNum->setAlignment(Qt::AlignCenter);
-    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));
-    showSunNum->show();
+    ShowSunNumberLabel = new QLabel(GlobalManager::CurrentWidget);
+    ShowSunNumberLabel->setMouseTracking(true);
+    ShowSunNumberLabel->setGeometry(ForScale(26), ForScale(59), ForScale(54), ForScale(21));
+    ShowSunNumberLabel->setAlignment(Qt::AlignCenter);
+    ShowSunNumberLabel->setText(QString::number(GlobalManager::SunNumber));
+    ShowSunNumberLabel->show();
 }
 
 SunManager::~SunManager()
 {
     emit DeleteAllSun();
     delete MainManagerTimer;
-    delete showSunNum;
+    delete ShowSunNumberLabel;
 }
 
 void SunManager::Start()
 {
-    isPause = true;
-    MainManagerTimer->setInterval(2000);
-    MainManagerTimer->start();
-}
-
-void SunManager::Pause()
-{
-    leftmsec = MainManagerTimer->remainingTime();
-    MainManagerTimer->stop();
-    emit PauseAllSun();
-}
-
-void SunManager::Restart()
-{
-    isPause = true;
-    MainManagerTimer->setInterval(leftmsec);
-    MainManagerTimer->start();
-    emit RestartAllSun();
+    MainManagerTimer->setInterval(6000);
+    QTimer::singleShot(2000, this, SLOT(GenerateSun()));
 }
 
 void SunManager::GenerateSun()
 {
-    if(isPause)
+    if(!(MainManagerTimer->isActive()))
     {
-        MainManagerTimer->stop();
-        MainManagerTimer->setInterval(6000);
-        isPause = false;
         MainManagerTimer->start();
     }
     srand(QTime::currentTime().msecsSinceStartOfDay());
@@ -60,8 +41,6 @@ void SunManager::GenerateSun()
     Sun *temp = new Sun(TargetSite, this);
     temp->SunLabel->show();
     connect(this, SIGNAL(UpAllSun()), temp, SLOT(RaiseSun()));
-    connect(this, SIGNAL(PauseAllSun()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(RestartAllSun()), temp, SLOT(Restart()));
     connect(temp, SIGNAL(GetSunUp(int)), this, SLOT(AddSunNumber(int)));
     connect(temp, SIGNAL(die(Sun*)), this, SLOT(DeleteSun(Sun*)));
     connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis()));
@@ -73,8 +52,6 @@ void SunManager::FlowerSun(int Row, int Culumn)
     temp->SunLabel->show();
     temp->SunLabel->raise();
     connect(this, SIGNAL(UpAllSun()), temp, SLOT(RaiseSun()));
-    connect(this, SIGNAL(PauseAllSun()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(RestartAllSun()), temp, SLOT(Restart()));
     connect(temp, SIGNAL(GetSunUp(int)), this, SLOT(AddSunNumber(int)));
     connect(temp, SIGNAL(die(Sun*)), this, SLOT(DeleteSun(Sun*)));
     connect(this, SIGNAL(DeleteAllSun()), temp, SLOT(DeleteThis())); 
@@ -83,9 +60,9 @@ void SunManager::FlowerSun(int Row, int Culumn)
 
 void SunManager::AddSunNumber(int nowType)
 {
-    GlobalManager::NumberOfSun += nowType;
+    GlobalManager::SunNumber += nowType;
     emit SunNumberUpdate();
-    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));    
+    ShowSunNumberLabel->setText(QString::number(GlobalManager::SunNumber));    
 }
 
 void SunManager::DeleteSun(Sun * Point)
@@ -95,7 +72,7 @@ void SunManager::DeleteSun(Sun * Point)
 
 void SunManager::MinusSunNumber(int num)
 {
-    GlobalManager::NumberOfSun -= num;
+    GlobalManager::SunNumber -= num;
     emit SunNumberUpdate();
-    showSunNum->setText(QString::number(GlobalManager::NumberOfSun));    
+    ShowSunNumberLabel->setText(QString::number(GlobalManager::SunNumber));    
 }

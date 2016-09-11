@@ -1,4 +1,4 @@
-#ifndef POLEVAULTINGZOMBIE_H
+﻿#ifndef POLEVAULTINGZOMBIE_H
 #define POLEVAULTINGZOMBIE_H
 
 #include "abstractzombie.h"
@@ -16,26 +16,26 @@ public:
     
     void getAttack();
     void SwitchStatus();
-    int getStatus();
+    int getStatus() const { return static_cast<int>(CurrentStatus); }
     
 signals:
     
 public slots:
     void ZombieMove();
-    void jump();
+    void Jump();
     
 private slots:
     void DeleteHead();
     void DeleteBody();
-    void jump2();
-    void jump3();
+    void Jump2();
+    void Jump3();
     
 private:
     QLabel* HeadLabel;
     QMovie* HeadMovie;
     QLabel* BodyLabel;
     QMovie* BodyMovie;
-    PoleVaultingZombieStatus m_status;
+    PoleVaultingZombieStatus CurrentStatus;
 };
 
 #endif // POLEVAULTINGZOMBIE_H

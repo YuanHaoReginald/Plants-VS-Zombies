@@ -7,18 +7,12 @@ CardManager::CardManager(QObject *parent) : QObject(parent)
 {
     PlantCard* temp = new PlantCard(PlantType::SunFlower, 1);
     CardVec.push_back(temp);
-    connect(this, SIGNAL(Pause()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(Restart()), temp, SLOT(Restart()));
     connect(this, SIGNAL(CheckAllCard()), temp, SLOT(CheckThis()));
     temp = new PlantCard(PlantType::Peashooter, 2);
     CardVec.push_back(temp);
-    connect(this, SIGNAL(Pause()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(Restart()), temp, SLOT(Restart()));
     connect(this, SIGNAL(CheckAllCard()), temp, SLOT(CheckThis()));
     temp = new PlantCard(PlantType::WallNut, 3);
     CardVec.push_back(temp);
-    connect(this, SIGNAL(Pause()), temp, SLOT(Pause()));
-    connect(this, SIGNAL(Restart()), temp, SLOT(Restart()));
     connect(this, SIGNAL(CheckAllCard()), temp, SLOT(CheckThis()));
 }
 

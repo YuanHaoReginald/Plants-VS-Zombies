@@ -16,8 +16,6 @@ public:
     std::vector<PlantCard*> CardVec;    
     
 signals:
-    void Pause();
-    void Restart();
     void CheckAllCard();
     
 public slots:

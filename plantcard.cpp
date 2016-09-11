@@ -2,31 +2,31 @@
 #include "globalmanager.h"
 #include <QPixmap>
 
-PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(parent), m_Type(TypeVal)
+PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(parent), CardType(TypeVal)
 {
     switch(TypeVal)
     {
     case PlantType::SunFlower:
         SunCost = 50;
-        Freezemsec = 7500;
-        NormalPic = new QPixmap(":/card/res/images/card/Sunflower.png");
+        FreezeMsec = 7500;
+        NormalPixmap = new QPixmap(":/card/res/images/card/Sunflower.png");
         break;
     case PlantType::WallNut:
         SunCost = 50;
-        Freezemsec = 30000;
-        NormalPic = new QPixmap(":/card/res/images/card/WallNut.png");
+        FreezeMsec = 30000;
+        NormalPixmap = new QPixmap(":/card/res/images/card/WallNut.png");
         break;
     case PlantType::Peashooter:
         SunCost = 100;
-        Freezemsec = 7500;
-        NormalPic = new QPixmap(":/card/res/images/card/Peashooter.png");
+        FreezeMsec = 7500;
+        NormalPixmap = new QPixmap(":/card/res/images/card/Peashooter.png");
         break;
     default:
         break;
     }
     
-    posX = (CardID <= 3) ? (43 + CardID * 57) : (45 + CardID * 57);
-    posY = 10;
+    PosX = (CardID <= 3) ? (43 + CardID * 57) : (45 + CardID * 57);
+    PosY = 10;
     CurrentStatus = CardStatus::Normal;
     NormalCard = new QLabel(GlobalManager::CurrentWidget);
     NormalCard->setMouseTracking(true);
@@ -34,71 +34,44 @@ PlantCard::PlantCard(PlantType TypeVal, int CardID, QObject *parent) : QObject(p
     DisableCard->setMouseTracking(true);
     FreezeCard = new QLabel(GlobalManager::CurrentWidget);
     FreezeCard->setMouseTracking(true);
-    NormalCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));
-    DisableCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));
-    FreezeCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), ForScale(63));    
-    grayPic = new QPixmap(":/card/res/images/card/DisableCard.png");
-    *grayPic = grayPic->scaled(ForScale(45), ForScale(63));
-    *NormalPic = NormalPic->scaled(ForScale(45), ForScale(63));
-    m_GOE = new QGraphicsOpacityEffect;
-    m_GOE->setOpacity(0.5);
-    FreezeCard->setPixmap(*grayPic);
-    FreezeCard->setGraphicsEffect(m_GOE);
-    DisableCard->setPixmap(*grayPic);
-    DisableCard->setGraphicsEffect(m_GOE);
-    NormalCard->setPixmap(*NormalPic);
+    NormalCard->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(45), ForScale(63));
+    DisableCard->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(45), ForScale(63));
+    FreezeCard->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(45), ForScale(63));    
+    GrayPixmap = new QPixmap(":/card/res/images/card/DisableCard.png");
+    *GrayPixmap = GrayPixmap->scaled(ForScale(45), ForScale(63));
+    *NormalPixmap = NormalPixmap->scaled(ForScale(45), ForScale(63));
+    GrayEffect = new QGraphicsOpacityEffect;
+    GrayEffect->setOpacity(0.5);
+    FreezeCard->setPixmap(*GrayPixmap);
+    FreezeCard->setGraphicsEffect(GrayEffect);
+    DisableCard->setPixmap(*GrayPixmap);
+    DisableCard->setGraphicsEffect(GrayEffect);
+    NormalCard->setPixmap(*NormalPixmap);
     DisableCard->hide();
     FreezeCard->hide();
     NormalCard->show();
     FreezeTimer = new QTimer;
     FreezeTimer->setInterval(5);
     TimeUsed = 0;
-    connect(FreezeTimer, SIGNAL(timeout()), this, SLOT(ReFreeze()));
+    connect(FreezeTimer, SIGNAL(timeout()), this, SLOT(RecoveryFreeze()));
     CheckThis();
 }
 
 PlantCard::~PlantCard()
 {
-    delete grayPic;
-    delete NormalPic;
+    delete GrayPixmap;
+    delete NormalPixmap;
     delete NormalCard;
     delete DisableCard;
     delete FreezeCard;
     delete FreezeTimer;
 }
 
-PlantType PlantCard::getType() const
-{
-    return m_Type;
-}
-
-CardStatus PlantCard::getCardStatus()
-{
-    return CurrentStatus;
-}
-
-void PlantCard::Pause()
-{
-    if(CurrentStatus == CardStatus::Freezed)
-    {
-        FreezeTimer->stop();
-    }
-}
-
-void PlantCard::Restart()
-{
-    if(CurrentStatus == CardStatus::Freezed)
-    {
-        FreezeTimer->start();
-    }
-}
-
-void PlantCard::ReFreeze()
+void PlantCard::RecoveryFreeze()
 {
     TimeUsed += 5;
-    FreezeCard->setGeometry(ForScale(posX), ForScale(posY), ForScale(45), 
-                            ForScale(63 - 63 * TimeUsed * 1.0 / Freezemsec));
-    if(TimeUsed == Freezemsec)
+    FreezeCard->resize(ForScale(45), ForScale(63 - 63 * TimeUsed * 1.0 / FreezeMsec));
+    if(TimeUsed == FreezeMsec)
     {
         FreezeTimer->stop();
         TimeUsed = 0;
@@ -133,7 +106,6 @@ void PlantCard::FreezeThis()
 void PlantCard::CheckThis()
 {
     if(CurrentStatus == CardStatus::Freezed)
-        return;
-    
-    DisableThis(GlobalManager::NumberOfSun < SunCost);
+        return; 
+    DisableThis(GlobalManager::SunNumber < SunCost);
 }

@@ -6,15 +6,15 @@
 WinWidget::WinWidget(QWidget* parent) : AbstractWidget(parent)
 {
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
-    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
+    setFixedHeight(ForScale(GlobalManager::StanradWindowHeight));
     setMouseTracking(true);
     WinLabel = new QLabel(this);
     WinLabel->setMouseTracking(true);
     WinPixmap = new QPixmap(":/surface/res/images/surface/Win.png");
     *WinPixmap = WinPixmap->scaled(ForScale(GlobalManager::StanradWindowWidth),
-                                   ForScale(GlobalManager::StanradWindowWHeight));
+                                   ForScale(GlobalManager::StanradWindowHeight));
     WinLabel->resize(ForScale(GlobalManager::StanradWindowWidth),
-                     ForScale(GlobalManager::StanradWindowWHeight));
+                     ForScale(GlobalManager::StanradWindowHeight));
     WinLabel->move(0, 0);
     WinLabel->setPixmap(*WinPixmap);
     WinLabel->show();

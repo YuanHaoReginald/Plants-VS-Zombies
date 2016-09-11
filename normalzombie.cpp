@@ -6,13 +6,13 @@ NormalZombie::NormalZombie(int RowVal, int idVal)
 {
     Row = RowVal;
     id = idVal;
-    m_Type = ZombieType::NormalZombie;
-    blood = 10;
-    speed = 80;
-    width = 166;
-    height = 144;
+    ThisZombieType = ZombieType::NormalZombie;
+    Blood = 10;
+    Speed = 80;
+    Width = 166;
+    Height = 144;
     PosX = 900;
-    PosY = GlobalManager::posY[Row] - height;
+    PosY = GlobalManager::PosY[Row] - Height;
     ZombieLabel = new QLabel(GlobalManager::CurrentWidget);
     ZombieLabel->setMouseTracking(true);
     ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/Zombie.gif");
@@ -23,7 +23,7 @@ NormalZombie::NormalZombie(int RowVal, int idVal)
     ZombieMovie->start();
     ZombieLabel->show();
     ZombieLabel->raise();
-    m_status = NormalZombieStatus::Normal;
+    CurrentStatus = NormalZombieStatus::Normal;
     
     HeadLabel = nullptr;
     HeadMovie = nullptr;
@@ -39,15 +39,10 @@ NormalZombie::~NormalZombie()
     delete BodyMovie;
 }
 
-int NormalZombie::getStatus()
-{
-    return static_cast<int>(m_status);
-}
-
 void NormalZombie::getAttack()
 {
-    blood--;
-    if(blood == 0)
+    Blood--;
+    if(Blood == 0)
     {
         delete ZombieLabel;
         ZombieLabel = nullptr;
@@ -79,35 +74,35 @@ void NormalZombie::getAttack()
         
         QTimer::singleShot(560, this, SLOT(DeleteHead()));
         QTimer::singleShot(2000, this, SLOT(DeleteBody()));
-        m_status = NormalZombieStatus::Die;
+        CurrentStatus = NormalZombieStatus::Die;
     }
 }
 
 void NormalZombie::SwitchStatus()
 {    
-    if(m_status == NormalZombieStatus::Normal)
+    if(CurrentStatus == NormalZombieStatus::Normal)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/ZombieAttack.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = NormalZombieStatus::Eating;
+        CurrentStatus = NormalZombieStatus::Eating;
     }
-    else if(m_status == NormalZombieStatus::Eating)
+    else if(CurrentStatus == NormalZombieStatus::Eating)
     {
         delete ZombieMovie;
         ZombieMovie = new QMovie(":/zombie/res/images/zombie/Zombie/Zombie.gif");
         ZombieMovie->setScaledSize(QSize(ForScale(166), ForScale(144)));
         ZombieLabel->setMovie(ZombieMovie);
         ZombieMovie->start();
-        m_status = NormalZombieStatus::Normal;
+        CurrentStatus = NormalZombieStatus::Normal;
     }
 }
 
 void NormalZombie::ZombieMove()
 {
-    if(m_status == NormalZombieStatus::Normal)
+    if(CurrentStatus == NormalZombieStatus::Normal)
     {
         PosX--;
         ZombieLabel->move(ForScale(PosX), ForScale(PosY));

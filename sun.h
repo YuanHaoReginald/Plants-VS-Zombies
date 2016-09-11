@@ -16,15 +16,15 @@ public:
     
 public:
     explicit Sun(int FallSiteX, QObject *parent = 0, int TempType = 25);
-    explicit Sun(int FlowerRow, int FlowerCulumn, QObject *parent = 0, int TempType = 25);
+    explicit Sun(int FlowerRow, int FlowerColumn, QObject *parent = 0, int TempType = 25);
     ~Sun();
     
-    int getType();
+    int getType() const { return SunType; }
     Label *SunLabel;
     
 private:
-    int m_Type;
-    Mode m_Mode;
+    int SunType;
+    Mode SunMode;
     QMovie *SunGif;
     
     QTimer *FallTimer;
@@ -32,26 +32,22 @@ private:
     QTimer *BackTimer;
     QTimer *FlowerTimer;
 
-    int posX, posY;
+    int PosX, PosY;
     SunStatus CurrentStatus;
-    int LeftMSec;
     int TimeUsed;
-    
     
 signals:
     void die(Sun*);
     void GetSunUp(int);
     
 private slots:
-    void FallEvent();
+    void SkyFall();
     void FlowerFall();
     void DelayDie();
     void GetSun();
     void SunBack();
     
 public slots:
-    void Pause();
-    void Restart();
     void RaiseSun();
     void DeleteThis();
 };

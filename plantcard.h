@@ -15,35 +15,31 @@ public:
     explicit PlantCard(PlantType TypeVal, int CardID, QObject *parent = 0);
     ~PlantCard();
     
-    PlantType getType() const;
-    CardStatus getCardStatus();
+    PlantType getType() const { return CardType; }
+    CardStatus getCardStatus() const {return CurrentStatus; }
     void DisableThis(bool);
     void FreezeThis();
-    
-signals:
-    
+       
 public slots:
-    void Pause();
-    void Restart();
     void CheckThis();    
     
 private slots:
-    void ReFreeze();
+    void RecoveryFreeze();
     
 private:
-    PlantType m_Type;
-    QPixmap *grayPic;
-    QPixmap *NormalPic;
-    QGraphicsOpacityEffect *m_GOE;
+    PlantType CardType;
+    QPixmap *GrayPixmap;
+    QPixmap *NormalPixmap;
+    QGraphicsOpacityEffect *GrayEffect;
     QLabel *NormalCard;
     QLabel *DisableCard;
     QLabel *FreezeCard;
     QTimer *FreezeTimer;
     CardStatus CurrentStatus;
     
-    int posX, posY;
+    int PosX, PosY;
     int SunCost;
-    int Freezemsec;
+    int FreezeMsec;
     int TimeUsed;
 };
 

@@ -3,67 +3,69 @@
 #include <QSize>
 #include <QTimer>
 #include "globalmanager.h"
-#include <QDebug>
 
 Sun::Sun(int FallSiteX, QObject *parent, int TempType) 
-    : QObject(parent), m_Type(TempType)
+    : QObject(parent), SunType(TempType)
 {
-    m_Mode = Mode::Fall;
+    SunMode = Mode::Fall;
     FlowerTimer = new QTimer;
-    DelayTimer = new QTimer;
     BackTimer = new QTimer;
+    
     SunGif = new QMovie(":/surface/res/images/surface/Sun.gif");
     SunGif->setScaledSize(QSize(ForScale(70), ForScale(70)));
     SunLabel = new Label(GlobalManager::CurrentWidget);
     SunLabel->setMouseTracking(true);
     SunLabel->setMovie(SunGif);
+    SunGif->start();
+    connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
+    
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
     connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));
-    SunGif->start();
-    connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
     
     if(FallSiteX <= 140)
         FallSiteX = 140;
     else if(FallSiteX >= 790)
         FallSiteX = 790;
-    posX = FallSiteX;
-    posY = 84;
-    SunLabel->setGeometry(ForScale(posX), ForScale(posY), ForScale(70), ForScale(70));
+    PosX = FallSiteX;
+    PosY = 84;
+    SunLabel->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(70), ForScale(70));
     FallTimer = new QTimer;
     FallTimer->setInterval(15);
-    connect(FallTimer, SIGNAL(timeout()), this, SLOT(FallEvent()));
+    connect(FallTimer, SIGNAL(timeout()), this, SLOT(SkyFall()));
     FallTimer->start();
 }
 
-Sun::Sun(int FlowerRow, int FlowerCulumn, QObject *parent, int TempType)
-    : QObject(parent), m_Type(TempType)
+Sun::Sun(int FlowerRow, int FlowerColumn, QObject *parent, int TempType)
+    : QObject(parent), SunType(TempType)
 {  
-    m_Mode = Mode::Flower;
+    SunMode = Mode::Flower;
     FallTimer = new QTimer;
     BackTimer = new QTimer;
+    
     SunGif = new QMovie(":/surface/res/images/surface/Sun.gif");
     SunGif->setScaledSize(QSize(ForScale(70), ForScale(70)));
     SunLabel = new Label(GlobalManager::CurrentWidget);
     SunLabel->setMouseTracking(true);
     SunLabel->setMovie(SunGif);
+    SunGif->start();
+    connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
+    
     DelayTimer = new QTimer;
     DelayTimer->setInterval(8000);
     connect(DelayTimer, SIGNAL(timeout()), this, SLOT(DelayDie()));  
-    SunGif->start();
-    connect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));
     
     if(FlowerRow <= 1)
         FlowerRow = 1;
     else if(FlowerRow >= 5)
         FlowerRow = 5;
-    if(FlowerCulumn <= 1)
-        FlowerCulumn = 1;
-    else if(FlowerCulumn >= 9)
-        FlowerCulumn = 9;
-    posX = GlobalManager::posX[FlowerCulumn - 1] + 5;
-    posY = GlobalManager::posY[FlowerRow - 1];
-    SunLabel->setGeometry(ForScale(posX), ForScale(posY), ForScale(70), ForScale(70));
+    if(FlowerColumn <= 1)
+        FlowerColumn = 1;
+    else if(FlowerColumn >= 9)
+        FlowerColumn = 9;
+    PosX = GlobalManager::PosX[FlowerColumn - 1] + 5;
+    PosY = GlobalManager::PosY[FlowerRow - 1];
+    SunLabel->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(70), ForScale(70));
     FlowerTimer = new QTimer;
     FlowerTimer ->setInterval(5);
     connect(FlowerTimer, SIGNAL(timeout()), this, SLOT(FlowerFall()));
@@ -81,16 +83,11 @@ Sun::~Sun()
     delete FlowerTimer;
 }
 
-int Sun::getType()
+void Sun::SkyFall()
 {
-    return m_Type;
-}
-
-void Sun::FallEvent()
-{
-    posY += 1;
-    SunLabel->setGeometry(ForScale(posX), ForScale(posY), ForScale(70), ForScale(70));
-    if(posY == 530)
+    PosY += 1;
+    SunLabel->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(70), ForScale(70));
+    if(PosY == 530)
     {
         FallTimer->stop();
         DelayTimer->start();
@@ -100,14 +97,13 @@ void Sun::FallEvent()
 void Sun::FlowerFall()
 {
     TimeUsed += 5;
-    SunLabel->setGeometry(ForScale(posX - 0.07 * TimeUsed),ForScale(1.0 * 21 * TimeUsed * TimeUsed / 125000
-                                                                    - 1.0 * 3 * TimeUsed / 125 + posY) 
-                          , ForScale(70), ForScale(70));
+    SunLabel->move(ForScale(PosX - 0.07 * TimeUsed),ForScale(1.0 * 21 * TimeUsed * TimeUsed / 125000
+                                                             - 1.0 * 3 * TimeUsed / 125 + PosY));
     if(TimeUsed == 500)
     {
         FlowerTimer->stop();
-        posX -= 35;
-        posY += 30;
+        PosX -= 35;
+        PosY += 30;
         DelayTimer->start();
     }
 }
@@ -122,9 +118,9 @@ void Sun::GetSun()
     disconnect(SunLabel, SIGNAL(clicked()), this, SLOT(GetSun()));    
     if(FallTimer->isActive())
         FallTimer->stop();
-    else if(DelayTimer->isActive())
+    if(DelayTimer->isActive())
         DelayTimer->stop();
-    else if(FlowerTimer->isActive())
+    if(FlowerTimer->isActive())
         FlowerTimer->stop();
     BackTimer->setInterval(5);
     TimeUsed = 0;
@@ -135,58 +131,15 @@ void Sun::GetSun()
 void Sun::SunBack()
 {
     TimeUsed += 5;
-    SunLabel->setGeometry(ForScale(posX + (posX - 15) * 1.0 * TimeUsed * TimeUsed / 250000 
-                                   - (posX - 15) * 1.0 * TimeUsed / 250),
-                          ForScale(posY + (posY - 9) * 1.0 * TimeUsed * TimeUsed / 250000 
-                                   - (posY - 9) * 1.0 * TimeUsed / 250),
-                          ForScale(70), ForScale(70));
+    SunLabel->move(ForScale(PosX + (PosX - 15) * 1.0 * TimeUsed * TimeUsed / 250000 
+                            - (PosX - 15) * 1.0 * TimeUsed / 250),
+                   ForScale(PosY + (PosY - 9) * 1.0 * TimeUsed * TimeUsed / 250000 
+                            - (PosY - 9) * 1.0 * TimeUsed / 250));
     if(TimeUsed == 500)
     {
         BackTimer->stop();
-        emit GetSunUp(m_Type);
+        emit GetSunUp(SunType);
         emit die(this);
-    }
-}
-
-void Sun::Pause()
-{
-    switch (CurrentStatus) {
-    case SunStatus::Fall:
-        if(m_Mode == Mode::Fall)
-            FallTimer->stop();
-        else if(m_Mode == Mode::Fall)
-            FlowerTimer->stop();
-        break;
-    case SunStatus::Delay:
-        LeftMSec = DelayTimer->remainingTime(); 
-        DelayTimer->stop();
-        break;
-    case SunStatus::Back:
-        BackTimer->stop();
-        break;
-    default:
-        break;
-    }
-}
-
-void Sun::Restart()
-{
-    switch (CurrentStatus) {
-    case SunStatus::Fall:
-        if(m_Mode == Mode::Fall)
-            FallTimer->start();
-        else if(m_Mode == Mode::Fall)
-            FlowerTimer->start();
-        break;
-    case SunStatus::Delay:
-        DelayTimer->setInterval(LeftMSec);
-        DelayTimer->start();
-        break;
-    case SunStatus::Back:
-        BackTimer->start();
-        break;
-    default:
-        break;
     }
 }
 

@@ -7,15 +7,13 @@ class Peashooter : public AbstractPlant
 {
     Q_OBJECT
 public:
-    Peashooter(int RowVal, int CulumnVal);
+    Peashooter(int RowVal, int ColumnVal);
     ~Peashooter();
     
 signals:
     void EmitPea(int, int);
     
 public slots:
-    void Pause();
-    void Restart();
     void StartEmitPea();
     void StopEmitPea();
     
@@ -24,7 +22,6 @@ private slots:
     
 private:
     QTimer *EmitPeaTimer;
-    int leftmsec;
 };
 
 #endif // PEASHOOTER_H

@@ -13,9 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     CurrentStatusWidget = nullptr;
     setFixedWidth(ForScale(GlobalManager::StanradWindowWidth));
-    setFixedHeight(ForScale(GlobalManager::StanradWindowWHeight));
-    //setFixedWidth(2560);
-    //setFixedHeight(1440);
+    setFixedHeight(ForScale(GlobalManager::StanradWindowHeight));
     SwitchStatus(GameStatus::Welcome); 
 }
 
@@ -48,6 +46,7 @@ void MainWindow::SwitchStatus(GameStatus TargetStatus)
         case GameStatus::Fail:
             CurrentStatusWidget = new FailWidget(this);
             GlobalManager::CurrentWidget = CurrentStatusWidget;
+            break;
 		default:
 			break;
 		}

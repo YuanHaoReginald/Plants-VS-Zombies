@@ -1,18 +1,18 @@
 #include "pea.h"
 #include "globalmanager.h"
 
-Pea::Pea(int RowVal, int CulumnVal, QObject *parent) : QObject(parent)
+Pea::Pea(int RowVal, int ColumnVal, QObject *parent) : QObject(parent)
 {
-    width = height = 24;
-    xVal = GlobalManager::posX[CulumnVal] - 18;
-    yVal = GlobalManager::posY[RowVal - 1] + 17;
+    Width = Height = 24;
+    PosX = GlobalManager::PosX[ColumnVal] - 18;
+    PosY = GlobalManager::PosY[RowVal - 1] + 17;
     
     PeaPixmap = new QPixmap(":/plant/res/images/plant/pea.png");
-    *PeaPixmap = PeaPixmap->scaled(ForScale(width), ForScale(height));
+    *PeaPixmap = PeaPixmap->scaled(ForScale(Width), ForScale(Height));
     PeaLabel = new QLabel(GlobalManager::CurrentWidget);
     PeaLabel->setMouseTracking(true);
     PeaLabel->setPixmap(*PeaPixmap);
-    PeaLabel->setGeometry(ForScale(xVal), ForScale(yVal), ForScale(width), ForScale(height));
+    PeaLabel->setGeometry(ForScale(PosX), ForScale(PosY), ForScale(Width), ForScale(Height));
     PeaLabel->show();
     PeaLabel->raise();
 }
@@ -23,18 +23,8 @@ Pea::~Pea()
     delete PeaPixmap;
 }
 
-int Pea::getWidth()
-{
-    return width;
-}
-
-int Pea::getX()
-{
-    return xVal;
-}
-
 void Pea::PeaMove()
 {
-    xVal += 2;
-    PeaLabel->move(ForScale(xVal), ForScale(yVal));
+    PosX += 2;
+    PeaLabel->move(ForScale(PosX), ForScale(PosY));
 }

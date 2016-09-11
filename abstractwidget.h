@@ -8,12 +8,10 @@ class AbstractWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AbstractWidget(QWidget *parent = 0);
+    explicit AbstractWidget(QWidget *parent = 0) : QWidget(parent) { }
     
 signals:
     void StatusChanged(GameStatus);
-    
-public slots:
 };
 
 #endif // ABSTRACTWINDOW_H

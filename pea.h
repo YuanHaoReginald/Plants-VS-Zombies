@@ -12,10 +12,8 @@ public:
     explicit Pea(int, int, QObject *parent = 0);
     ~Pea();
     
-    int getWidth();
-    int getX();
-    
-signals:
+    int getWidth() const { return Width; }
+    int getPosX() const { return PosX; }
     
 public slots:
     void PeaMove();
@@ -24,7 +22,7 @@ private:
     QLabel *PeaLabel;
     QPixmap *PeaPixmap;
     
-    int width, height, xVal, yVal;
+    int Width, Height, PosX, PosY;
 };
 
 #endif // PEA_H
